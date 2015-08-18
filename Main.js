@@ -126,10 +126,12 @@ window.addEventListener('load',main,false);
 
 
 
+
 function main()
 {
 	window.addEventListener('touchstart',onTouchStart,false);
 	var c = document.getElementById("canvas");
+	window.addEventListener('click',MouseClicked,false);
 	var ctx=c.getContext("2d");
 	
 	function onTouchStart(e){
@@ -158,6 +160,34 @@ function main()
 		}
 		
 		e.preventDefault();
+	}
+	
+	function MouseClicked(e)
+	{
+		console.log(e.clientX + "," + e.clientY);
+	
+		for(var i = 0; i < locations.length; i++)
+		{
+			var loc = locations[i];
+			var state = Clicked(e.clientX,e.clientY,loc.bounds.PointA,loc.bounds.PointB);
+			if(state)
+			{
+				if(loc.selected)
+				{
+					ctx.fillStyle = "#003399";
+					loc.selected = false;
+				}
+				else
+				{
+					ctx.fillStyle = "#FFFF00";
+					loc.selected = true;
+				}
+				ctx.beginPath();
+				ctx.arc(loc.circle.x,loc.circle.y,25,0,2*Math.PI);
+				ctx.fill();
+
+			}
+		}
 	}
 	
 	AddNode("Lunar Isle",1,4,140,95,92,93,31);
