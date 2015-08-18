@@ -132,6 +132,7 @@ function main()
 	window.addEventListener('touchstart',onTouchStart,false);
 	var c = document.getElementById("canvas");
 	window.addEventListener('click',MouseClicked,false);
+	window.addEventListener('touchend', CallEval,false);
 	var ctx=c.getContext("2d");
 	
 	function onTouchStart(e){
@@ -162,9 +163,16 @@ function main()
 		e.preventDefault();
 	}
 	
+	function CallEval(e)
+	{
+		var canvas = document.getElementById('canvas');
+		if(e.changedTouches[0].clientX >= canvas.width) Evaluate();
+	
+		e.preventDefault();
+	}
+	
 	function MouseClicked(e)
 	{
-		console.log(e.clientX + "," + e.clientY);
 	
 		for(var i = 0; i < locations.length; i++)
 		{
