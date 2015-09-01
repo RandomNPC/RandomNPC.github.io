@@ -216,6 +216,11 @@ function main()
 	AddNode("Desert",0,971,702,1092,594,925,661);
 	AddNode("Al Kaharid",0,974,563,1134,464,911,489);
 	
+	AddNode("Gnome Stronghold",1,336,411,502,365,315,333);
+	AddNode("Varrock",0,680,415,772,325,820,383);
+	AddNode("Zanaris",1,657,605,731,562,758,500);
+	AddNode("Mos Le Harmless",3,881,253,1026,192,1118,297);
+	
 	
 	for(var i = 0; i < locations.length; i++)
 	{
