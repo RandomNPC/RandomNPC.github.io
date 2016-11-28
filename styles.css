@@ -4,69 +4,88 @@
 
 [class="Header-0"] {
     float: left;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    font-weight: bold;
     padding: 10px;
     border: 2px solid black;
     line-height: 200%;
     width: 16.66%;
-    background-color:#4CAF50!important;
+    background-color:#4CAF50!important   
 }
 
 [class="Header-1"] {
     float: left;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    font-weight: bold;
     padding: 10px;
     border: 2px solid black;
     line-height: 200%;
     width: 16.66%;
-    background-color:#f44336!important;
+    background-color:#f44336!important
 }
 
 [class="Header-2"] {
     float: left;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    font-weight: bold;
     padding: 10px;
     border: 2px solid black;
     line-height: 200%;
     width: 16.66%;
-    background-color:#ff5722!important;
+    background-color:#ff5722!important
 }
 
 [class="Header-3"] {
     float: left;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    font-weight: bold;
     padding: 10px;
     border: 2px solid black;
     line-height: 200%;
     width: 16.66%;
-    background-color:#3a3a3a!important;
+    background-color:#3a3a3a!important
 }
 
 [class="Header-4"] {
     float: left;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    font-weight: bold;
     padding: 10px;
     border: 2px solid black;
     line-height: 200%;
     width: 16.66%;
-    background-color:#2196F3!important;
+    background-color:#2196F3!important
 }
 
 [class="Header-5"] {
     float: left;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    font-weight: bold;
     padding: 10px;
     border: 2px solid black;
     line-height: 200%;
     width: 16.66%;
-    background-color:#9c27b0!important;
+    background-color:#9c27b0!important
 }
+
+[class="Header-6"] {
+    float: left;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    border: 2px solid black;
+    line-height: 200%;
+    width: 16.66%;
+    background-color:#BFFF00!important
+}
+
 .row::after {
     content: "";
     clear: both;
