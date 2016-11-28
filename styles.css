@@ -1,17 +1,23 @@
-#bg {
-  position: fixed; 
-  top: -50%; 
-  left: -50%; 
-  width: 200%; 
-  height: 200%;
+* {
+    box-sizing: border-box;
 }
-#bg img {
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  bottom: 0; 
-  margin: auto; 
-  min-width: 50%;
-  min-height: 50%;
+
+[class="Header-1"] {
+    float: left;
+    font-size: 12px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid black;
+    line-height: 200%;
+    width: 16.66%;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+html {
+    font-family: "Lucida Sans", sans-serif;
 }

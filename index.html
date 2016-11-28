@@ -1,11 +1,226 @@
 <!DOCTYPE html>
 <html>
-
-<canvas id="canvas" width="1227" height="836" style="background: url('./images/map1.jpg')">
-  Your browser does not support the canvas element.
-</canvas>
-<button type="button" onclick=Evaluate();>Path</button>
-<script type="text/javascript" src="main.js"></script>
-
-</body>
+	<link rel="stylesheet" href="styles.css">
+	<body>
+		<div class="row">
+			<div class="Header-1">
+				Name
+			</div>
+			<div class="Header-1">
+				Base Tank
+			</div>
+			<div class="Header-1">
+				Backup/South Chargers
+			</div>
+			<div class="Header-1">
+				Pet Tank 1/3
+			</div>
+			<div class="Header-1">
+				Pet Tank 2
+			</div>
+			<div class="Header-1">
+				North Chargers
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="00">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="01" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="02" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="03" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="04" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="05" value="Bike">
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="10">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="11" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="12" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="13" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="14" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="15" value="Bike">
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="20">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="21" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="22" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="23" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="24" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="25" value="Bike">
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="30">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="31" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="32" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="33" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="34" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="35" value="Bike">
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="0">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="41" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="42" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="43" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="44" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="45" value="Bike">
+			</div>
+		</div>
+				<div class="row">
+			<div class="Header-1">
+				<input type="text" name="50">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="51" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="52" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="53" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="54" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="55" value="Bike">
+			</div>
+		</div>
+				<div class="row">
+			<div class="Header-1">
+				<input type="text" name="60">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="61" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="62" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="63" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="64" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="65" value="Bike">
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="70">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="71" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="72" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="73" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="74" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="75" value="Bike">
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="80">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="81" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="82" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="83" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="84" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="85" value="Bike">
+			</div>
+		</div>
+		<div class="row">
+			<div class="Header-1">
+				<input type="text" name="90">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="91" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="92" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="93" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="94" value="Bike">
+			</div>
+			<div class="Header-1">
+				<input type="checkbox" name="95" value="Bike">
+			</div>
+		</div>
+	</body>
 </html>
