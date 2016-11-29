@@ -1,5 +1,3 @@
-console.log("YES");
-
 function isBlacklisted(arr,arg)
 {
 	for(var k=0; k < arr.length; k++)
@@ -15,7 +13,7 @@ function refresh()
 {
 	for(var m=1; m<=5; m++)
 	{
-		for(var n=0; n<9; n++)
+		for(var n=0; n<=9; n++)
 		{
 			var source = document.getElementById(n + "" + m + "0");
 			source.classList.remove(source.className);
@@ -36,7 +34,7 @@ function OnSubmit()
 	{
 		selector = [];
 		
-		for(var j=0; j<9; j++) //Scans names
+		for(var j=0; j<=9; j++) //Scans names
 		{
 			var status = document.getElementById(j+""+i).checked;
 			
@@ -53,7 +51,7 @@ function OnSubmit()
 		//Select the new value from candidates
 		if(selector.length > 0)
 		{
-			var result = selector[Math.floor(Math.random() * selector.length)];
+			var result = selector[Math.floor(Math.random() * (selector.length))];
 			var target = document.getElementById(result + "" + i + "0");
 			target.classList.remove(target.className);
 			target.classList.add("Header-6");
