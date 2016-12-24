@@ -1,317 +1,238 @@
 <!DOCTYPE html>
 <html>
 	<link rel="stylesheet" href="styles.css">
+	<script src="jquery-3.1.1.js"></script>
+	<script>
+	$(document).click(
+		function(event)
+		{
+			var column = $(event.target).index();
+			var row = $(event.target).parent().closest("div").index()-100;
+
+			$("#"+column+""+row)[0].play();
+		}
+	);
+	</script>
 	<body>
-		<script src="Main.js"></script>
-		<fieldset>
-		<legend>Beastmaster:</legend>
+			<audio id="00" src="t.mp3"></audio>
+			<audio id="01" src=""></audio>
+			<audio id="02" src=""></audio>
+			<audio id="03" src=""></audio>
+			<audio id="04" src=""></audio>
+			<audio id="05" src=""></audio>
+			<audio id="06" src=""></audio>
+			<audio id="07" src=""></audio>
+			<audio id="08" src=""></audio>
+			<audio id="09" src=""></audio>
+			<audio id="10" src=""></audio>
+			<audio id="11" src=""></audio>
+			<audio id="12" src=""></audio>
+			<audio id="13" src=""></audio>
+			<audio id="14" src=""></audio>
+			<audio id="15" src=""></audio>
+			<audio id="16" src=""></audio>
+			<audio id="17" src=""></audio>
+			<audio id="18" src=""></audio>
+			<audio id="19" src=""></audio>
+			<audio id="20" src=""></audio>
+			<audio id="21" src=""></audio>
+			<audio id="22" src=""></audio>
+			<audio id="23" src=""></audio>
+			<audio id="24" src=""></audio>
+			<audio id="25" src=""></audio>
+			<audio id="26" src=""></audio>
+			<audio id="27" src=""></audio>
+			<audio id="28" src=""></audio>
+			<audio id="29" src=""></audio>				
+			<audio id="30" src=""></audio>
+			<audio id="31" src=""></audio>
+			<audio id="32" src=""></audio>
+			<audio id="33" src=""></audio>
+			<audio id="34" src=""></audio>
+			<audio id="35" src=""></audio>
+			<audio id="36" src=""></audio>
+			<audio id="37" src=""></audio>
+			<audio id="38" src=""></audio>
+			<audio id="39" src=""></audio>	
+			<audio id="40" src=""></audio>
+			<audio id="41" src=""></audio>
+			<audio id="42" src=""></audio>
+			<audio id="43" src=""></audio>
+			<audio id="44" src=""></audio>
+			<audio id="45" src=""></audio>
+			<audio id="46" src=""></audio>
+			<audio id="47" src=""></audio>
+			<audio id="48" src=""></audio>
+			<audio id="49" src=""></audio>		
+			<audio id="50" src=""></audio>
+			<audio id="51" src=""></audio>
+			<audio id="52" src=""></audio>
+			<audio id="53" src=""></audio>
+			<audio id="54" src=""></audio>
+			<audio id="55" src=""></audio>
+			<audio id="56" src=""></audio>
+			<audio id="57" src=""></audio>
+			<audio id="58" src=""></audio>
+			<audio id="59" src=""></audio>		
+			<audio id="60" src=""></audio>
+			<audio id="61" src=""></audio>
+			<audio id="62" src=""></audio>
+			<audio id="63" src=""></audio>
+			<audio id="64" src=""></audio>
+			<audio id="65" src=""></audio>
+			<audio id="66" src=""></audio>
+			<audio id="67" src=""></audio>
+			<audio id="68" src=""></audio>
+			<audio id="69" src=""></audio>	
+			<audio id="70" src=""></audio>
+			<audio id="71" src=""></audio>
+			<audio id="72" src=""></audio>
+			<audio id="73" src=""></audio>
+			<audio id="74" src=""></audio>
+			<audio id="75" src=""></audio>
+			<audio id="76" src=""></audio>
+			<audio id="77" src=""></audio>
+			<audio id="78" src=""></audio>
+			<audio id="79" src=""></audio>	
+			<audio id="80" src=""></audio>
+			<audio id="81" src=""></audio>
+			<audio id="82" src=""></audio>
+			<audio id="83" src=""></audio>
+			<audio id="84" src=""></audio>
+			<audio id="85" src=""></audio>
+			<audio id="86" src=""></audio>
+			<audio id="87" src=""></audio>
+			<audio id="88" src=""></audio>
+			<audio id="89" src=""></audio>	
+			<audio id="90" src=""></audio>
+			<audio id="91" src=""></audio>
+			<audio id="92" src=""></audio>
+			<audio id="93" src=""></audio>
+			<audio id="94" src=""></audio>
+			<audio id="95" src=""></audio>
+			<audio id="96" src=""></audio>
+			<audio id="97" src=""></audio>
+			<audio id="98" src=""></audio>
+			<audio id="99" src=""></audio>			
 			<div class="row">
-				<div class="Header-0">
-					Name
-				</div>
-				<div class="Header-1">
-					Base Tank
-				</div>
-				<div class="Header-2">
-					Backup/South Chargers
-				</div>
-				<div class="Header-3">
-					Pet Tank 1/3
-				</div>
-				<div class="Header-4">
-					Pet Tank 2
-				</div>
-				<div class="Header-5">
-					North Chargers
-				</div>
-			</div>
-			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="00">
-				</div>
-				<div class="Header-1" id="010">
-					<input type="checkbox" id="01">
-				</div>
-				<div class="Header-2" id="020">
-					<input type="checkbox" id="02">
-				</div>
-				<div class="Header-3" id="030">
-					<input type="checkbox" id="03">
-				</div>
-				<div class="Header-4" id="040">
-					<input type="checkbox" id="04">
-				</div>
-				<div class="Header-5" id="050">
-					<input type="checkbox" id="05">
-				</div>
-			</div>
-			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="10">
-				</div>
-				<div class="Header-1" id="110">
-					<input type="checkbox" id="11">
-				</div>
-				<div class="Header-2" id="120">
-					<input type="checkbox" id="12">
-				</div>
-				<div class="Header-3" id="130">
-					<input type="checkbox" id="13">
-				</div>
-				<div class="Header-4" id="140">
-					<input type="checkbox" id="14">
-				</div>
-				<div class="Header-5" id="150">
-					<input type="checkbox" id="15">
-				</div>
-			</div>
-			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="20">
-				</div>
-				<div class="Header-1" id="210">
-					<input type="checkbox" id="21">
-				</div>
-				<div class="Header-2" id="220">
-					<input type="checkbox" id="22">
-				</div>
-				<div class="Header-3"  id="230">
-					<input type="checkbox" id="23">
-				</div>
-				<div class="Header-4"  id="240">
-					<input type="checkbox" id="24">
-				</div>
-				<div class="Header-5"  id="250">
-					<input type="checkbox" id="25">
-				</div>
-			</div>
-			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="30">
-				</div>
-				<div class="Header-1" id="310">
-					<input type="checkbox" id="31">
-				</div>
-				<div class="Header-2" id="320">
-					<input type="checkbox" id="32">
-				</div>
-				<div class="Header-3" id="330">
-					<input type="checkbox" id="33">
-				</div>
-				<div class="Header-4" id="340">
-					<input type="checkbox" id="34">
-				</div>
-				<div class="Header-5" id="350">
-					<input type="checkbox" id="35">
-				</div>
-			</div>
-			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="40">
-				</div>
-				<div class="Header-1"  id="410">
-					<input type="checkbox" id="41">
-				</div>
-				<div class="Header-2"  id="420">
-					<input type="checkbox" id="42">
-				</div>
-				<div class="Header-3"  id="430">
-					<input type="checkbox" id="43">
-				</div>
-				<div class="Header-4"  id="440">
-					<input type="checkbox" id="44">
-				</div>
-				<div class="Header-5"  id="450">
-					<input type="checkbox" id="45">
-				</div>
-			</div>
-					<div class="row">
-				<div class="Header-0">
-					<input type="text" id="50">
-				</div>
-				<div class="Header-1" id="510">
-					<input type="checkbox" id="51">
-				</div>
-				<div class="Header-2" id="520">
-					<input type="checkbox" id="52">
-				</div>
-				<div class="Header-3" id="530">
-					<input type="checkbox" id="53">
-				</div>
-				<div class="Header-4" id="540">
-					<input type="checkbox" id="54">
-				</div>
-				<div class="Header-5" id="550">
-					<input type="checkbox" id="55">
-				</div>
-			</div>
-					<div class="row">
-				<div class="Header-0">
-					<input type="text" id="60">
-				</div>
-				<div class="Header-1" id="610">
-					<input type="checkbox" id="61">
-				</div>
-				<div class="Header-2" id="620">
-					<input type="checkbox" id="62">
-				</div>
-				<div class="Header-3" id="630">
-					<input type="checkbox" id="63">
-				</div>
-				<div class="Header-4" id="640">
-					<input type="checkbox" id="64">
-				</div>
-				<div class="Header-5" id="650">
-					<input type="checkbox" id="65">
-				</div>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
 			</div>
 			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="70">
-				</div>
-				<div class="Header-1" id="710">
-					<input type="checkbox" id="71">
-				</div>
-				<div class="Header-2" id="720">
-					<input type="checkbox" id="72">
-				</div>
-				<div class="Header-3" id="730">
-					<input type="checkbox" id="73">
-				</div>
-				<div class="Header-4" id="740">
-					<input type="checkbox" id="74">
-				</div>
-				<div class="Header-5" id="750">
-					<input type="checkbox" id="75">
-				</div>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
 			</div>
 			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="80">
-				</div>
-				<div class="Header-1" id="810">
-					<input type="checkbox" id="81">
-				</div>
-				<div class="Header-2" id="820">
-					<input type="checkbox" id="82">
-				</div>
-				<div class="Header-3" id="830">
-					<input type="checkbox" id="83">
-				</div>
-				<div class="Header-4" id="840">
-					<input type="checkbox" id="84">
-				</div>
-				<div class="Header-5" id="850">
-					<input type="checkbox" id="85">
-				</div>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
 			</div>
 			<div class="row">
-				<div class="Header-0">
-					<input type="text" id="90">
-				</div>
-				<div class="Header-1" id="910">
-					<input type="checkbox" id="91">
-				</div>
-				<div class="Header-2" id="920">
-					<input type="checkbox" id="92">
-				</div>
-				<div class="Header-3" id="930">
-					<input type="checkbox" id="93">
-				</div>
-				<div class="Header-4" id="940">
-					<input type="checkbox" id="94">
-				</div>
-				<div class="Header-5" id="950">
-					<input type="checkbox" id="95">
-				</div>
-			</div>
-			<button onclick="OnSubmit()">Submit</button>
-		</fieldset>
-		<br></br>
-		<fieldset>
-			<legend>Yakamaru:</legend>
-			<div class="row">
-				<div class="Header-7">
-					Role
-				</div>
-				<div class="Header-8">
-					Base Tank
-				</div>
-				<div class="Header-9">
-					North Tank
-				</div>
-				<div class="Header-10">
-					Poison Tank
-				</div>
-				<div class="Header-11">
-					Shark Tag 10
-				</div>
-				<div class="Header-12">
-					Stun 5
-				</div>
-				<div class="Header-13">
-					Stun 5
-				</div>
-				<div class="Header-14">
-					Stun 0
-				</div>
-				<div class="Header-15">
-					CPR
-				</div>
-				<div class="Header-16">
-					Double Poison
-				</div>
-				<div class="Header-17">
-					Main Stun
-				</div>
-				<div class="Header-18">
-					Backup Stun
-				</div>
-				<div class="Header-19">
-					Wrangler
-				</div>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
 			</div>
 			<div class="row">
-				<div class="Header-7">
-					Name
-				</div>
-				<div class="Header-8">
-					<input type="text" style="width: 75px;" >
-				</div>
-				<div class="Header-9">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-10">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-11">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-12">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-13">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-14">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-15">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-16">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-17">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-18">
-					<input type="text" style="width: 75px;">
-				</div>
-				<div class="Header-19">
-					<input type="text" style="width: 75px;">
-				</div>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
 			</div>
-		</fieldset>
+			<div class="row">
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+			</div>
+			<div class="row">
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+			</div>
+			<div class="row">
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+			</div>
+			<div class="row">
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+			</div>
+			<div class="row">
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+				<a class="button"></a>
+			</div>
 	</body>
 </html>
