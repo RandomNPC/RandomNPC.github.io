@@ -37,3 +37,8 @@ li{
   list-style-type: none;
   text-align: center;
 }
+
+body{
+  font-family: 'Chivo', sans-serif;
+  font-size: 15px;
+}

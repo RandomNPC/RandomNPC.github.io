@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<link rel="stylesheet" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Chivo" rel="stylesheet">
 	<script src="jquery-3.1.1.js"></script>
 	<script src="jquery.js"></script>
 	<script src="jquery-ui.js"></script>
@@ -24,10 +25,9 @@
 								$origin.append("<li class=\'placeholder\'>DPS</li>");
 							}
 						}
-
+						UpdateBBCode();
 					}
-				}
-			);
+				});
 
 
 			$('.yakamaru, .yakaroles').sortable(
@@ -48,14 +48,88 @@
 								$origin.append("<li class=\'placeholder\'>DPS</li>");
 							}
 						}
+						UpdateBBCode();
 					}
 				}
 			);
 
+			$(".participant").change(function(){
+				UpdateBBCode();
+			});
+
 			$.each($('.roster .beastmaster, .roster .yakamaru'),function(index, value){
 				$(this).append("<li class=\'placeholder\'>DPS</li>");
 			});
-			
+
+			function UpdateBBCode(){
+				$("#textarea").val("");
+				var $rows = $('.roster li, .roster input').map(function(){
+					return $(this);
+				});
+
+				var bmroleCount = 0;
+				var yakaroleCount = 0;
+				var bmoutput = "";
+				var yakaoutput = "";
+				var display = "";
+
+				$.each($rows,function(index,value){
+					var $cell = value;
+					if($cell.hasClass("participant"))
+					{
+						if(bmoutput != "")
+						{
+							display +=
+							"[td][center]"+ yakaoutput +"[/center][/td]"  + "\n" +
+							"[td][center]"+ bmoutput +"[/center][/td]"  + "\n" +
+							"[/tr]"  + "\n";
+
+							bmoutput = "";
+							yakaoutput = "";
+						}
+
+						bmroleCount = 0;
+						yakaroleCount = 0;
+
+						display +=
+						"[tr]"  + "\n" +
+						"[td][center]" + $cell.val() + "[/center][/td]"  + "\n";
+					}
+					else if($cell.parent().hasClass("beastmaster")){
+						bmoutput += (bmroleCount > 0) ? " + " + $cell.context.textContent : $cell.context.textContent;
+						bmroleCount++;
+					}
+					else if($cell.parent().hasClass("yakamaru")){
+						yakaoutput += (yakaroleCount > 0) ? " + " + $cell.context.textContent : $cell.context.textContent;
+						yakaroleCount++;
+					}
+				});
+
+				display +=
+				"[td][center]"+ yakaoutput +"[/center][/td]"  + "\n" +
+				"[td][center]"+ bmoutput +"[/center][/td]"  + "\n" +
+				"[/tr]"  + "\n";
+
+				$("textarea").val(
+					"[table]" + "\n" +
+					"[tr]" + "\n" +
+					"[th][center]0?:?? GMT, ???, ??? ???[/center][/th]" + "\n" +
+					"[td][center]Hosted by ???[/center][/td]" + "\n" +
+					"[/tr]" + "\n" +
+					"[tr]" + "\n" +
+					"[td] [/td]" + "\n" +
+					"[/tr]" + "\n" +
+					"[/table]" + "\n" +
+					"(Names marked with a * are people learning roles for the first time.)" + "\n" +
+					"[table]" + "\n" +
+					"[tr]" +" [/tr]" + "\n" +
+					"[tr]" + "\n" +
+					"[th]Name[/th]" + "\n" +
+					"[th]Yakamaru[/th]" + "\n" +
+					"[th]Beastmaster[/th]" + "\n" +
+					"[/tr]"+ "\n"
+					+ display + "[/table]");
+			}
 		});
 
 
@@ -70,52 +144,52 @@
 					<td>Yakamaru</td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
 				<tr>
-					<td><input type='text'></td>
+					<td><input type='text' class="participant"></td>
 					<td class='beastmaster'></td>
 					<td class='yakamaru'></td>
 				</tr>
@@ -143,6 +217,9 @@
 				<tr><td class='yakaroles'><li>Backup Stun</li></td></tr>
 			</table>
 		</div>
+	</div>
+	<div id='output'>
+		<textarea id="textarea"></textarea>
 	</div>
 	</body>
 </html>
