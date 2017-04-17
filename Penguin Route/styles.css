@@ -1,0 +1,59 @@
+.raw{
+  border-style: solid;
+  border: 1px black;
+}
+
+.raw td{
+  width: 150px;
+  height: 30px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+#output{
+  float: right;
+}
+
+#master{
+  float: left;
+}
+
+#container{
+  display: flex;
+}
+
+#container > div{
+  display: inline-block;
+  padding: 1em;
+}
+
+.display{
+  font-family: 'Karla', sans-serif;
+  font-size: 18px;
+  vertical-align: middle;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.circle {
+    background-color:#fff;
+    border:5px solid black;
+    height:10px;
+    border-radius:50%;
+    width:10px;
+}
+
+.display td{
+  /*border: 1px solid black;*/
+}
+
+.bar {
+  height: 20px;
+  width: 10px;
+  border-left: 5px solid #000080;
+  transform: translate(50%);
+}
+
+.teleports{
+  min-width: 300px;
+}

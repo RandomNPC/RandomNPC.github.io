@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+	<script src="jquery-3.1.1.js"></script>
+	<script src="jquery.js"></script>
+	<script src="jquery-ui.js"></script>
+	<script src="data.js"></script>
+	<script>
+    		$(document).ready(function(){
+						//populate each selector
+						$(".locations").each(function(){
+							var selector = $(this);
+							$.each(locations,function(index, value){
+								$.each(value,function(i,v){
+									selector.append("<option>" + i + "</option>");
+								});
+							});
+						});
+
+						$(".locations").change(function(){
+							var id = $(this).attr('id');
+							var stop = (id % 2 === 0) ? id/2 : (id-1)/2;
+							var $ref = $("#"+((stop*2)+1));
+							$ref.empty();
+							$.each(locations[this.selectedIndex][$(this).val()],function(index,value){
+								$ref.append("<option>" + value + "</option>");
+							});
+
+							UpdateRoute(stop);
+						});
+
+						$(".teleports").change(function(){
+							var id = $(this).attr('id');
+							var stop = (id % 2 === 0) ? id/2 : (id-1)/2;
+
+							UpdateRoute(stop);
+						});
+
+
+						function UpdateRoute(stop){
+
+							var stopName = $("#"+(stop*2)).val();
+							var via = $("#"+((stop*2)+1)).val();
+
+							stopName = (via === "") ? stopName : stopName + " via " + via;
+
+							if(stopName === "")
+							{
+								//Stop Node
+								$("#00"+((stop < 10) ? "0" + stop : stop )).toggleClass("circle",false);;
+
+								//Stop Connector
+								if(stop > 0)
+								{
+									$("#00"+((stop < 10) ? "0" + stop : stop )+"A").toggleClass("bar",false);
+								}
+							}
+							else {
+								//Stop Node
+								$("#00"+((stop < 10) ? "0" + stop : stop )).toggleClass("circle",true);
+
+								//Stop Connector
+								if(stop > 0)
+								{
+									$("#00"+((stop < 10) ? "0" + stop : stop )+"A").toggleClass("bar",true);
+								}
+							}
+							$("#"+((stop < 10) ? "0" + stop : stop )+"0").html(stopName);
+						}
+				});
+	</script>
+	<body>
+    <div id='container'>
+      <div id='master'>
+        <table class="raw">
+          <tr>
+            <td>Penguin</td>
+            <td>via</td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="0"></select></td>
+            <td><select class="teleports" id="1"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="2"></select></td>
+            <td><select class="teleports" id="3"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="4"></select></td>
+            <td><select class="teleports" id="5"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="6"></select></td>
+            <td><select class="teleports" id="7"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="8"></select></td>
+            <td><select class="teleports" id="9"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="10"></select></td>
+            <td><select class="teleports" id="11"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="12"></select></td>
+            <td><select class="teleports" id="13"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="14"></select></td>
+            <td><select class="teleports" id="15"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="16"></select></td>
+            <td><select class="teleports" id="17"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="18"></select></td>
+            <td><select class="teleports" id="19"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="20"></select></td>
+            <td><select class="teleports" id="21"></select></td>
+          </tr>
+          <tr>
+						<td><select class="locations" id="22"></select></td>
+            <td><select class="teleports" id="23"></select></td>
+          </tr>
+        </table>
+      </div>
+      <div id="output">
+        <table class="display">
+          <tr>
+            <td><div id="0000"></div></td>
+            <td id="000"></td>
+          </tr>
+					<tr>
+						<td><div id="0001A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0001"></div></td>
+            <td id="010"></td>
+          </tr>
+					<tr>
+						<td><div id="0002A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0002"></div></td>
+            <td id="020"></td>
+          </tr>
+					<tr>
+						<td><div id="0003A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0003"></div></td>
+            <td id="030"></td>
+          </tr>
+					<tr>
+						<td><div id="0004A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0004"></div></td>
+            <td id="040"></td>
+          </tr>
+					<tr>
+						<td><div id="0005A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0005"></div></td>
+            <td id="050"></td>
+          </tr>
+					<tr>
+						<td><div id="0006A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0006"></div></td>
+            <td id="060"></td>
+          </tr>
+					<tr>
+						<td><div id="0007A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0007"></div></td>
+            <td id="070"></td>
+          </tr>
+					<tr>
+						<td><div id="0008A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0008"></div></td>
+            <td id="080"></td>
+          </tr>
+					<tr>
+						<td><div id="0009A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0009"></div></td>
+            <td id="090"></td>
+          </tr>
+					<tr>
+						<td><div id="0010A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0010"></div></td>
+            <td id="100"></td>
+          </tr>
+					<tr>
+						<td><div id="0011A"></div></td>
+					</tr>
+          <tr>
+            <td><div id="0011"></div></td>
+            <td id="110"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+	</body>
+</html>
