@@ -57,3 +57,7 @@
 .teleports{
   min-width: 300px;
 }
+
+.confirmed{
+  background-color: #31a033;
+}

@@ -1,225 +1,562 @@
 <!DOCTYPE html>
 <html>
-	<link rel="stylesheet" href="styles.css">
-	<link href="https://fonts.googleapis.com/css?family=Chivo" rel="stylesheet">
-	<script src="jquery-3.1.1.js"></script>
-	<script src="jquery.js"></script>
-	<script src="jquery-ui.js"></script>
-	<script>
-		$(document).ready(function(){
-			$('.beastmaster, .bmroles').sortable(
-				{
-					connectWith: '.bmroles, .beastmaster',
-					cursor: 'pointer',
-					revert: true,
-					receive: function(event, ui){
-						var $origin = ui.sender;
-						var $destination = $(this);
-
-						//Role List -> Roster
-						$destination.children(".placeholder").remove();
-
-						//Roster -> Role List or Roster -> Roster
-						if(!$origin.hasClass("bmroles")){ //Stop this from filling the Role List
-							if($origin.children("li").length === 0){ //Prevent furthur DPS placeholders here
-								$origin.append("<li class=\'placeholder\'>DPS</li>");
-							}
-						}
-						UpdateBBCode();
-					}
-				});
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="labels.css">
+    <link rel="stylesheet" href="buttons.css">
+    <script src="navigation.js"></script>
+    <script src="home.js"></script>
+    <script>
+      $(document).ready(()=>{
 
 
-			$('.yakamaru, .yakaroles').sortable(
-				{
-					connectWith: '.yakamaru, .yakaroles',
-					cursor: 'pointer',
-					revert: true,
-					receive: function(event, ui){
-						var $origin = ui.sender;
-						var $destination = $(this);
-
-						//Role List -> Roster
-						$destination.children(".placeholder").remove();
-
-						//Roster -> Role List or Roster -> Roster
-						if(!$origin.hasClass("yakaroles")){ //Stop this from filling the Role List
-							if($origin.children("li").length === 0){ //Prevent furthur DPS placeholders here
-								$origin.append("<li class=\'placeholder\'>DPS</li>");
-							}
-						}
-						UpdateBBCode();
-					}
-				}
-			);
-
-			$(".participant").change(function(){
-				UpdateBBCode();
-			});
-
-			$.each($('.roster .beastmaster, .roster .yakamaru'),function(index, value){
-				$(this).append("<li class=\'placeholder\'>DPS</li>");
-			});
-
-			function UpdateBBCode(){
-				$("#textarea").val("");
-				var $rows = $('.roster li, .roster input').map(function(){
-					return $(this);
-				});
-
-				var bmroleCount = 0;
-				var yakaroleCount = 0;
-				var bmoutput = "";
-				var yakaoutput = "";
-				var display = "";
-
-				$.each($rows,function(index,value){
-					var $cell = value;
-					if($cell.hasClass("participant"))
-					{
-						if(bmoutput != "")
-						{
-							display +=
-							"[td][center]"+ yakaoutput +"[/center][/td]"  + "\n" +
-							"[td][center]"+ bmoutput +"[/center][/td]"  + "\n" +
-							"[/tr]"  + "\n";
-
-							bmoutput = "";
-							yakaoutput = "";
-						}
-
-						bmroleCount = 0;
-						yakaroleCount = 0;
-
-						display +=
-						"[tr]"  + "\n" +
-						"[td][center]" + $cell.val() + "[/center][/td]"  + "\n";
-					}
-					else if($cell.parent().hasClass("beastmaster")){
-						bmoutput += (bmroleCount > 0) ? " + " + $cell.context.textContent : $cell.context.textContent;
-						bmroleCount++;
-					}
-					else if($cell.parent().hasClass("yakamaru")){
-						yakaoutput += (yakaroleCount > 0) ? " + " + $cell.context.textContent : $cell.context.textContent;
-						yakaroleCount++;
-					}
-				});
-
-				display +=
-				"[td][center]"+ yakaoutput +"[/center][/td]"  + "\n" +
-				"[td][center]"+ bmoutput +"[/center][/td]"  + "\n" +
-				"[/tr]"  + "\n";
-
-				$("textarea").val(
-					"[table]" + "\n" +
-					"[tr]" + "\n" +
-					"[th][center]0?:?? GMT, ???, ??? ???[/center][/th]" + "\n" +
-					"[td][center]Hosted by ???[/center][/td]" + "\n" +
-					"[/tr]" + "\n" +
-					"[tr]" + "\n" +
-					"[td] [/td]" + "\n" +
-					"[/tr]" + "\n" +
-					"[/table]" + "\n" +
-					"(Names marked with a * are people learning roles for the first time.)" + "\n" +
-					"[table]" + "\n" +
-					"[tr]" +" [/tr]" + "\n" +
-					"[tr]" + "\n" +
-					"[th]Name[/th]" + "\n" +
-					"[th]Yakamaru[/th]" + "\n" +
-					"[th]Beastmaster[/th]" + "\n" +
-					"[/tr]"+ "\n"
-					+ display + "[/table]");
-			}
-		});
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Raid Worksheet</a>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="#" id="link-home">Home</a>
+          <a class="nav-item nav-link" href="#" id="link-teamspeak">Teamspeak</a>
+          <a class="nav-item nav-link" href="#" id="link-video">Video</a>
+          <a class="nav-item nav-link" href="#" id="link-settings">Settings</a>
+        </div>
 
 
-	</script>
-	<body>
-	<div id='container'>
-		<div id='master'>
-			<table class='roster' cellspacing="0">
-				<tr>
-					<td>Name</td>
-					<td>Beastmaster</td>
-					<td>Yakamaru</td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-				<tr>
-					<td><input type='text' class="participant"></td>
-					<td class='beastmaster'></td>
-					<td class='yakamaru'></td>
-				</tr>
-			</table>
-		</div>
-		<div id='roles'>
-			<table class='rolelist'>
-				<tr><td class='bmroles'><li>BM Base Tank</li></td></tr>
-				<tr><td class='bmroles'><li>Pet Tank 1/3</li></td></tr>
-				<tr><td class='bmroles'><li>Pet Tank 2</li></td></tr>
-				<tr><td class='bmroles'><li>Backup Tank</li></td></tr>
-				<tr><td class='bmroles'><li>North Chargers</li></td></tr>
-				<tr><td class='bmroles'><li>South Chargers</li></td></tr>
-				<tr><td class='yakaroles'><li>Yaka Base Tank</li></td></tr>
-				<tr><td class='yakaroles'><li>North Tank</li></td></tr>
-				<tr><td class='yakaroles'><li>Poison Tank</li></td></tr>
-				<tr><td class='yakaroles'><li>Double Poison</li></td></tr>
-				<tr><td class='yakaroles'><li>Shark 10</li></td></tr>
-				<tr><td class='yakaroles'><li>Stun 5</li></td></tr>
-				<tr><td class='yakaroles'><li>Stun 5</li></td></tr>
-				<tr><td class='yakaroles'><li>Stun 0</li></td></tr>
-				<tr><td class='yakaroles'><li>CPR</li></td></tr>
-				<tr><td class='yakaroles'><li>Wrangler</li></td></tr>
-				<tr><td class='yakaroles'><li>Main Stun</li></td></tr>
-				<tr><td class='yakaroles'><li>Backup Stun</li></td></tr>
-			</table>
-		</div>
-	</div>
-	<div id='output'>
-		<textarea id="textarea"></textarea>
-	</div>
-	</body>
+      </div>
+    </nav>
+    <!--Navigation-->
+
+    <!--Content-->
+    <div class="container-fluid">
+      <div id="content-home">
+      <!--Role Roster-->
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="card">
+            <div class="card-header" role="tab" id="headingOne">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 1
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingTwo">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 2
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingThree">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 3
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingFour">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 4
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+
+            <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingFive">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 5
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+            <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingSix">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 6
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+            <div id="collapseSix" class="collapse" role="tabpanel" aria-labelledby="headingSix">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingSeven">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 7
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+
+            <div id="collapseSeven" class="collapse" role="tabpanel" aria-labelledby="headingSeven">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingEight">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 8
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+            <div id="collapseEight" class="collapse" role="tabpanel" aria-labelledby="headingEight">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingNine">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 9
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+            <div id="collapseNine" class="collapse" role="tabpanel" aria-labelledby="headingNine">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" role="tab" id="headingTen">
+              <h5 class="mb-0">
+                <div class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 padding">
+                        Player 10
+                      </div>
+                      <div class="col-md-7 padding">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+            </div>
+
+            <div id="collapseTen" class="collapse" role="tabpanel" aria-labelledby="headingTen">
+              <div class="card-block">
+                <form class="form-inline">
+                  <input class="form-control" type="text" placeholder="Player Name">
+                </form>
+                <hr/>
+                <div>
+                   <p>Beastmaster: </p>
+                   <button type="button" class="btn btn-primary btn-space role-1">BM Base Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-2">Backup Tank</button>
+                   <button type="button" class="btn btn-primary btn-space role-3">Pet Tank 1/3</button>
+                   <button type="button" class="btn btn-primary btn-space role-4">Pet Tank 2</button>
+                   <button type="button" class="btn btn-primary btn-space role-5">North Chargers</button>
+                   <button type="button" class="btn btn-primary btn-space role-6">South Chargers</button>
+                </div>
+                <hr/>
+                <div>
+                   <p>Yakamaru: </p>
+                   <button type="button" class="btn btn-success btn-space role-8">Yaka Base Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-9">North Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-10">Poison Tank</button>
+                   <button type="button" class="btn btn-success btn-space role-11">Shark 10</button>
+                   <button type="button" class="btn btn-success btn-space role-12">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-13">Stun 5</button>
+                   <button type="button" class="btn btn-success btn-space role-14">Stun 0</button>
+                   <button type="button" class="btn btn-success btn-space role-15">CPR</button>
+                   <button type="button" class="btn btn-success btn-space role-16">Double Poison</button>
+                   <button type="button" class="btn btn-success btn-space role-17">Main Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-18">Backup Stun</button>
+                   <button type="button" class="btn btn-success btn-space role-19">Wrangler</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Role Roster-->
+      <div id="content-teamspeak">
+        Teamspeak
+      </div>
+      <div id="content-video">
+        Video
+      </div>
+      <div id="content-settings">
+        Settings
+      </div>
+    </div>
+    <!--Content-->
+  </body>
 </html>

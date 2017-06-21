@@ -8,6 +8,11 @@
 	<script src="data.js"></script>
 	<script>
     		$(document).ready(function(){
+
+					$(".check").click(function(){
+						$(this).parent().parent().toggleClass("confirmed");
+					});
+
 						//populate each selector
 						$(".locations").each(function(){
 							var selector = $(this);
@@ -75,54 +80,67 @@
       <div id='master'>
         <table class="raw">
           <tr>
+						<td></td>
             <td>Penguin</td>
             <td>via</td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="0"></select></td>
             <td><select class="teleports" id="1"></select></td>
           </tr>
           <tr>
+						<td><input class="check"  type="checkbox"></td>
 						<td><select class="locations" id="2"></select></td>
             <td><select class="teleports" id="3"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="4"></select></td>
             <td><select class="teleports" id="5"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="6"></select></td>
             <td><select class="teleports" id="7"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="8"></select></td>
             <td><select class="teleports" id="9"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="10"></select></td>
             <td><select class="teleports" id="11"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="12"></select></td>
             <td><select class="teleports" id="13"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="14"></select></td>
             <td><select class="teleports" id="15"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="16"></select></td>
             <td><select class="teleports" id="17"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="18"></select></td>
             <td><select class="teleports" id="19"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="20"></select></td>
             <td><select class="teleports" id="21"></select></td>
           </tr>
           <tr>
+						<td><input class="check" type="checkbox"></td>
 						<td><select class="locations" id="22"></select></td>
             <td><select class="teleports" id="23"></select></td>
           </tr>
