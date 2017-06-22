@@ -7,13 +7,13 @@ $(document).ready(()=>{
 
     var $roles = $($($(this).parents()[3]).find(".list"));
     var roles = $.map($roles.children(),(v)=>{
-      return $(v).text();
+      return $(v).attr("class").split(' ')[3];
     });
 
     //if this hasn't been added already add to the banner
-    if(roles.indexOf($(this).text()) > -1){
+    if(roles.indexOf($(this).attr("class").split(' ')[3]) > -1){
       //Remove from banner
-      $($roles.children()[roles.indexOf($(this).text())]).remove();
+      $($roles.children()[roles.indexOf($(this).attr("class").split(' ')[3])]).remove();
 
       //re-enable all other instances of this button
       var $others = $("#content-home ." + $(this).attr("class").split(' ')[3]).not($(this));
@@ -47,7 +47,6 @@ $(document).ready(()=>{
     else {
       //Remove DPS label if exists for respective section
       var role_id = $(this).attr("class").split(' ')[3].match(/\d+/g)[0];
-      console.log(role_id)
       if(role_id <= BEASTMASTER_DPS)
       {
         $roles.find(".role-7").remove();
@@ -64,12 +63,17 @@ $(document).ready(()=>{
       var $others = $("#content-home ." + $(this).attr("class").split(' ')[3]).not($(this)).not($target);
       $others.prop("disabled", true);
     }
-/*
-    $roles.children().detach().sort(function(a,b){
-      console.log(a)
-      console.log(b)
+
+    var $reference = $roles.children();
+
+    $reference.detach().sort(function(a,b){
+      var pointA = $(a).attr("class").split(' ')[3].match(/\d+/g)[0];
+      var pointB = $(b).attr("class").split(' ')[3].match(/\d+/g)[0];
+      return pointA - pointB;
     });
-*/
+
+    $roles.append($reference);
+
   });
 
   $.each($("#content-home .list"),function(index,value){
