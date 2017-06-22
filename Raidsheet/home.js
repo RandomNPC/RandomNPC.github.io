@@ -5,7 +5,7 @@ $(document).ready(()=>{
 
   $("#content-home .btn").click(function(){
 
-    var $roles = $($($(this).parents()[3]).find(".col-md-7"));
+    var $roles = $($($(this).parents()[3]).find(".list"));
     var roles = $.map($roles.children(),(v)=>{
       return $(v).text();
     });
@@ -21,7 +21,7 @@ $(document).ready(()=>{
 
       var bmCount = 0;
       var yakaCount = 0;
-      
+
       //if there are zero roles, add DPS
       $.each($roles.children(),function(index,value){
         var role_id = $(value).attr("class").split(' ')[3].match(/\d+/g)[0];
@@ -64,18 +64,22 @@ $(document).ready(()=>{
       var $others = $("#content-home ." + $(this).attr("class").split(' ')[3]).not($(this)).not($target);
       $others.prop("disabled", true);
     }
-
-
+/*
+    $roles.children().detach().sort(function(a,b){
+      console.log(a)
+      console.log(b)
+    });
+*/
   });
 
-  $.each($("#content-home .col-md-7"),function(index,value){
+  $.each($("#content-home .list"),function(index,value){
     $(value).append("<button type=\"button\" class=\"btn btn-primary btn-space role-7\">BM DPS</button>");
     $(value).append("<button type=\"button\" class=\"btn btn-success btn-space role-20\">Yaka DPS</button>");
   });
 
   $("#content-home .form-control").change(function(){
     var text = $(this).val();
-    var $textbox = $($($(this).parents()[3]).find(".col-md-5"));
+    var $textbox = $($($(this).parents()[3]).find(".text"));
     $textbox.text(text);
   });
 
