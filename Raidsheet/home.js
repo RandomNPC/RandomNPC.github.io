@@ -1,7 +1,7 @@
-$(document).ready(()=>{
+var YAKAMARU_DPS = 20;
+var BEASTMASTER_DPS = 7;
 
-  var YAKAMARU_DPS = 20;
-  var BEASTMASTER_DPS = 7;
+$(document).ready(()=>{
 
   $("#content-home .btn").click(function(){
 
@@ -28,6 +28,7 @@ $(document).ready(()=>{
       });
 
       $roles.append($reference);
+      UpdateTeamspeakDisplay();
     }
     else {
       AddRoleToPlayer(GetClassProperties($(this)),$($(this).parents()[3]));
@@ -35,10 +36,18 @@ $(document).ready(()=>{
 
   });
 
+  $("#content-home .form-control").keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+
   $("#content-home .form-control").change(function(){
     var text = $(this).val();
     var $textbox = $($($(this).parents()[3]).find(".text"));
     $textbox.text(text);
+    UpdateTeamspeakDisplay();
   });
 
 });
@@ -65,6 +74,7 @@ function AddRoleToPlayer(className,$card)
   });
 
   $list.append($reference);
+  UpdateTeamspeakDisplay();
 }
 
 function GetClassProperties($ref)

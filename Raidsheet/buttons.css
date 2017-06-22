@@ -8,3 +8,7 @@
 .padding{
   margin-top: 5px;
 }
+
+textarea{
+  height: 100%;
+}

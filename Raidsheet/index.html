@@ -10,14 +10,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="labels.css">
     <link rel="stylesheet" href="buttons.css">
-    <script src="navigation.js"></script>
+    <script src="teamspeak.js"></script>
     <script src="home.js"></script>
-    <script>
-      $(document).ready(()=>{
-
-
-      });
-    </script>
+    <script src="navigation.js"></script>
   </head>
   <body>
     <!-- Navigation -->
@@ -551,7 +546,14 @@
       </div>
       <!--Role Roster-->
       <div id="content-teamspeak">
-        Teamspeak
+        <form class="form-inline">
+          <input class="form-control" type="text" placeholder="Date">
+          <input class="form-control" type="text" placeholder="Time">
+          <input class="form-control" type="text" placeholder="Host">
+        </form>
+        <div class="form-group">
+          <textarea class="form-control" id="output-teamspeak" rows="30"></textarea>
+        </div>
       </div>
       <div id="content-video">
         Video
