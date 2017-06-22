@@ -7,78 +7,32 @@ $(document).ready(()=>{
 
     var $roles = $($($(this).parents()[3]).find(".list"));
     var roles = $.map($roles.children(),(v)=>{
-      return $(v).attr("class").split(' ')[3];
+      return GetClassProperties($(v));
     });
 
     //if this hasn't been added already add to the banner
-    if(roles.indexOf($(this).attr("class").split(' ')[3]) > -1){
+    if(roles.indexOf(GetClassProperties($(this))) > -1){
       //Remove from banner
-      $($roles.children()[roles.indexOf($(this).attr("class").split(' ')[3])]).remove();
+      $($roles.children()[roles.indexOf(GetClassProperties($(this)))]).remove();
 
       //re-enable all other instances of this button
-      var $others = $("#content-home ." + $(this).attr("class").split(' ')[3]).not($(this));
-      $others.prop("disabled",false);
+      var $others = $("#content-home ." + GetClassProperties($(this))).not($(this));
+      $others.prop("hidden",false);
 
-      var bmCount = 0;
-      var yakaCount = 0;
+      var $reference = $roles.children();
 
-      //if there are zero roles, add DPS
-      $.each($roles.children(),function(index,value){
-        var role_id = $(value).attr("class").split(' ')[3].match(/\d+/g)[0];
-        if(role_id <= BEASTMASTER_DPS)
-        {
-          bmCount++;
-        }
-        else if(role_id > BEASTMASTER_DPS && role_id <= YAKAMARU_DPS)
-        {
-          yakaCount++;
-        }
+      $reference.detach().sort(function(a,b){
+        var pointA = GetClassProperties($(a)).match(/\d+/g)[0];
+        var pointB = GetClassProperties($(b)).match(/\d+/g)[0];
+        return pointA - pointB;
       });
 
-      if(bmCount <= 0){
-        $roles.append("<button type=\"button\" class=\"btn btn-primary btn-space role-7\">BM DPS</button>");
-      }
-      if(yakaCount <= 0)
-      {
-        $roles.append("<button type=\"button\" class=\"btn btn-success btn-space role-20\">Yaka DPS</button>");
-      }
-
+      $roles.append($reference);
     }
     else {
-      //Remove DPS label if exists for respective section
-      var role_id = $(this).attr("class").split(' ')[3].match(/\d+/g)[0];
-      if(role_id <= BEASTMASTER_DPS)
-      {
-        $roles.find(".role-7").remove();
-      }
-      else{
-        $roles.find(".role-20").remove();
-      }
-
-      //Add to banner
-      var $target = $(this).clone();
-      $target.appendTo($roles);
-
-      //disable other instances of this button (do not disable the button on the player or the source)
-      var $others = $("#content-home ." + $(this).attr("class").split(' ')[3]).not($(this)).not($target);
-      $others.prop("disabled", true);
+      AddRoleToPlayer(GetClassProperties($(this)),$($(this).parents()[3]));
     }
 
-    var $reference = $roles.children();
-
-    $reference.detach().sort(function(a,b){
-      var pointA = $(a).attr("class").split(' ')[3].match(/\d+/g)[0];
-      var pointB = $(b).attr("class").split(' ')[3].match(/\d+/g)[0];
-      return pointA - pointB;
-    });
-
-    $roles.append($reference);
-
-  });
-
-  $.each($("#content-home .list"),function(index,value){
-    $(value).append("<button type=\"button\" class=\"btn btn-primary btn-space role-7\">BM DPS</button>");
-    $(value).append("<button type=\"button\" class=\"btn btn-success btn-space role-20\">Yaka DPS</button>");
   });
 
   $("#content-home .form-control").change(function(){
@@ -88,3 +42,32 @@ $(document).ready(()=>{
   });
 
 });
+
+
+function AddRoleToPlayer(className,$card)
+{
+  var $list = $card.find(".list");
+  var $role = $card.find("."+className);
+
+  var $target = $role.clone();
+
+  $target.appendTo($list);
+
+  var $others = $("#content-home ." + className).not($role).not($target);
+  $others.prop("hidden", true);
+
+  var $reference = $list.children();
+
+  $reference.detach().sort(function(a,b){
+    var pointA = GetClassProperties($(a)).match(/\d+/g)[0];
+    var pointB = GetClassProperties($(b)).match(/\d+/g)[0];
+    return pointA - pointB;
+  });
+
+  $list.append($reference);
+}
+
+function GetClassProperties($ref)
+{
+  return $ref.attr("class").split(' ')[3];
+}
