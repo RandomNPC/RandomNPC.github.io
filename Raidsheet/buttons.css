@@ -9,6 +9,19 @@
   margin-top: 5px;
 }
 
+#display-information{
+  padding: 20px;
+  background-color: #333;
+  border-color: #333;
+}
+
+#teamspeak-output
+{
+  padding-top: 20px;
+  background-color: #333;
+  border-color: #333;
+}
+
 textarea{
-  height: 100%;
+  resize: none;
 }

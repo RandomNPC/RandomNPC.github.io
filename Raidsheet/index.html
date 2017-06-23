@@ -10,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="labels.css">
     <link rel="stylesheet" href="buttons.css">
+    <script src="video.js"></script>
     <script src="teamspeak.js"></script>
     <script src="home.js"></script>
     <script src="navigation.js"></script>
@@ -546,17 +547,29 @@
       </div>
       <!--Role Roster-->
       <div id="content-teamspeak">
-        <form class="form-inline">
-          <input class="form-control" type="text" placeholder="Date">
-          <input class="form-control" type="text" placeholder="Time">
-          <input class="form-control" type="text" placeholder="Host">
-        </form>
-        <div class="form-group">
+        <div class="card card-inverse" id="display-information">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-4">
+                <input class="form-control" type="text" placeholder="Date">
+              </div>
+              <div class="col-md-4">
+                <input class="form-control" type="text" placeholder="Time">
+              </div>
+              <div class="col-md-4">
+                <input class="form-control" type="text" placeholder="Host">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
           <textarea class="form-control" id="output-teamspeak" rows="30"></textarea>
         </div>
       </div>
       <div id="content-video">
-        Video
+        <div>
+          <textarea class="form-control" id="output-video" rows="30"></textarea>
+        </div>
       </div>
       <div id="content-settings">
         Settings
