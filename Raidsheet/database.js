@@ -20,8 +20,9 @@ $(document).ready(function(){
 
 function Populate(data)
 {
-  console.log("HI")
   var db_data = $.map(data.val(),function(value){return value;});
+  $.map($("#content-home .list"),function(value){$(value).empty();})
+
   $.each($("#content-home .card"),function(index,value){
     var $ref = $(value);
     $(value).find(".text").text(db_data[index].name);
