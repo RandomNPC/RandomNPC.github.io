@@ -30,9 +30,10 @@ $(document).ready(()=>{
       $roles.append($reference);
       UpdateTeamspeakDisplay();
       UpdateVideoDisplay();
+      UpdateDatabase($($($(this).parents()[3])));
     }
     else {
-      AddRoleToPlayer(GetClassProperties($(this)),$($(this).parents()[3]));
+      AddRoleToPlayer(GetClassProperties($(this)),$($(this).parents()[3]),true);
     }
 
   });
@@ -50,12 +51,13 @@ $(document).ready(()=>{
     $textbox.text(text);
     UpdateTeamspeakDisplay();
     UpdateVideoDisplay();
+    UpdateDatabase($($($(this).parents()[3])));
   });
 
 });
 
 
-function AddRoleToPlayer(className,$card)
+function AddRoleToPlayer(className,$card,update)
 {
   var $list = $card.find(".list");
   var $role = $card.find("."+className);
@@ -78,6 +80,10 @@ function AddRoleToPlayer(className,$card)
   $list.append($reference);
   UpdateTeamspeakDisplay();
   UpdateVideoDisplay();
+  if(update)
+  {
+    UpdateDatabase($($($(this).parents()[3])));
+  }
 }
 
 function GetClassProperties($ref)

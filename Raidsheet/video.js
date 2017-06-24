@@ -47,7 +47,6 @@ function UpdateVideoDisplay()
   role_list.splice(6,1,"DPS");
   role_list.splice(19,0,"DPS");
 
-  console.log(role_list);
   $.each(role_list,function(index,value){
     video_list[index] = value + ": " + video_list[index];
   });
