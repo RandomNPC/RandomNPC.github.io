@@ -15,6 +15,12 @@ $(document).ready(function(){
   var db_ref = firebase.database().ref(DATABASE);
   db_ref.on('value',Populate,(error)=>{});
 
+  $("#button-reset").click(function(){
+    if(confirm("Wipe raid data?"))
+    {
+      ResetDatabase();
+    }
+  });
 
 });
 
@@ -63,4 +69,20 @@ function UpdateDatabase($card)
   });
 
   db_ref.set(player_data);
+}
+
+function ResetDatabase()
+{
+  var db_ref = firebase.database().ref(DATABASE);
+  var db_contents = [];
+
+  $.each($("#content-home .card"),function(index,value){
+    var player_data =
+    {
+      name: "Player "+index,
+      roles: "-1",
+    };
+    db_contents.push(player_data);
+  });
+  db_ref.set(db_contents);
 }
