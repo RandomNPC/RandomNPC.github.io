@@ -62,6 +62,11 @@ function AddRoleToPlayer(className,$card,update)
   var $list = $card.find(".list");
   var $role = $card.find("."+className);
 
+  if($list.find("."+className).length > 0)
+  {
+    return;
+  }
+
   var $target = $role.clone();
 
   $target.appendTo($list);
@@ -82,7 +87,7 @@ function AddRoleToPlayer(className,$card,update)
   UpdateVideoDisplay();
   if(update)
   {
-    UpdateDatabase($($($(this).parents()[3])));
+    UpdateDatabase($card);
   }
 }
 

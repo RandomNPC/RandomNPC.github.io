@@ -1,3 +1,5 @@
+var DATABASE = "players";
+
 $(document).ready(function(){
   // Initialize Firebase
   var config = {
@@ -10,14 +12,15 @@ $(document).ready(function(){
   };
   firebase.initializeApp(config);
 
-  var db_ref = firebase.database().ref("players");
-
+  var db_ref = firebase.database().ref(DATABASE);
   db_ref.on('value',Populate,(error)=>{});
+
 
 });
 
 function Populate(data)
 {
+  console.log("HI")
   var db_data = $.map(data.val(),function(value){return value;});
   $.each($("#content-home .card"),function(index,value){
     var $ref = $(value);
@@ -33,7 +36,7 @@ function Populate(data)
 
 function UpdateDatabase($card)
 {
-  var db_ref = firebase.database().ref("players/"+$card.index());
+  var db_ref = firebase.database().ref(DATABASE+"/"+$card.index());
 
   var player_data =
   {
@@ -49,12 +52,12 @@ function UpdateDatabase($card)
   $.each($list.children(),function(i,v){
     var role_id = $(v).attr("class").split(' ')[3].match(/\d+/g)[0];
 
-    if(roles === "-1")
+    if(player_data.roles === "-1")
     {
-      roles = role_id;
+      player_data.roles = role_id;
     }
     else {
-      roles += ","+role_id;
+      player_data.roles += ","+role_id;
     }
   });
 
