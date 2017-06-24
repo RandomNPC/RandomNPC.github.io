@@ -29,6 +29,7 @@ $(document).ready(()=>{
 
       $roles.append($reference);
       UpdateTeamspeakDisplay();
+      UpdateVideoDisplay();
     }
     else {
       AddRoleToPlayer(GetClassProperties($(this)),$($(this).parents()[3]));
@@ -48,6 +49,7 @@ $(document).ready(()=>{
     var $textbox = $($($(this).parents()[3]).find(".text"));
     $textbox.text(text);
     UpdateTeamspeakDisplay();
+    UpdateVideoDisplay();
   });
 
 });
@@ -75,6 +77,7 @@ function AddRoleToPlayer(className,$card)
 
   $list.append($reference);
   UpdateTeamspeakDisplay();
+  UpdateVideoDisplay();
 }
 
 function GetClassProperties($ref)
