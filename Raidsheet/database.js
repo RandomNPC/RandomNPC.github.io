@@ -34,6 +34,7 @@ function Populate(data)
   $.each($("#content-home .card"),function(index,value){
     var $ref = $(value);
     $(value).find(".text").text(db_data[index].name);
+    $(value).find(".form-control").text(db_data[index].name);
     if(db_data[index].roles != "-1")
     {
       $.each(db_data[index].roles.match(/\d+/g),function(i,v){
