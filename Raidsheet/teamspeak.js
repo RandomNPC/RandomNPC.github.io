@@ -60,8 +60,8 @@ function UpdateTeamspeakDisplay()
 
     display += "[tr]"  + "\n" +
                "[td][center]" + name + "[/center][/td]"  + "\n" +
-               "[td][center]"+ bm_role +"[/center][/td]"  + "\n" +
                "[td][center]"+ yaka_role +"[/center][/td]"  + "\n" +
+               "[td][center]"+ bm_role +"[/center][/td]"  + "\n" +
                "[/tr]"  + "\n";
 
   });

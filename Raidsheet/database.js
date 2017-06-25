@@ -19,6 +19,8 @@ $(document).ready(function(){
     if(confirm("Wipe raid data?"))
     {
       ResetDatabase();
+      UpdateTeamspeakDisplay();
+      UpdateVideoDisplay();
     }
   });
 
