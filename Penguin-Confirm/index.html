@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script src="https://use.fontawesome.com/6d4d8942d6.js"></script>
+    <script src="settings.js"></script>
+    <script src="setup.js"></script>
+    <script src="home.js"></script>
+    <script src="navigation.js"></script>
+    <script src="database.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      $(document).ready(()=>{
+
+      });
+    </script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Penguin-Confirm</a>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="#" id="link-home">Home</a>
+          <a class="nav-item nav-link" href="#" id="link-setup">Setup</a>
+          <a class="nav-item nav-link" href="#" id="link-settings">Settings</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div id="content-home">
+        <h5 style="margin-top:40px;">One-Point Penguins</h5>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 style="margin-top:40px;">Two-Point Penguins</h5>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2" style="text-align=center">
+                  <p>
+                    <a href="#">
+                      <i class="fa fa-refresh icon" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                </div>
+                <div class="col-7">
+                  <h5 class="main">Main Penguin</h5>
+                  <p class="alt">Alt Penguin</p>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="content-setup">
+        <h5 style="margin-top:40px;">One-Point Penguins</h5>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2">
+                  <h5>1</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>2</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>3</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>4</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>5</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt"  type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 style="margin-top:40px;">Two-Point Penguins</h5>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>1</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>2</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>3</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>4</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>5</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="container-fluid">
+              <div class="row justify-content-between">
+                <div class="col-2"><h5>F</h5>
+                </div>
+                <div class="col-5">
+                  <div style>
+                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="content-settings">
+        Settings
+      </div>
+    </div>
+  </body>
+</html>
