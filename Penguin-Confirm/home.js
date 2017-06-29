@@ -17,7 +17,10 @@ $(document).ready(function(){
     });
   });
 
-  $("#content-home .btn").click(function(){
+  $("#content-home .btn").click(function(e){
+
+    e.preventDefault();
+
     //Which card was clicked?
     var $card_target = $(this).parents(".card")[0];
 
