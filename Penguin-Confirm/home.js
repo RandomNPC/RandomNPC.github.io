@@ -1,5 +1,8 @@
 $(document).ready(function(){
-  $("#content-home .icon").click(function(){
+  $("#content-home .icon").click(function(e){
+
+    e.preventDefault();
+
     //Which card was clicked?
     var $card_target = $(this).parents(".card")[0];
 
