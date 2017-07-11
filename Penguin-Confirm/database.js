@@ -73,7 +73,21 @@ $(document).ready(function(){
         $card_rotate.show();
         $alt.show();
       }
-      
+
+      if($home_card.find(".polar-bear").length > 0)
+      {
+        var polar_locations = [
+          "Varrock Well",
+          "Falador Well",
+          "Rimmington Well",
+          "Musa Point Well",
+          "Ardougne Well",
+          "Rellekka Well"
+        ];
+
+        $main.text(polar_locations[value.index]);
+      }
+
     });
   }
 });
