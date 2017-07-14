@@ -3,12 +3,12 @@ var DATABASE = "players";
 $(document).ready(function(){
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDbq9h_dIl3dwlqvtXzZ8-VOA9Y3myu4t0",
-    authDomain: "raid-worksheet-90937.firebaseapp.com",
-    databaseURL: "https://raid-worksheet-90937.firebaseio.com",
-    projectId: "raid-worksheet-90937",
-    storageBucket: "raid-worksheet-90937.appspot.com",
-    messagingSenderId: "214244885880"
+    apiKey: "AIzaSyCf9OcO4bzKT27Gx-5XxcnLnqAIls6bLTU",
+    authDomain: "raid-worksheet-7a372.firebaseapp.com",
+    databaseURL: "https://raid-worksheet-7a372.firebaseio.com",
+    projectId: "raid-worksheet-7a372",
+    storageBucket: "raid-worksheet-7a372.appspot.com",
+    messagingSenderId: "21800807525"
   };
   firebase.initializeApp(config);
 
