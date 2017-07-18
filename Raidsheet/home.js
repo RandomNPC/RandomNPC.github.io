@@ -5,37 +5,57 @@ $(document).ready(()=>{
 
   $("#content-home .btn").click(function(){
 
-    var $roles = $($($(this).parents()[3]).find(".list"));
-    var roles = $.map($roles.children(),(v)=>{
-      return GetClassProperties($(v));
-    });
+    //Reference to the button clicked
+    var $target_button = $(this);
 
-    //if this hasn't been added already add to the banner
-    if(roles.indexOf(GetClassProperties($(this))) > -1){
-      //Remove from banner
-      $($roles.children()[roles.indexOf(GetClassProperties($(this)))]).remove();
+    //List of roles
+    var $roles_list = $($target_button.parents()[1]).find(".btn");
 
-      //re-enable all other instances of this button
-      var $others = $("#content-home ." + GetClassProperties($(this))).not($(this));
-      $others.prop("hidden",false);
+    //Which role has been selected
+    var role_index = parseInt($target_button[0].classList[3]);
 
-      var $reference = $roles.children();
+    //Reference to the card
+    var $target_card = $target_button.parents()[3];
 
-      $reference.detach().sort(function(a,b){
-        var pointA = GetClassProperties($(a)).match(/\d+/g)[0];
-        var pointB = GetClassProperties($(b)).match(/\d+/g)[0];
-        return pointA - pointB;
-      });
+    //Card Index
+    var target_index = $.inArray($target_card,$("#content-home .card"));
 
-      $roles.append($reference);
-      UpdateTeamspeakDisplay();
-      UpdateVideoDisplay();
-      UpdateDatabase($($($(this).parents()[3])));
+    //list reference
+    var $list = $($($target_card).find(".list")[0]);
+
+    var list_indices = $.map($list.children(),(v)=>{
+                          return parseInt(v.classList[3]);
+                       });
+    var index = list_indices.indexOf(role_index);
+
+    if(index < 0)
+    {
+      list_indices.push(role_index);
     }
     else {
-      AddRoleToPlayer(GetClassProperties($(this)),$($(this).parents()[3]),true);
+      list_indices.splice(index,1);
     }
 
+    if(list_indices.length <= 0)
+    {
+      list_indices.push(-1);
+    }
+
+    var format = "";
+    $.each(list_indices,(k,v)=>{
+      if(k > 0)
+      {
+        format += ","+v;
+      }
+      else {
+        format = v;
+      }
+    });
+
+    var db = firebase.database().ref(DATABASE+"/"+target_index);
+    db.update({
+      "roles": format
+    });
   });
 
   $("#content-home .form-control").keydown(function(event){
@@ -46,52 +66,18 @@ $(document).ready(()=>{
     });
 
   $("#content-home .form-control").change(function(){
-    var text = $(this).val();
-    var $textbox = $($($(this).parents()[3]).find(".text"));
-    $textbox.text(text);
-    UpdateTeamspeakDisplay();
-    UpdateVideoDisplay();
-    UpdateDatabase($($($(this).parents()[3])));
+    var $target_box = $(this);
+    var $target_card = $target_box.parents()[3];
+
+    //Card Index
+    var target_index = $.inArray($target_card,$("#content-home .card"));
+
+    var db = firebase.database().ref(DATABASE+"/"+target_index);
+
+    db.update({
+      "name": $target_box.val()
+    });
+
   });
 
 });
-
-
-function AddRoleToPlayer(className,$card,update)
-{
-  var $list = $card.find(".list");
-  var $role = $card.find("."+className);
-
-  if($list.find("."+className).length > 0)
-  {
-    return;
-  }
-
-  var $target = $role.clone();
-
-  $target.appendTo($list);
-
-  var $others = $("#content-home ." + className).not($role).not($target);
-  $others.prop("hidden", true);
-
-  var $reference = $list.children();
-
-  $reference.detach().sort(function(a,b){
-    var pointA = GetClassProperties($(a)).match(/\d+/g)[0];
-    var pointB = GetClassProperties($(b)).match(/\d+/g)[0];
-    return pointA - pointB;
-  });
-
-  $list.append($reference);
-  UpdateTeamspeakDisplay();
-  UpdateVideoDisplay();
-  if(update)
-  {
-    UpdateDatabase($card);
-  }
-}
-
-function GetClassProperties($ref)
-{
-  return $ref.attr("class").split(' ')[3];
-}

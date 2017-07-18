@@ -3,17 +3,17 @@ var DATABASE = "players";
 $(document).ready(function(){
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDbq9h_dIl3dwlqvtXzZ8-VOA9Y3myu4t0",
-    authDomain: "raid-worksheet-90937.firebaseapp.com",
-    databaseURL: "https://raid-worksheet-90937.firebaseio.com",
-    projectId: "raid-worksheet-90937",
-    storageBucket: "raid-worksheet-90937.appspot.com",
-    messagingSenderId: "214244885880"
+    apiKey: "AIzaSyCf9OcO4bzKT27Gx-5XxcnLnqAIls6bLTU",
+    authDomain: "raid-worksheet-7a372.firebaseapp.com",
+    databaseURL: "https://raid-worksheet-7a372.firebaseio.com",
+    projectId: "raid-worksheet-7a372",
+    storageBucket: "raid-worksheet-7a372.appspot.com",
+    messagingSenderId: "21800807525"
   };
   firebase.initializeApp(config);
 
   var db_ref = firebase.database().ref(DATABASE);
-  db_ref.on('value',Populate,(error)=>{});
+  db_ref.on('value',Update,(error)=>{});
 
   $("#button-reset").click(function(){
     if(confirm("Wipe raid data?"))
@@ -26,52 +26,50 @@ $(document).ready(function(){
 
 });
 
-function Populate(data)
+function Update(data)
 {
-  var db_data = $.map(data.val(),function(value){return value;});
-  $.map($("#content-home .list"),function(value){$(value).empty();})
+  //Purge all lists
+  $.map($(".list"),(v)=>{$(v).empty();});
+  $.map($(".card-block :hidden"),(v)=>{$(v).show();});
 
-  $.each($("#content-home .card"),function(index,value){
-    var $ref = $(value);
-    $(value).find(".text").text(db_data[index].name);
-    $(value).find(".form-control").text(db_data[index].name);
-    if(db_data[index].roles != "-1")
-    {
-      $.each(db_data[index].roles.match(/\d+/g),function(i,v){
-        AddRoleToPlayer("role-"+v,$ref,false);
-      });
-    }
-  });
-}
+  $.each(data.val(),(index,value)=>{
 
-function UpdateDatabase($card)
-{
-  var db_ref = firebase.database().ref(DATABASE+"/"+$card.index());
+    var $card = $($("#content-home .card")[index]);
+    var $list = $card.find(".list");
+    var $roles = $card.find(".card-block .btn");
 
-  var player_data =
-  {
-    name: "",
-    roles: "-1",
-  };
+    var $text = $card.find(".text");
+    var $form = $card.find(".form-control");
 
-  var name = $card.find(".text").text().replace(/^\s+|\s+$/g,"");
-  player_data.name = name;
+    //Get Roles
+    var extracted_roles = value.roles.toString().match(/[^,]+/g).sort(function(a,b){
+      return parseInt(a) - parseInt(b);
+    });
 
-  var $list = $card.find(".list");
+    //Append Roles
+    $.map(extracted_roles,(v)=>{
+      if(v >= 0)
+      {
+        var $ref = $($roles[v]);
+        $ref.clone().appendTo($list);
+      }
+    })
 
-  $.each($list.children(),function(i,v){
-    var role_id = $(v).attr("class").split(' ')[3].match(/\d+/g)[0];
+    //Set Text
+    $form.val(value.name);
+    $text.text(value.name);
 
-    if(player_data.roles === "-1")
-    {
-      player_data.roles = role_id;
-    }
-    else {
-      player_data.roles += ","+role_id;
-    }
+    //Turn off roles
+    $.each($("#content-home .card").not($card), (index,value)=>{
+      $.each(extracted_roles, (i,v)=>{$($(value).find(".card-block .btn")[v]).hide();});
+    });
   });
 
-  db_ref.set(player_data);
+  //Update Teamspeak
+  UpdateTeamspeakDisplay();
+
+  //Update Video
+  UpdateVideoDisplay();
 }
 
 function ResetDatabase()
@@ -87,5 +85,5 @@ function ResetDatabase()
     };
     db_contents.push(player_data);
   });
-  db_ref.set(db_contents);
+  db_ref.update(db_contents);
 }
