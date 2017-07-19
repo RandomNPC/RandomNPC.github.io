@@ -49,5 +49,17 @@ function UpdateVideoDisplay()
     }
 
   });
-  console.log(data)
+
+  data.splice(6,0,data[18]);
+  data.splice(19,1);
+  data.splice(0,0,"Beastmaster: ");
+  data.splice(1,0,"Roles in this video: ");
+  data.splice(8,0,"");
+  data.splice(10,0,"Yakamaru: ");
+  data.splice(11,0,"Roles in this video: ");
+
+  var text_to_display = "";
+  var filtered_text = $.map(data,(p)=>{if(p!="") return p + "\n";});
+  $.each(filtered_text,(i,v)=>{text_to_display += v;})
+  $("#output-video").text(text_to_display);
 }
