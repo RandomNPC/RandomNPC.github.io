@@ -1,63 +1,50 @@
-.raw{
-  border-style: solid;
-  border: 1px black;
-}
-
-.raw td{
-  width: 150px;
-  height: 30px;
-  border: 1px solid black;
-  text-align: center;
-}
-
-#output{
-  float: right;
-}
-
-#master{
-  float: left;
-}
-
-#container{
-  display: flex;
-}
-
-#container > div{
-  display: inline-block;
-  padding: 1em;
-}
-
-.display{
+body {
   font-family: 'Karla', sans-serif;
   font-size: 18px;
   vertical-align: middle;
+}
+
+div#container{
+  padding: 20px;
+  display: flex;
+}
+
+#container  > div{
+  display: table-cell;
+  vertical-align: top;
+}
+
+#container > div:last-child{
+  margin-left: 50px;
+}
+
+#output tr > td:last-child{
+  text-align: right;
+}
+
+#output{
+  background-color:#ffffff;
+  height: 100%;
   border: 1px solid black;
   padding: 10px;
 }
 
-.circle {
-    background-color:#fff;
-    border:5px solid black;
-    height:10px;
-    border-radius:50%;
-    width:10px;
+a{
+  color: inherit;
+  text-decoration: none;
 }
 
-.display td{
-  /*border: 1px solid black;*/
+#output tr > td{
+  height: 1em;
 }
 
-.bar {
-  height: 20px;
-  width: 10px;
-  border-left: 5px solid #000080;
-  transform: translate(50%);
+
+#output tr > td:first-child > img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.teleports{
-  min-width: 300px;
-}
-
-.confirmed{
-  background-color: #31a033;
+table{
+  border: 1px solid black;
 }
