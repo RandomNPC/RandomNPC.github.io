@@ -1,17 +1,78 @@
 $(document).ready(function(){
 
-  $("#input td:nth-child(3) input").change(function(){
-    var index = $.inArray(this,$("#input td:nth-child(3) input"));
-    var content = $(this).val();
+  $.each($("#input li > table td:first-child"),(index,value)=>{
+    $(value).text(index+1);
+  });
 
-    $("#output tr:eq("+index*2+") td:eq(2)").text((content === "") ? "" : " via " +content);
+  $("#input li > table td:last-child").change(()=>{
+    UpdateRoute();
     UpdateLink();
   });
 
-  $("#post").click(function(){
+  $("#input").sortable({
+    stop: function(event,ui){
+      UpdateRoute();
+      UpdateLink();
+    }
+  });
+
+
+});
+
+function UpdateRoute(){
+  $.each($("#input li > table td:first-child"),(index,value)=>{
+    $(value).text(index+1);
+  });
+
+  var stop_names = $.map($("#input li > table td:nth-child(2) >"),(value)=>{return $(value).val();});
+
+  $.each($("#output tr:even > :nth-child(2)"),(index,value)=>{
+    var current_stop = stop_names[index];
+
+    $(value).text(current_stop);
+
+
+    var $node = $("#output tr:even:eq("+ index+") td:first-child");
+
+
+    if(current_stop!="")
+    {
+      $node.show();
+    }
+    else {
+      $node.hide();
+    }
+
+    if(index > 0)
+    {
+      var $divide = $("#output tr:odd:eq("+ (index-1)+") td:first-child");
+      
+      if(current_stop!="")
+      {
+        $divide.show();
+      }
+      else{
+        $divide.hide();
+      }
+    }
 
   });
-});
+
+  var via_names = $.map($("#input li > table td:nth-child(3) >"),(value)=>{return $(value).val();});
+
+
+  $.each($("#output tr:even > :nth-child(3)"),(index,value)=>{
+    var current_via = via_names[index];
+    var stop_text = $("#input li:nth-child("+(index+1)+") > table td:nth-child(2) >").val();
+
+    if(current_via!="" && stop_text!=""){
+      $(value).text("via " + current_via);
+    }
+    else {
+      $(value).text("");
+    }
+  });
+}
 
 function UpdateLink()
 {

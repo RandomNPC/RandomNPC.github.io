@@ -18,10 +18,6 @@ div#container{
   margin-left: 50px;
 }
 
-#output tr > td:last-child{
-  text-align: right;
-}
-
 #output{
   background-color:#ffffff;
   height: 100%;
@@ -29,15 +25,13 @@ div#container{
   padding: 10px;
 }
 
-a{
-  color: inherit;
-  text-decoration: none;
+#output tr > td:last-child{
+  text-align: right;
 }
 
 #output tr > td{
   height: 1em;
 }
-
 
 #output tr > td:first-child > img{
   display: block;
@@ -45,6 +39,24 @@ a{
   margin-right: auto;
 }
 
-table{
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+li{
   border: 1px solid black;
+  list-style: none;
+}
+
+ul{
+  border: 1px solid black;
+  margin: 0px;
+  padding: 0px;
+}
+
+#input li > table td:first-child{
+  width: 30px;
+  height: 30px;
+  text-align: center;
 }

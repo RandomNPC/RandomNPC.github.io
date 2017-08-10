@@ -21,29 +21,19 @@ $(document).ready(function(){
 
         selection = $.map(selection,(select)=>{return select.toString().replace(/.\(.+/g,"");});
 
-        $.map($("#input td:nth-child(2) input"),(selector)=>{
-          $(selector).autocomplete({
+        $.map($("#input li > table td:nth-child(2) >"),(value)=>{
+          $(value).autocomplete({
             source: selection,
-            change: function( event, ui ) {
-              var index = $.inArray(this,$("#input td:nth-child(2) input"));
-
-              var content = $(this).val();
-
-              var $node = $("#output tr:eq("+index*2+") td:eq(1)");
-              $node.text(content);
-
-              var $via = $("#output tr:eq("+index*2+") td:eq(2)");
-              var via_text = $via.val();
-
-              $("#output tr:eq("+index*2+") td:eq(0)").show();//.toggleClass("circle");
-              if(index > 0){
-                $("#output tr:eq("+(index*2-1)+") td:eq(0)").show();
-              }
-              
+            close: function(event,ui){
+              UpdateRoute();
               UpdateLink();
             },
+            change: function(event,ui){
+              UpdateRoute();
+              UpdateLink();
+            }
           });
-        });
+        })
       }
   });
 
