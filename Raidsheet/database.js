@@ -56,7 +56,7 @@ function Update(data)
     })
 
     //Set Text
-    $form.val(value.name);
+    //$form.val(value.name);
     $text.text(value.name);
 
     //Turn off roles
