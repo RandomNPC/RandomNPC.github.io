@@ -24,7 +24,11 @@ $(document).ready(()=>{
     var $list = $($($target_card).find(".list")[0]);
 
     var list_indices = $.map($list.children(),(v)=>{
-                          return parseInt(v.classList[3]);
+                          var value = parseInt(v.classList[3]);
+                          if($.isNumeric(value))
+                          {
+                            return value;
+                          }
                        });
     var index = list_indices.indexOf(role_index);
 

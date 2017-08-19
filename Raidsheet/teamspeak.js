@@ -9,8 +9,8 @@ function UpdateTeamspeakDisplay()
 {
   var display = '[table]' +"\n"+
                 '[tr]'+"\n"+
-                '[th][center]'+ $($("#content-teamspeak .form-control")[1]).val() +' GMT, '+ $($("#content-teamspeak .form-control")[0]).val() +'[/center][/th]'+"\n"+
-                '[td][center]Hosted by '+ $($("#content-teamspeak .form-control")[2]).val() +'[/center][/td]'+"\n"+
+                '[th][center]'+ GetDate() +'[/center][/th]'+"\n"+
+                '[td][center]Hosted by '+ $("#content-home .text:eq(0)").text() +'[/center][/td]'+"\n"+
                 '[/tr]'+"\n"+
                 '[tr]'+"\n"+
                 '[td][/td]'+"\n"+
@@ -74,4 +74,14 @@ function UpdateTeamspeakDisplay()
 
   display += "[/table]";
   $("#output-teamspeak").val(display);
+}
+
+function GetDate()
+{
+  var day_of_week = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  var date = new Date();
+  return day_of_week[date.getDay()] + ", " + months[date.getMonth()] + " " + date.getDate();
+
 }

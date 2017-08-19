@@ -32,6 +32,8 @@ function Update(data)
   $.map($(".list"),(v)=>{$(v).empty();});
   $.map($(".card-block :hidden"),(v)=>{$(v).show();});
 
+  $("#content-home .list:eq(0)").append("<button type=\"button\" class=\"btn btn-warning btn-space\">Host</button>");
+
   $.each(data.val(),(index,value)=>{
 
     var $card = $($("#content-home .card")[index]);
