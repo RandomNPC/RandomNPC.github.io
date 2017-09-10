@@ -1,21 +1,7 @@
 body {
   font-family: 'Karla', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   vertical-align: middle;
-}
-
-div#container{
-  padding: 20px;
-  display: flex;
-}
-
-#container  > div{
-  display: table-cell;
-  vertical-align: top;
-}
-
-#container > div:last-child{
-  margin-left: 50px;
 }
 
 #output{
@@ -23,14 +9,17 @@ div#container{
   height: 100%;
   border: 1px solid black;
   padding: 10px;
+  border-spacing:0;
 }
 
-#output tr > td:last-child{
-  text-align: right;
+#output tr > td > p:last-child{
+  font-size: 12px;
+  padding: 0px;
+  margin: 0px;
 }
 
-#output tr > td{
-  height: 1em;
+#output td{
+  min-height: 35px;
 }
 
 #output tr > td:first-child > img{
@@ -45,18 +34,68 @@ a{
 }
 
 li{
-  border: 1px solid black;
-  list-style: none;
+  list-style-type: none;
 }
 
-ul{
+.confirm{
+  background-color: #f4eb42;
+
+}
+
+#container{
+  display: flex;
+}
+
+#container > div:nth-child(2)
+{
+  padding-left: 25px;
+}
+
+#container > div:nth-child(1)
+{
+
+}
+
+#container ul{
   border: 1px solid black;
-  margin: 0px;
   padding: 0px;
 }
 
-#input li > table td:first-child{
-  width: 30px;
-  height: 30px;
+#container li > div{
+  border: 1px solid black;
+  display: table-cell;
   text-align: center;
+}
+
+#container p{
+  margin: 0px;
+  padding: 0;
+}
+
+#container li > div:nth-child(1){
+  vertical-align: middle;
+  min-width: 50px;
+  max-width: 50px;
+}
+
+#container li > div:nth-child(2){
+  min-width: 250px;
+  max-width: 250px;
+}
+
+#container li > div:nth-child(3){
+  vertical-align: middle;
+  min-width: 150px;
+  max-width: 150px;
+}
+
+#container li > div:nth-child(4){
+  vertical-align: middle;
+  min-width: 50px;
+  max-width: 50px;
+}
+
+.via{
+  max-width: 100px;
+  min-width: 100px;
 }
