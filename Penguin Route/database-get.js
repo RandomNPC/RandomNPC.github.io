@@ -143,6 +143,7 @@ $(document).ready(function(){
   {
     var stop_limit = $(".confirm.call-at").length;
     $("#output tr td:nth-child(1)").hide();
+    $("#output p").empty();
 
     $.each($(".confirm.call-at"),(index,value)=>{
 
