@@ -151,9 +151,7 @@ $(document).ready(function(){
 
       $("#output tr:even:eq("+index+") > td:nth-child(1)").show();
 
-      $("#output tr:even:eq("+index+") > td:eq(1) p:eq(0)").text(
-         (index_id > 10) ? text : text.replace(/ ([^ ]+)$/g,"")
-      );
+      $("#output tr:even:eq("+index+") > td:eq(1) p:eq(0)").text(text);
 
       var via_text = $($($(value).parents()[1]).find(".via")).val();
 
