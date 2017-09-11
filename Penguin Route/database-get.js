@@ -16,10 +16,7 @@ $(document).ready(function(){
 
   ref.on('value',Update,(error)=>{});
 
-
-
   $("#post").click(function(){
-    //console.log(localStorage.getItem("image"));
 
     $.ajax({
      url: 'https://api.imgur.com/3/image',
@@ -32,8 +29,8 @@ $(document).ready(function(){
        image: localStorage.getItem("image"),
      },
      success: function(result) {
-       var id = result.data.id;
-       window.location = 'https://imgur.com/gallery/' + id;
+       $("#link-imgur").val("http://www.imgur.com/"+result.data.id);
+       $("#link-rs").val("[imgur src="+result.data.id+".png]")
      }
     });
 
@@ -193,15 +190,7 @@ $(document).ready(function(){
   {
     html2canvas(document.getElementById("output"),{
       onrendered: function(canvas) {
-
-        //var dt = canvas.toDataURL('image/jpeg');
-        //dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
-        //dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=Canvas.png');
-
-        var dt = canvas.toDataURL('image/jpeg', 0.9).split(',')[1];
-
-        localStorage.setItem("image",dt);
-        //$("#post").attr("href",dt);
+        localStorage.setItem("image",canvas.toDataURL('image/jpeg', 0.9).split(',')[1]);
       },
       allowTaint:true,
       useCORS: true,

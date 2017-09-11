@@ -10,6 +10,7 @@ body {
   border: 1px solid black;
   padding: 10px;
   border-spacing:0;
+  width: 250px;
 }
 
 #output tr > td > p:last-child{
