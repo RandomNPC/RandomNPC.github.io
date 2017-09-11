@@ -16,8 +16,28 @@ $(document).ready(function(){
 
   ref.on('value',Update,(error)=>{});
 
-  //init
-  //$.map($("#output tr td:first-child"),(element)=>{$(element).hide();});
+
+
+  $("#post").click(function(){
+    //console.log(localStorage.getItem("image"));
+
+    $.ajax({
+     url: 'https://api.imgur.com/3/image',
+     type: 'POST',
+     headers: {
+       Authorization: 'Client-ID ' + '2a084be43ea3a8b',
+       Accept: 'application/json'
+     },
+     data: {
+       image: localStorage.getItem("image"),
+     },
+     success: function(result) {
+       var id = result.data.id;
+       window.location = 'https://imgur.com/gallery/' + id;
+     }
+    });
+
+  });
 
   $("#container").on("change",".via",function(){
     UpdateRoute();
@@ -174,11 +194,14 @@ $(document).ready(function(){
     html2canvas(document.getElementById("output"),{
       onrendered: function(canvas) {
 
-        var dt = canvas.toDataURL('image/jpeg');
-        dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
-        dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=Canvas.png');
+        //var dt = canvas.toDataURL('image/jpeg');
+        //dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+        //dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=Canvas.png');
 
-        $("#post").attr("href",dt);
+        var dt = canvas.toDataURL('image/jpeg', 0.9).split(',')[1];
+
+        localStorage.setItem("image",dt);
+        //$("#post").attr("href",dt);
       },
       allowTaint:true,
       useCORS: true,
