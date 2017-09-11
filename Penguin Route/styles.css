@@ -68,8 +68,13 @@ li{
   text-align: center;
 }
 
+#container li p{
+  margin: 1px;
+  padding: 0;
+}
+
 #container p{
-  margin: 3px;
+  margin: 0px;
   padding: 0;
 }
 
