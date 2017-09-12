@@ -1,5 +1,71 @@
 $(document).ready(function(){
 
+  var teleports = [
+                    //Lodestones
+                    "Lumbridge Lodestone",
+                    "Buthrope Lodestone",
+                    "Lunar Isle Lodestone",
+                    "Bandit Camp Lodestone",
+                    "Taverly Lodestone",
+                    "Al Kharid Lodestone",
+                    "Varrock Lodestone",
+                    "Edgeville Lodestone",
+                    "Falador Lodestone",
+                    "Port Sarim Lodestone",
+                    "Draynor Village Lodestone",
+                    "Ardougne Lodestone",
+                    "Catherby Lodestone",
+                    "Yannile Lodestone",
+                    "Seers' Village Lodestone",
+                    "Eagles' Peak Lodestone",
+                    "Tirannwn Lodestone",
+                    "Oo'glog Lodestone",
+                    "Karamja Lodestone",
+                    "Canifis Lodestone",
+                    "Wilderness Volcano Lodestone",
+                    "Fremmnik Province Lodestone",
+                    "Menaphos Lodestone",
+                    //Items
+                    "Ectophial",
+                    "Charter Ship",
+                    "Juju Teleport Spiritbag",
+                    //Duel Ring
+                    "Dueling Ring: Castle Wars",
+                    "Dueling Ring: Mobilising Armies",
+                    "Dueling Ring: Al Kharid Duel Arena",
+                    "Dueling Ring: Fist of Guthix",
+                    //Games Necklace
+                    "Games Necklace: Barbarian Outpost",
+                    "Games Necklace: Gamers Grotto",
+                    "Games Necklace: Corporeal Beast",
+                    "Games Necklace: Tears Of Guthix",
+                    "Games Necklace: Troll Invasion",
+                    //Glory
+                    "Amulet of Glory: Edgeville",
+                    "Amulet of Glory: Draynor Village",
+                    "Amulet of Glory: Karamja",
+                    "Amulet of Glory: Al Kharid",
+                    //Ring of Wealth
+                    "Ring of Wealth: Grand Exchange",
+                    "Ring of Wealth: Miscellenia",
+                    //Wicked Hood
+                    "Wicked Hood: Air Altar",
+                    "Wicked Hood: Earth Altar",
+                    "Wicked Hood: Fire Altar",
+                    "Wicked Hood: Water Altar",
+                    "Wicked Hood: Chaos Altar",
+                    "Wicked Hood: Mind Altar",
+                    "Wicked Hood: Body Altar",
+                    "Wicked Hood: Death Altar",
+                    "Wicked Hood: Nature Altar",
+                    "Wicked Hood: Soul Altar",
+                    "Wicked Hood: Law Altar",
+                    "Wicked Hood: Astral Altar",
+                    "Wicked Hood: Blood Altar",
+                    "Wicked Hood: Cosmic Altar",
+                    //
+                  ];
+
   var config = {
     apiKey: "AIzaSyB42PW3MwrtNhxuAVUgGYFdDfjiVCqNpJ0",
     authDomain: "penguin-confirm.firebaseapp.com",
@@ -14,7 +80,17 @@ $(document).ready(function(){
 
   var ref = firebase.database().ref('penguins');
 
-  ref.on('value',Update,(error)=>{});
+  $("#container").on("change",".via",function(){
+    UpdateRoute();
+    UpdateLink();
+  });
+
+  $("#container ul").sortable({
+    update: function(event, ui){
+      UpdateRoute();
+      UpdateLink();
+    }
+  });
 
   $("#post").click(function(){
 
@@ -36,19 +112,21 @@ $(document).ready(function(){
 
   });
 
-  $("#container").on("change",".via",function(){
-    UpdateRoute();
-    UpdateLink();
-  });
-
-  $("#container ul").sortable({
-    update: function(event, ui){
-      UpdateRoute();
-      UpdateLink();
-    }
-  });
-
   //Delegates
+  ref.on('value',Update,(error)=>{});
+
+  $("#container ul").on("focusin",".via",function(){
+    var $target = $(this);
+    if($target.is(".via")){
+      $target.autocomplete(
+        {
+          source: teleports,
+        }
+      );
+    }
+
+  });
+
   $("#container").on("click",".split", function(){
 
     var key = $($(this).parents()[2]).find("p:first").text();
