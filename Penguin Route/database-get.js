@@ -63,7 +63,23 @@ $(document).ready(function(){
                     "Wicked Hood: Astral Altar",
                     "Wicked Hood: Blood Altar",
                     "Wicked Hood: Cosmic Altar",
-                    //
+                    //Fairy Rings
+                    "Fairy Ring: ALQ - Haunted Woods",
+                    "Fairy Ring: CKS - West Canifis",
+                    "Fairy Ring: BKR - Mort Myre Swamp",
+                    "Fairy Ring: DLQ - Nardah",
+                    "Fairy Ring: BIQ - Kalphite Queen Lair",
+                    "Fairy Ring: DIS - Wizards Tower",
+                    "Fairy Ring: AIQ - Mudskipper Point",
+                    "Fairy Ring: DKR - Edgeville",
+                    "Fairy Ring: DKP - East Karamja",
+                    "Fairy Ring: CKR - Central Karamja",
+                    "Fairy Ring: AKS - Feldip Hills",
+                    "Fairy Ring: CIQ - Yannile",
+                    "Fairy Ring: BKP - South Castle Wars",
+                    "Fairy Ring: CIP - Miscellenia",
+                    "Fairy Ring: AKQ - Piscatoris",
+                    "Fairy Ring: ALS - McGrubors Woods",
                   ];
 
   var config = {
