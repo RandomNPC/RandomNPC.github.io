@@ -10,21 +10,22 @@ $(document).ready(()=>{
     var db_index = $.inArray($card_setup,$("#content-setup .card"));
 
     //Get Database Reference
-    var db = firebase.database().ref("penguins"+"/"+db_index);
+    var db = firebase.database().ref("penguins"+"/"+db_index+"/"+"entries/"+(Math.floor(text_slot/2)));
+    var text = $(this).val();
 
-    switch(text_slot)
-    {
+    switch(text_slot){
       case 0:
+      case 2:
         db.update({
-          "main":$(this).val(),
+          index: text,
         });
         break;
       case 1:
+      case 3:
         db.update({
-          "alt":$(this).val(),
+          descriptor: text,
         });
         break;
     }
-
   });
 });

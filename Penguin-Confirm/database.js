@@ -12,82 +12,45 @@ $(document).ready(function(){
 
   var ref = firebase.database().ref('penguins');
 
-  ref.on('value',Update,(error)=>{
-
-  });
+  ref.on('value',Update,(error)=>{});
 
   function Update(data){
-
     $.each(data.val(),function(index,value){
-      var $setup_card = $($("#content-setup .card")[index]);
-      var $home_card = $($("#content-home .card")[index]);
 
-      //Corresponding display
-      var $main = $($home_card.find(".main")[0]);
-      var $alt = $($home_card.find(".alt")[0]);
+      $.each($("#content-setup .card:eq("+index+") .col-5"),(i,v)=>{
 
-      //Corresponding text boxes
-      var $main_box = $($setup_card.find(".box-main")[0]);
-      var $alt_box = $($setup_card.find(".box-alt")[0]);
+          //ID
+          $($(v).find("input:first")).val(value.entries[i].index);
 
-      //Set Text
-      $main_box.val(value.main);
-      $alt_box.val(value.alt);
+          //Descriptor
+          $($(v).find("input:last")).val(value.entries[i].descriptor);
+      });
 
-      //Flip
-      if(value.flip){
-        $main.text(value.alt);
-        $alt.text("Main: " + value.main);
-      }
-      else{
-        $main.text(value.main);
-        $alt.text("Alt: " + value.alt);
-      }
+      //Home Page Entry for each card
 
-      //Get references to the card, button, and rotate img
-      var $card_header = $($home_card.find(".card-header")[0]);
-      var $card_btn = $($home_card.find(".btn")[0]);
-      var $card_rotate = $($home_card.find(".fa")[0]);
+      $("#content-home .card:eq("+index+") .col-7 >:eq(0)").text(value.entries[value.index].descriptor);
+      $("#content-home .card:eq("+index+") .col-7 >:eq(1)").text(value.entries[(value.index + 1) % value.entries.length].descriptor);
 
       //Toggle confirm skin
-      $card_header.toggleClass("penguin-confirm",value.confirm);
+      $("#content-home .card:eq("+index+") .card-header").toggleClass("penguin-confirm",value.confirm);
 
       //Toggle Button Style
-      $card_btn.toggleClass("btn-danger",value.confirm);
-      $card_btn.toggleClass("btn-success",!value.confirm);
+      $("#content-home .card:eq("+index+") button").toggleClass("btn-danger",value.confirm);
+      $("#content-home .card:eq("+index+") button").toggleClass("btn-success",!value.confirm);
 
-      //Change the button text
-      $card_btn.text((!value.confirm) ? "Confirm" : "Deny");
+      //Change Button Text
+      $("#content-home .card:eq("+index+") button").text((!value.confirm) ? "Confirm" : "Deny");
 
-      //show the rotate button
-      $card_rotate.show();
-      $alt.show();
+      $("#content-home .card:eq("+index+") .fa").show();
+      $("#content-home .card:eq("+index+") .col-7 > :eq(1)").show();
 
-      //Confirm
-      if(value.confirm) //Flip this value because the user pressed the confirm button
+      if(value.confirm)
       {
-        $card_rotate.hide();
-        $alt.hide();
-      }
-      else {
-        $card_rotate.show();
-        $alt.show();
-      }
-
-      if($home_card.find(".polar-bear").length > 0)
-      {
-        var polar_locations = [
-          "Varrock Well",
-          "Falador Well",
-          "Rimmington Well",
-          "Musa Point Well",
-          "Ardougne Well",
-          "Rellekka Well"
-        ];
-
-        $main.text(polar_locations[value.index]);
+        $("#content-home .card:eq("+index+") .fa").hide();
+        $("#content-home .card:eq("+index+") .col-7 > :eq(1)").hide();
       }
 
     });
+
   }
 });

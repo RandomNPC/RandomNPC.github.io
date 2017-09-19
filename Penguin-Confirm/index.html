@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
@@ -303,21 +303,36 @@
         </div>
       </div>
       <div id="content-setup">
+        <div class="container-fluid">
+          <div class="row justify-content-between">
+            <h5 style="margin-top:25px;" class="col-2">Week: </h5>
+            <input style="margin-top:20px;" class="form-control col-2" type="text" placeholder="Week">
+            <div class="col-8"></div>
+          </div>
+        </div>
         <h5 style="margin-top:40px;">One-Point Penguins</h5>
         <div class="card">
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
                 <div class="col-2">
-                  <h5>1</h5>
+                  <h5 style="margin-top:5px;">1</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -327,15 +342,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>2</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">2</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -345,15 +369,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>3</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">3</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -363,15 +396,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>4</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">4</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -381,15 +423,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>5</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">5</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt"  type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -400,15 +451,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>1</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">1</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -418,15 +478,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>2</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">2</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -436,15 +505,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>3</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">3</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -454,15 +532,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>4</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">4</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -472,15 +559,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>5</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">5</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -490,15 +586,24 @@
           <div class="card-header">
             <div class="container-fluid">
               <div class="row justify-content-between">
-                <div class="col-2"><h5>F</h5>
+                <div class="col-2">
+                  <h5 style="margin-top:5px;">F</h5>
                 </div>
                 <div class="col-5">
-                  <div style>
-                    <input class="form-control box-main" type="text" placeholder="Main Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
                   </div>
                 </div>
                 <div class="col-5">
-                  <input class="form-control box-alt" type="text" placeholder="Alternate Penguin">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <input class="form-control col-3" type="text" placeholder="ID">
+                      <input class="form-control col-9" type="text" placeholder="Descriptor">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -506,7 +611,16 @@
         </div>
       </div>
       <div id="content-settings">
-        Settings
+        <div class="container-fluid">
+          <div class="row justify-content-between" style="margin:20px;">
+            <div class="col-ms-6">
+              Generate Predictions:
+            </div>
+            <div class="col-ms-6">
+               <button type="button" id="button-reset" class="btn btn-danger">Generate</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>
