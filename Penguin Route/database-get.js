@@ -219,33 +219,23 @@ $(document).ready(function(){
 
   function Update(data)
   {
-    var list = [];
+    $.each(data.val(),(index,value)=>{
+      $("#"+index+", #"+index+"-0").find("p:eq(1)").text(value.entries[(value.entries.length > 2 ? value.index : 0)].descriptor);
+      $("#"+index+", #"+index+"-1").find("p:eq(2)").text(value.entries[1].descriptor);
 
-    var polar_locations = [
-      "Varrock Well",
-      "Falador Well",
-      "Rimmington Well",
-      "Musa Point Well",
-      "Ardougne Well",
-      "Rellekka Well"
-    ];
-
-    $("#11 p:last").text(polar_locations[data.val()[data.val().length-1].index]);
-    $("#11 p:last").toggleClass("confirm",data.val()[data.val().length-1].confirm);
-
-    $.each(data.val(),function(index,value){
-
-      if(index < (data.val().length-1))
+      if(value.entries.length > 2)
       {
-        $("#"+index+", #"+index+"-0").find("p:not(:first):nth-child(1)").text(value.main);
-        $("#"+index+", #"+index+"-0").find("p:not(:first):nth-child(1)").toggleClass("confirm",(value.confirm && !value.flip));
-        $("#"+index+", #"+index+"-0").find("p:not(:first):nth-child(1)").toggleClass("call-at",(value.confirm && !value.flip));
+        $("#"+index+", #"+index+"-0").find("p:eq(1)").toggleClass("confirm",(value.confirm));
+      }
+      else {
+        $("#"+index+", #"+index+"-0").find("p:eq(1)").toggleClass("confirm",(value.confirm && (value.index==0)));
+        $("#"+index+", #"+index+"-1").find("p:eq(2)").toggleClass("confirm",(value.confirm && (value.index==1)));
 
-        $("#"+index+", #"+index+"-1").find("p:last").text(value.alt);
-        $("#"+index+", #"+index+"-1").find("p:last").toggleClass("confirm",(value.confirm && value.flip));
-        $("#"+index+", #"+index+"-1").find("p:last").toggleClass("call-at",(value.confirm && value.flip));
+        $("#"+index+", #"+index+"-0").find("p:eq(1)").toggleClass("call-at",(value.confirm && (value.index==0)));
+        $("#"+index+", #"+index+"-1").find("p:eq(2)").toggleClass("call-at",(value.confirm && (value.index==1)));
       }
     });
+
     UpdateRoute();
     UpdateLink();
   }
