@@ -1,0 +1,25 @@
+.hidden{
+  display: none;
+}
+
+html, body, .login-background{
+  height: 100vh;
+}
+
+.login-background{
+  background-image: url(login-background.png);
+  background-repeat:no-repeat;
+  -webkit-background-size:cover;
+  -moz-background-size:cover;
+  -o-background-size:cover;
+  background-size:cover;
+  background-position:center;
+}
+
+#login-screen .col-sm-6 > div{
+  padding-top: 25px;
+}
+
+#my-signin2 > div{
+  margin: 0 auto;
+}
