@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
   var CLIENT_ID = '79847669821-7s19sehothfn3v4eeloalhng91pi9fmj.apps.googleusercontent.com';
-  var CALENDAR_ID = 'kvt7ldoc62n0hkadqsnr5v44po@group.calendar.google.com';
 
   firebase.initializeApp({
     apiKey: "AIzaSyDmFH4ggKydjXMGmvtRslmLFCXpAL4PnhE",
@@ -36,8 +35,8 @@ $(document).ready(function(){
 
   function UpdateUserWebpage(isLoggedIn)
   {
+
     $("#login-screen").toggleClass("hidden",isLoggedIn);
-    $("#main-screen").toggleClass("hidden",!isLoggedIn);
 
     //Handle Firebase Authentication via Google Authentication
     if(!isLoggedIn){
@@ -54,9 +53,13 @@ $(document).ready(function(){
       var cred = firebase.auth
                          .GoogleAuthProvider
                          .credential(null, auth);
-                         
+
       firebase.auth()
               .signInWithCredential(cred)
+              .then(function(){
+                $("#main-screen").toggleClass("hidden",!isLoggedIn);
+                StartApplication();
+              })
               .catch(function(error){});
     }
   }
