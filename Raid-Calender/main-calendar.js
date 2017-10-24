@@ -2,7 +2,7 @@ var CALENDAR_ID = 'kvt7ldoc62n0hkadqsnr5v44po@group.calendar.google.com';
 
 $(document).ready(function(){
 
-  $("#main-screen nav .nav-link:eq(1)").click(function(){
+  $("#main-screen nav .nav-link:eq(2)").click(function(){
     gapi.auth2.getAuthInstance().signOut();
   });
 
@@ -22,11 +22,14 @@ function date(format)
     year: date.getFullYear(),
     time: new Date(format).toLocaleString().replace(/.+, /g,'').replace(/(:)(?!.*:)../g,'')
   };
-  return d;//d.day_of_week + ", " + d.month + " " + d.day + " " + d.year;
+  return d;
 }
 
 function StartApplication()
 {
+  $("#user-image").attr("src",gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
+  $("#user-name").text(gapi.auth2.getAuthInstance().currentUser.get().w3.ig);
+
   gapi.client.calendar.events.list({
             'calendarId': CALENDAR_ID,
             'timeMin': (new Date()).toISOString(),
@@ -37,9 +40,8 @@ function StartApplication()
           }).then(function(response) {
 
             var $root = $("#main-content");
-
+            $root.empty();
             $.each(response.result.items,(index,value)=>{
-              console.log(value)
               var content =
               '<div class="card">'+
                 '<div class="card-block container">'+
