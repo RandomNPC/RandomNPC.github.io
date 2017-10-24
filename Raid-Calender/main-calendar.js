@@ -46,19 +46,19 @@ function StartApplication()
               '<div class="card">'+
                 '<div class="card-block container">'+
                   '<div class="row">'+
-                    '<div class="col-md-3">'+
-                      '<div>'+ date(value.start.dateTime).day_of_week +'</div>'+
-                      '<div>'+ date(value.start.dateTime).day +'</div>'+
+                    '<div class="col-md-1">'+
+                      '<div class="text-center">'+ date(value.start.dateTime).day_of_week +'</div>'+
+                      '<div class="text-center">'+ date(value.start.dateTime).day +'</div>'+
                     '</div>'+
-                    '<div class="col-md-3">'+
+                    '<div class="col-md-5">'+
                       '<div>'+value.summary+'</div>'+
                       '<div>'+((value.description === undefined) ? '' : value.description) +'</div>'+
                     '</div>'+
-                    '<div class="col-md-3">'+
+                    '<div class="col-md-5">'+
                       '<div> Time: ' + date(value.start.dateTime).time + '</div>' +
                       '<div> Host: ' + value.creator.displayName + '</div>'+
                     '</div>'+
-                    '<div class="selection col-md-3">'+
+                    '<div class="selection col-md-1">'+
                       '<button>Yes</button>'+
                       '<button>No</button>'+
                     '</div>'+
