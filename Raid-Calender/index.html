@@ -62,6 +62,9 @@
              <a id="user-name" class="nav-link"></a>
            </li>
            <li class="nav-item active">
+             <a class="nav-link" href="#">Home</a>
+           </li>
+           <li class="nav-item active">
              <a class="nav-link" href="#">Settings</a>
            </li>
            <li class="nav-item active">
@@ -71,6 +74,21 @@
        </div>
      </nav>
      <div id="main-content" class="container-fluid"></div>
+     <div id="main-settings" class="hidden">
+       <div class="container-fluid">
+         <div class="row justify-content-between" style="margin:20px;">
+           <div class="col-ms-6 container">
+             <div class="row">
+               <div class="col-ms-6" style="margin-left:20px; margin-right:20px;">Current screen name:</div>
+               <div id="settings-username" class="col-ms-6"></div>
+             </div>
+           </div>
+           <div class="col-ms-6">
+              <button type="button" class="btn btn-danger">Change Screen Name</button>
+           </div>
+         </div>
+       </div>
+     </div>
    </div>
  </body>
 </html>

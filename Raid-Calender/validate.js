@@ -37,10 +37,11 @@ $(document).ready(function(){
   {
     $("#login-screen").toggleClass("hidden",isLoggedIn);
     $("#main-screen").toggleClass("hidden",!isLoggedIn);
-    
+
     //Handle Firebase Authentication via Google Authentication
     if(!isLoggedIn){
-
+      $("#user-image").attr("src","");
+      $("#user-name").text("")
       firebase.auth()
               .signOut()
               .then(function(error){});
@@ -58,7 +59,6 @@ $(document).ready(function(){
       firebase.auth()
               .signInWithCredential(cred)
               .then(function(){
-
                 StartApplication();
               })
               .catch(function(error){});
