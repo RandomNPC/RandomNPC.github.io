@@ -23,3 +23,13 @@ html, body, .login-background{
 #my-signin2 > div{
   margin: 0 auto;
 }
+
+/*For players attending to the relavant event*/
+ul{
+  -moz-column-count: 2;
+  -moz-column-gap: 2.5em;
+  -webkit-column-count: 2;
+  -webkit-column-gap: 2.5em;
+   column-count: 2;
+   column-gap: 2.5em;
+}
