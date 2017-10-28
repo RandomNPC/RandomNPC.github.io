@@ -138,7 +138,7 @@ function StartApplication()
                                                                  .once('value')
                                                                  .then((user)=>{
                                                                    let u = user.val();
-                                                                   $("#"+attendee.key+" ul").append('<li class="'+index+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px;">'+u.name+'</p></li>');
+                                                                   $("#"+attendee.key+" ul").append('<li class="'+index+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px; border-radius: 50%;">'+u.name+'</p></li>');
                                                                    if(index === firebase.auth().currentUser.uid)
                                                                    {
                                                                      $("#"+attendee.key+" button").text("Not Going");
@@ -209,7 +209,7 @@ function StartApplication()
                                   db_ref.ref('users/'+diffA[0]).once('value').then((user)=>{
                                     let u = user.val();
 
-                                    $("#"+snapshot.key+" ul").append('<li class="'+user.key+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px;">'+u.name+'</p></li>');
+                                    $("#"+snapshot.key+" ul").append('<li class="'+user.key+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px; border-radius: 50%;">'+u.name+'</p></li>');
                                     if(user.key === firebase.auth().currentUser.uid)
                                     {
                                       $("#"+snapshot.key+" button").text("Not Going");
