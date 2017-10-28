@@ -35,16 +35,18 @@ $(document).ready(function(){
 
   function UpdateUserWebpage(isLoggedIn)
   {
-    $("#login-screen").toggleClass("hidden",isLoggedIn);
-    $("#main-screen").toggleClass("hidden",!isLoggedIn);
 
     //Handle Firebase Authentication via Google Authentication
     if(!isLoggedIn){
       $("#user-image").attr("src","");
-      $("#user-name").text("")
+      $("#user-name").text("");
+      $("#login-screen").toggleClass("hidden",false);
+      $("#main-screen").toggleClass("hidden",true);
       firebase.auth()
               .signOut()
               .then(function(error){});
+
+      firebase.database().off();
     }
     else {
       var auth = gapi.auth2

@@ -26,6 +26,7 @@ html, body, .login-background{
 
 /*For players attending to the relavant event*/
 ul{
+  list-style-type: none;
   -moz-column-count: 2;
   -moz-column-gap: 2.5em;
   -webkit-column-count: 2;
