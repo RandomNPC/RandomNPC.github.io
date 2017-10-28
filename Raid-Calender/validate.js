@@ -46,7 +46,7 @@ $(document).ready(function(){
               .signOut()
               .then(function(error){});
 
-      firebase.database().off();
+      firebase.database().ref().off();
     }
     else {
       var auth = gapi.auth2

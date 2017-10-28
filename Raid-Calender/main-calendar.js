@@ -95,6 +95,7 @@ function BuildCalendarEntry(e)
 
 function StartApplication()
 {
+  $("#main-content").empty();
   var db_ref = firebase.database();
   //Set the calendar structure before listening to events
   db_ref.ref('raid-events').orderByChild('startTime')
@@ -117,8 +118,8 @@ function StartApplication()
                                                         .then((user)=>{
                                                           $.each(user.val(),(index,value)=>{
                                                             $("#"+res.key + " .host").text("Host: "+value.name);
-
-                                                            //You can't delete yourself if you are host
+                                                            $("#"+res.key + " .host").addClass(index);
+                                                            //You can't unattend raid if you are host
                                                             if(index === firebase.auth().currentUser.uid)
                                                             {
                                                               $("#"+res.key+" button").hide();
@@ -137,9 +138,7 @@ function StartApplication()
                                                                  .once('value')
                                                                  .then((user)=>{
                                                                    let u = user.val();
-                                                                   $("#"+attendee.key+" ul").append('<li class="'+index+'">'+
-                                                                                           '<img src="'+u.image+'" width="40" height="40" style="padding:5px;">'+u.name+'</img>'+
-                                                                                           '</li>');
+                                                                   $("#"+attendee.key+" ul").append('<li class="'+index+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px;">'+u.name+'</p></li>');
                                                                    if(index === firebase.auth().currentUser.uid)
                                                                    {
                                                                      $("#"+attendee.key+" button").text("Not Going");
@@ -169,7 +168,7 @@ function StartApplication()
                              });
                            }).then((listen_events)=>{
 
-                             //When a raid event contents get changed on the webpage
+                             //When raid event content gets changed on the webpage
                              db_ref.ref('raid-events').on('child_changed',(snapshot)=>{
                                 console.log("Changed: " + JSON.stringify(snapshot.val()));
                              });
@@ -209,9 +208,8 @@ function StartApplication()
                                 if(diffA.length > diffB.length){
                                   db_ref.ref('users/'+diffA[0]).once('value').then((user)=>{
                                     let u = user.val();
-                                    $("#"+snapshot.key+" ul").append('<li class="'+user.key+'">'+
-                                                            '<img src="'+u.image+'" width="40" height="40" style="padding:5px;">'+u.name+'</img>'+
-                                                            '</li>');
+
+                                    $("#"+snapshot.key+" ul").append('<li class="'+user.key+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px;">'+u.name+'</p></li>');
                                     if(user.key === firebase.auth().currentUser.uid)
                                     {
                                       $("#"+snapshot.key+" button").text("Not Going");
@@ -232,5 +230,15 @@ function StartApplication()
                                 }
                              });
 
+                             db_ref.ref('users').on('child_changed',(snapshot)=>{
+                               $.map($("."+snapshot.key+" p:not(host)"),(element)=>{$(element).get(0).lastChild.nodeValue = snapshot.val().name;});
+                               $(".host."+snapshot.key).text("Host: " + snapshot.val().name);
+
+                               if(snapshot.key === firebase.auth().currentUser.uid)
+                               {
+                                 $("#user-name").text(snapshot.val().name);
+                                 $("#settings-username").text(snapshot.val().name);
+                               }
+                             });
                            });
 }
