@@ -165,6 +165,10 @@ function StartApplication()
                              }).then((final)=>{
                                $("#login-screen").toggleClass("hidden",true);
                                $("#main-screen").toggleClass("hidden",false);
+                             }).catch((error)=>{
+                               //Profile couldn't be found. Don't delete profile while person is logged in :(
+                               console.log(error);
+                               gapi.auth2.getAuthInstance().signOut();
                              });
                            }).then((listen_events)=>{
 
