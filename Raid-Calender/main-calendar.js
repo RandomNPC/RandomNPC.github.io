@@ -20,14 +20,30 @@ $(document).ready(function(){
   });
 
   //Settings: Change screenname
-  $("#main-settings button").click(function(){
+  $("#main-settings button:eq(0)").click(function(){
     var response = prompt("What will be your new screen name?");
 
     var user = firebase.auth().currentUser;
     var user_ref = firebase.database().ref('users').child(user.uid);
 
     user_ref.update({
+      email: user.email,
       name: response,
+      image: $("#user-image").attr("src"),
+    });
+  });
+
+  //Settings: Change Image
+  $("#main-settings button:eq(1)").click(function(){
+    var response = prompt("Provide me a link to your image");
+
+    var user = firebase.auth().currentUser;
+    var user_ref = firebase.database().ref('users').child(user.uid);
+
+    user_ref.update({
+      email: user.email,
+      image: response,
+      name: $("#user-name").text(),
     });
   });
 
@@ -80,7 +96,7 @@ function BuildCalendarEntry(e)
                   '<div class="host">'+params.creator+'</div>' +
                 '</div>'+
                 '<div class="selection col-md-2 text-center">'+
-                  '<button class="btn btn-success">Going</button>'+
+                  '<button class="btn btn-success">Attend</button>'+
                 '</div>'+
                 '<div class="selection col-md-4">'+
                   '<div>'+
@@ -141,12 +157,12 @@ function StartApplication()
                                                                    $("#"+attendee.key+" ul").append('<li class="'+index+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px; border-radius: 50%;">'+u.name+'</p></li>');
                                                                    if(index === firebase.auth().currentUser.uid)
                                                                    {
-                                                                     $("#"+attendee.key+" button").text("Not Going");
+                                                                     $("#"+attendee.key+" button").text("Decline");
                                                                      $("#"+attendee.key+" button").toggleClass("btn-success",false);
                                                                      $("#"+attendee.key+" button").toggleClass("btn-danger",true);
                                                                    }
                                                                    else{
-                                                                     $("#"+attendee.key+" button").text("Going");
+                                                                     $("#"+attendee.key+" button").text("Accept");
                                                                      $("#"+attendee.key+" button").toggleClass("btn-success",true);
                                                                      $("#"+attendee.key+" button").toggleClass("btn-danger",false);
                                                                    }
@@ -179,6 +195,7 @@ function StartApplication()
                                $("#user-image").attr("src",user_cred.image);
                                $("#user-name").text(user_cred.name);
                                $("#settings-username").text(user_cred.name);
+                               $("#settings-image").attr("src",user_cred.image);
 
                                $("#login-screen").toggleClass("hidden",true);
                                $("#main-screen").toggleClass("hidden",false);
@@ -234,7 +251,7 @@ function StartApplication()
                                     $("#"+snapshot.key+" ul").append('<li class="'+user.key+'"><p><img src="'+u.image+'" width="40" height="40" style="padding:5px; border-radius: 50%;">'+u.name+'</p></li>');
                                     if(user.key === firebase.auth().currentUser.uid)
                                     {
-                                      $("#"+snapshot.key+" button").text("Not Going");
+                                      $("#"+snapshot.key+" button").text("Decline");
                                       $("#"+snapshot.key+" button").toggleClass("btn-success",false);
                                       $("#"+snapshot.key+" button").toggleClass("btn-danger",true);
                                     }
@@ -245,21 +262,30 @@ function StartApplication()
 
                                   if(diffB[0] === firebase.auth().currentUser.uid)
                                   {
-                                    $("#"+snapshot.key+" button").text("Going");
+                                    $("#"+snapshot.key+" button").text("Accept");
                                     $("#"+snapshot.key+" button").toggleClass("btn-success",true);
                                     $("#"+snapshot.key+" button").toggleClass("btn-danger",false);
                                   }
                                 }
                              });
 
+                             //When a user changes their name/image in settings
                              db_ref.ref('users').on('child_changed',(snapshot)=>{
-                               $.map($("."+snapshot.key+" p:not(host)"),(element)=>{$(element).get(0).lastChild.nodeValue = snapshot.val().name;});
-                               $(".host."+snapshot.key).text("Host: " + snapshot.val().name);
+
+                               let u = snapshot.val();
+
+                               //Name change
+                               $.map($("."+snapshot.key+" p:not(host)"),(element)=>{$(element).get(0).lastChild.nodeValue = u.name;});
+                               $(".host."+snapshot.key).text("Host: " + u.name);
+
+                               $("."+snapshot.key+" img").attr("src",u.image);
 
                                if(snapshot.key === firebase.auth().currentUser.uid)
                                {
-                                 $("#user-name").text(snapshot.val().name);
-                                 $("#settings-username").text(snapshot.val().name);
+                                 $("#user-name").text(u.name);
+                                 $("#settings-username").text(u.name);
+                                 $("#user-image").attr("src",u.image);
+                                 $("#settings-image").attr("src",u.image);
                                }
                              });
                            });
