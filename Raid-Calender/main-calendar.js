@@ -157,16 +157,34 @@ function StartApplication()
                                return Promise.all(attendee_promises);
                              });
                            }).then((update_profile)=>{
-                             return firebase.database().ref('users/'+firebase.auth().currentUser.uid).once('value').then((user)=>{
-                               let u = user.val();
-                               $("#user-image").attr("src",u.image);
-                               $("#user-name").text(u.name);
-                               $("#settings-username").text(u.name);
-                             }).then((final)=>{
+                             return db_ref.ref('users').once('value').then((user)=>{
+
+                               var user_cred = null;
+                               let auth_cred = firebase.auth().currentUser;
+
+                               if(user.child(auth_cred.uid).exists())
+                               {
+                                 user_cred = user.child(auth_cred.uid).val();
+                               }
+                               else {
+                                 user_cred = {
+                                   email: auth_cred.email,
+                                   image: auth_cred.photoURL,
+                                   name: auth_cred.displayName,
+                                 };
+
+                                 db_ref.ref('users/'+auth_cred.uid).set(user_cred);
+                               }
+
+                               $("#user-image").attr("src",user_cred.image);
+                               $("#user-name").text(user_cred.name);
+                               $("#settings-username").text(user_cred.name);
+
                                $("#login-screen").toggleClass("hidden",true);
                                $("#main-screen").toggleClass("hidden",false);
+
+                               return;
                              }).catch((error)=>{
-                               //Profile couldn't be found. Don't delete profile while person is logged in :(
                                console.log(error);
                                gapi.auth2.getAuthInstance().signOut();
                              });

@@ -63,7 +63,9 @@ $(document).ready(function(){
               .then(function(){
                 StartApplication();
               })
-              .catch(function(error){});
+              .catch(function(error){
+                console.log(error);
+              });
     }
   }
 
