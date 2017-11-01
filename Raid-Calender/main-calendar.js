@@ -182,18 +182,8 @@ function BuildCalendarEntry(e,uid,user_data)
 
 function AddUserToEvent(event_id,attendee_uid,user_profile)
 {
-  let host_uid = $("#"+event_id+" .raid-host").attr('class').split(' ')[1];
-
-  if(host_uid!=attendee_uid)
-  {
-    $("#"+event_id + " .rsvp-status").toggleClass("btn-danger btn-success");
-    $("#"+event_id + " .rsvp-status.btn-danger").text("Cancel");
-    $("#"+event_id + " .rsvp-status.btn-success").text("Attend");
-  }
-
-
   return '<li>' +
-          '<div class="container">' +
+          '<div class="container-fluid">' +
             '<div class="row">' +
               '<img class="'+attendee_uid+'" src="'+user_profile.image+'">' +
               '<p class="'+attendee_uid+'">'+user_profile.name+'</p>' +
@@ -239,7 +229,7 @@ function StartApplication()
                                                                                $calendar_root.append(BuildCalendarEntry(calendar_event, uid, user_data));
 
                                                                                if(uid === auth_ref.uid){
-                                                                                 $("#"+e_key+" .rsvp-status").toggleClass("btn-warning btn-success").text("Edit");
+                                                                                 $("#"+e_key+" .rsvp-status").addClass("btn-warning").removeClass("btn-success").text("Edit");
                                                                                }
 
                                                                               });
@@ -254,6 +244,13 @@ function StartApplication()
                                                                                                                            let p_key = profile.key;
                                                                                                                            let p = profile.val();
                                                                                                                            $("#"+e_key+" ul").append(AddUserToEvent(e_key,p_key,p));
+
+                                                                                                                           let host_uid =  $("#"+e_key + " .raid-host").attr('class').split(' ')[1];
+
+                                                                                                                           if(auth_ref.uid === u_key && u_key != host_uid)
+                                                                                                                           {
+                                                                                                                             $("#"+e_key + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
+                                                                                                                           }
                                                                                                                         });
                                                                                             });
                                                                                           });
@@ -285,23 +282,28 @@ function StartApplication()
                                   return $.inArray(entry,attendee_uids) < 0;
                                 }));
 
-                                if($.inArray(delta_uids[0],attendee_uids) >= 0)
+                                let delta_uid = delta_uids[0];
+
+                                if($.inArray(delta_uid,attendee_uids) >= 0)
                                 {
                                   //Exists, delete
-                                  $("#"+event_id+" ul ."+delta_uids[0]).parents("li").remove();
-                                  if(auth_ref === delta_uids[0])
+                                  $("#"+event_id+" ul ."+delta_uid).parents("li").remove();
+                                  if(auth_ref.uid === delta_uid)
                                   {
-                                    $("#"+event_id + " .rsvp-status").toggleClass("btn-danger btn-success");
-                                    $("#"+event_id + " .rsvp-status.btn-success").text("Attend");  
+                                    $("#"+event_id + " .rsvp-status").addClass("btn-success").removeClass("btn-danger").text("Attend");
                                   }
                                 }
                                 else {
                                   //Nonexist, create
-                                  db_ref.ref('users/'+delta_uids[0]).once('value')
+                                  db_ref.ref('users/'+delta_uid).once('value')
                                                                  .then((profile)=>{
                                                                     let p_key = profile.key;
                                                                     let p = profile.val();
                                                                     $("#"+event_id+" ul").append(AddUserToEvent(event_id,p_key,p));
+                                                                    if(auth_ref.uid === delta_uid)
+                                                                    {
+                                                                      $("#"+event_id + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
+                                                                    }
                                                                  });
                                 }
                               })
