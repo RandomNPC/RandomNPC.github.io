@@ -137,8 +137,12 @@ function BuildCalendarEntry(e,uid,user_data)
                   '<hr></hr>' +
                   '<div class="row">' +
                     '<div class="col-12">' +
-                      '<ul>' +
-                      '</ul>' +
+                     '<div class="col-12">' +
+                        '<ul class="list-group">' +
+                            '<li class="list-group-item row">' +
+                            '</li>' +
+                        '</ul>' +
+                      '</div>' +
                     '</div>' +
                   '</div>' +
                 '</div>' +
@@ -182,14 +186,12 @@ function BuildCalendarEntry(e,uid,user_data)
 
 function AddUserToEvent(event_id,attendee_uid,user_profile)
 {
-  return '<li>' +
-          '<div class="container-fluid">' +
-            '<div class="row">' +
+  return '<div class="col-6 container-fluid">' +
+            '<div class="row">' + //justify-content-center
               '<img class="'+attendee_uid+'" src="'+user_profile.image+'">' +
               '<p class="'+attendee_uid+'">'+user_profile.name+'</p>' +
             '</div>' +
-          '</div>' +
-         '</li>';
+          '</div>';
 }
 
 function StartApplication()
@@ -243,7 +245,7 @@ function StartApplication()
                                                                                                                         .then((profile)=>{
                                                                                                                            let p_key = profile.key;
                                                                                                                            let p = profile.val();
-                                                                                                                           $("#"+e_key+" ul").append(AddUserToEvent(e_key,p_key,p));
+                                                                                                                           $("#"+e_key+" .list-group-item").append(AddUserToEvent(e_key,p_key,p));
 
                                                                                                                            let host_uid =  $("#"+e_key + " .raid-host").attr('class').split(' ')[1];
 
@@ -258,7 +260,8 @@ function StartApplication()
                                 calendar_promise.push(c_event);
                              });
                              return Promise.all(calendar_promise);
-                           }).then((result)=>{
+                           }).then(()=>{
+
                              $("#login-screen").toggleClass("hidden",true);
                              $("#main-screen").toggleClass("hidden",false);
 
@@ -287,7 +290,7 @@ function StartApplication()
                                 if($.inArray(delta_uid,attendee_uids) >= 0)
                                 {
                                   //Exists, delete
-                                  $("#"+event_id+" ul ."+delta_uid).parents("li").remove();
+                                  $($("#"+event_id+" ul ."+delta_uid).parents()[1]).remove();
                                   if(auth_ref.uid === delta_uid)
                                   {
                                     $("#"+event_id + " .rsvp-status").addClass("btn-success").removeClass("btn-danger").text("Attend");
@@ -299,17 +302,14 @@ function StartApplication()
                                                                  .then((profile)=>{
                                                                     let p_key = profile.key;
                                                                     let p = profile.val();
-                                                                    $("#"+event_id+" ul").append(AddUserToEvent(event_id,p_key,p));
+                                                                    $("#"+event_id+" .list-group-item").append(AddUserToEvent(event_id,p_key,p));
                                                                     if(auth_ref.uid === delta_uid)
                                                                     {
                                                                       $("#"+event_id + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
                                                                     }
                                                                  });
                                 }
-                              })
-
-
-                              ;
+                              });
 
                              //When a player changes their profile
                              db_ref.ref('users').on('child_changed',(snapshot)=>{
