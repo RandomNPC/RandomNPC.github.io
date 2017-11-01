@@ -87,7 +87,7 @@ function BuildCalendarEntry(e,uid,user_data)
 {
 
   var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
 
   let cal_event = e.val();
 
