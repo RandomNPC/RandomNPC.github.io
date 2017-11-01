@@ -25,12 +25,23 @@ html, body, .login-background{
 }
 
 /*For players attending to the relavant event*/
+.card .row:nth-child(1) p{
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.card img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  vertical-align:middle;
+}
+
 ul{
   list-style-type: none;
   -moz-column-count: 2;
-  -moz-column-gap: 2.5em;
   -webkit-column-count: 2;
-  -webkit-column-gap: 2.5em;
    column-count: 2;
-   column-gap: 2.5em;
 }
