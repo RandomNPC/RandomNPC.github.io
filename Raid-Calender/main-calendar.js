@@ -289,8 +289,11 @@ function StartApplication()
                                 {
                                   //Exists, delete
                                   $("#"+event_id+" ul ."+delta_uids[0]).parents("li").remove();
-                                  $("#"+event_id + " .rsvp-status").toggleClass("btn-danger btn-success");
-                                  $("#"+event_id + " .rsvp-status.btn-success").text("Attend");
+                                  if(auth_ref === delta_uids[0])
+                                  {
+                                    $("#"+event_id + " .rsvp-status").toggleClass("btn-danger btn-success");
+                                    $("#"+event_id + " .rsvp-status.btn-success").text("Attend");  
+                                  }
                                 }
                                 else {
                                   //Nonexist, create
