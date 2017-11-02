@@ -61,6 +61,7 @@ $(document).ready(function(){
     if(host_uid === client_uid)
     {
       //Host
+      $root.find(".collapse").toggleClass('show hide');
     }
     else {
       //Client
@@ -79,36 +80,104 @@ $(document).ready(function(){
 
   });
 
+  //Host: Delete Raid
+  $("#main-content").on("click",".collapse button.btn-default",function(){
+    let $root = $(this).parents(".card");
+    let event_id = $root.attr('id');
 
+    if(confirm("Remove this event?"))
+    {
+      //Removing event
+      gapi.client.calendar.events.delete({
+          calendarId: CALENDAR_ID,
+          eventId: event_id,
+      }).execute((result)=>{
+        firebase.database().ref('raid-events/'+event_id).remove();
+        firebase.database().ref('raid-attendees/'+event_id).remove();
+      });
+    }
+    else {
+      let $root = $($(this).parents()[5]);
+      $root.find(".collapse").collapse('hide');
+    }
+  });
+
+  //Host: Update Raid Details
+  $("#main-content").on("click",".collapse button.btn-success",function(){
+    let $root = $(this).parents(".card");
+    let event_id = $root.attr('id');
+
+    let $event_details = $($($(this).parents()[2]).find("input")[0]);
+    let start_date = new Date($event_details.val());
+    start_date = moment(start_date).format("YYYY-MM-DDTHH:mm:ss");
+
+    let $event_title = $($($(this).parents()[2]).find("input")[1]);
+    let title = $event_title.val();
+
+    let timezone = moment.tz.guess();
+    console.log(timezone);
+
+    gapi.client.calendar.events.update({
+      calendarId: CALENDAR_ID,
+      eventId: event_id,
+      resource: {
+        start: {
+            dateTime: start_date,//end,
+            timeZone: timezone,
+        },
+        end: {
+            dateTime: moment(start_date).add(1,"h").format("YYYY-MM-DDTHH:mm:ss"),//start,
+            timeZone: timezone,
+        },
+        summary: title,
+      },
+    }).execute((result)=>{
+
+      if(result.code == 400){ return; }
+
+      firebase.database().ref('raid-events/'+event_id).update(
+        {
+          startTime: new Date(start_date).getTime(),
+          creator: firebase.auth().currentUser.email,
+          title: title,
+          description: "",
+        }
+      );
+
+    });
+  });
+
+  //Host: Cancel Raid Details
+  $("#main-content").on("click",".collapse button.btn-danger",function(){
+    let $root = $($(this).parents()[5]);
+    $root.find(".collapse").collapse('hide');
+  });
 
 });
 
 function BuildCalendarEntry(e,uid,user_data)
 {
 
-  var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  var months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
-
   let cal_event = e.val();
 
   return '<div id="'+e.key+'" class="card">' +
             '<div class="card-header" role="tab">' +
-              '<div class="collapsed" data-toggle="" data-parent="#accordion" aria-expanded="false" aria-controls="collapseOne">' +
+              '<div class="collapsed" data-toggle="" data-parent="#accordion" aria-expanded="false">' +
                 '<div class="container-fluid">' +
                  '<div class="row">' +
                    '<div class="col-3">' +
                      '<div class="row">' +
                        '<div class="col-xs-12">' +
-                          '<p class="week-name">'+days[new Date(cal_event.startTime).getDay()]+'</p>' +
+                          '<p class="week-name">'+moment(cal_event.startTime).format('dddd')+'</p>' +
                        '</div>' +
                      '</div>' +
                      '<div class="row">' +
                        '<div class="col-xs-2">' +
-                          '<p class="month-name">'+months[new Date(cal_event.startTime).getMonth()]+'</p>' +
+                          '<p class="month-name">'+moment(cal_event.startTime).format("MMM")+'</p>' +
                        '</div>' +
                         '<div class="col-xs-8"></div>' +
                        '<div class="col-xs-2">' +
-                          '<p class="day-month">'+new Date(cal_event.startTime).getDate()+'</p>' +
+                          '<p class="day-month">'+moment(cal_event.startTime).format("Do")+'</p>' +
                        '</div>' +
                      '</div>' +
                    '</div>' +
@@ -120,7 +189,7 @@ function BuildCalendarEntry(e,uid,user_data)
                      '</div>' +
                      '<div class="row">' +
                        '<div class="col-xs-5">' +
-                          '<p class="raid-time">'+ new Date(cal_event.startTime).toLocaleString().match(/([\d]{1,2}:[\d]{1,2}|[\d]{1,2}:[\d]{1,2} |[aApP][mM])/g).join().replace(','," ") +'</p>' +
+                          '<p class="raid-time">'+ moment(cal_event.startTime).format('LT') +'</p>' +
                        '</div>' +
                         '<div class="col-xs-2">' +
                           '<p style="margin-right:0px;">by</p>' +
@@ -148,7 +217,7 @@ function BuildCalendarEntry(e,uid,user_data)
                 '</div>' +
               '</div>' +
             '</div>' +
-            '<div class="collapse" role="tabpanel">' +
+            '<div class="collapse hide" role="tabpanel">' +
               '<div class="card-block">' +
                 '<div class="container-fluid">' +
                  '<div class="row">' +
@@ -156,7 +225,7 @@ function BuildCalendarEntry(e,uid,user_data)
                      '<div class="row">' +
                        '<label class="col-4 col-form-label">Date & Time</label>' +
                        '<div class="col-8 form-group form-group-sm">' +
-                          '<input type="datetime-local" class="form-control">' +
+                          '<input type="datetime-local" class="form-control" value="">' +
                        '</div>' +
                      '</div>' +
                      '<div class="row">' +
@@ -234,6 +303,12 @@ function StartApplication()
                                                                                  $("#"+e_key+" .rsvp-status").addClass("btn-warning").removeClass("btn-success").text("Edit");
                                                                                }
 
+                                                                               let e = calendar_event.val();
+
+                                                                               $("#"+e_key+" input:eq(0)").attr('value',moment(e.startTime).format('YYYY-MM-DDTHH:mm'));
+
+                                                                               $("#"+e_key+" input:eq(1)").val(e.title);
+
                                                                               });
                                                                           });
 
@@ -262,10 +337,10 @@ function StartApplication()
                              return Promise.all(calendar_promise);
                            }).then(()=>{
 
-                             $("#login-screen").toggleClass("hidden",true);
-                             $("#main-screen").toggleClass("hidden",false);
+                              $("#login-screen").toggleClass("hidden",true);
+                              $("#main-screen").toggleClass("hidden",false);
 
-                             //When a player rsvp or cancels a raid
+                              //When a player rsvp or cancels a raid
                               db_ref.ref('raid-attendees').on('child_changed',(snapshot)=>{
 
                                 let event_id = snapshot.key;
@@ -311,8 +386,8 @@ function StartApplication()
                                 }
                               });
 
-                             //When a player changes their profile
-                             db_ref.ref('users').on('child_changed',(snapshot)=>{
+                              //When a player changes their profile
+                              db_ref.ref('users').on('child_changed',(snapshot)=>{
 
                               let u_key = snapshot.key;
                               let u = snapshot.val();
@@ -330,5 +405,22 @@ function StartApplication()
                                  $("#settings-image").attr("src",u.image);
                                }
                              });
+
+                             //When a raid event details change
+                              db_ref.ref('raid-events').on('child_changed',(snapshot)=>{
+                                let s_key = snapshot.key;
+                                let s = snapshot.val();
+
+                                $("#"+s_key+" .raid-title").text(s.title);
+                                $("#"+s_key+" .raid-time").text(moment(s.startTime).format('LT'));
+                                $("#"+s_key+" .week-name").text(moment(s.startTime).format('dddd'));
+                                $("#"+s_key+" .month-name").text(moment(s.startTime).format("MMM"));
+                                $("#"+s_key+" .day-month").text(moment(s.startTime).format("Do"));
+                              });
+
+                              //When an event gets deleted
+                              db_ref.ref('raid-events').on('child_removed',(snapshot)=>{
+                                $("#"+snapshot.key).remove();
+                              });
                            });
 }
