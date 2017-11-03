@@ -12,6 +12,7 @@ $(document).ready(function(){
   //Create Event
   $("#main-screen nav .nav-link:eq(2)").click(function(){
     $("#main-content").toggleClass("hidden",true);
+    $("#main-settings").toggleClass("hidden",true);
     $("#main-create-event").toggleClass("hidden",false);
     $("#main-create-event input:eq(0)").attr('value',moment(new Date().getTime()).format('YYYY-MM-DDTHH:mm'));
   });
@@ -20,6 +21,7 @@ $(document).ready(function(){
   $("#main-screen nav .nav-link:eq(3)").click(function(){
     $("#main-content").toggleClass("hidden",true);
     $("#main-settings").toggleClass("hidden",false);
+    $("#main-create-event").toggleClass("hidden",true);
   });
 
   //Log Out Button
