@@ -13,6 +13,7 @@ $(document).ready(function(){
   $("#main-screen nav .nav-link:eq(2)").click(function(){
     $("#main-content").toggleClass("hidden",true);
     $("#main-create-event").toggleClass("hidden",false);
+    $("#main-create-event input:eq(0)").attr('value',moment(new Date().getTime()).format('YYYY-MM-DDTHH:mm'));
   });
 
   //Settings Button
@@ -206,6 +207,9 @@ $(document).ready(function(){
         });
       });
 
+      $("#main-content").toggleClass("hidden",false);
+      $("#main-settings").toggleClass("hidden",true);
+      $("#main-create-event").toggleClass("hidden",true);
     });
 
   });
