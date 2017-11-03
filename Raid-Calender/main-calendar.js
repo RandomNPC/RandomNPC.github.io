@@ -6,17 +6,25 @@ $(document).ready(function(){
   $("#main-screen nav .nav-link:eq(1)").click(function(){
     $("#main-content").toggleClass("hidden",false);
     $("#main-settings").toggleClass("hidden",true);
+    $("#main-create-event").toggleClass("hidden",true);
+  });
+
+  //Create Event
+  $("#main-screen nav .nav-link:eq(2)").click(function(){
+    $("#main-content").toggleClass("hidden",true);
+    $("#main-create-event").toggleClass("hidden",false);
   });
 
   //Settings Button
-  $("#main-screen nav .nav-link:eq(2)").click(function(){
+  $("#main-screen nav .nav-link:eq(3)").click(function(){
     $("#main-content").toggleClass("hidden",true);
     $("#main-settings").toggleClass("hidden",false);
   });
 
   //Log Out Button
-  $("#main-screen nav .nav-link:eq(3)").click(function(){
+  $("#main-screen nav .nav-link:eq(4)").click(function(){
     gapi.auth2.getAuthInstance().signOut();
+    location.reload();
   });
 
   //Settings: Change screenname
@@ -115,7 +123,6 @@ $(document).ready(function(){
     let title = $event_title.val();
 
     let timezone = moment.tz.guess();
-    console.log(timezone);
 
     gapi.client.calendar.events.update({
       calendarId: CALENDAR_ID,
@@ -151,6 +158,56 @@ $(document).ready(function(){
   $("#main-content").on("click",".collapse button.btn-danger",function(){
     let $root = $($(this).parents()[5]);
     $root.find(".collapse").collapse('hide');
+  });
+
+  //Create Raid - Cancel
+  $("#main-create-event button:eq(0)").click(function(){
+    $("#main-content").toggleClass("hidden",false);
+    $("#main-settings").toggleClass("hidden",true);
+    $("#main-create-event").toggleClass("hidden",true);
+  });
+
+  //Create Raid - Submit
+  $("#main-create-event button:eq(1)").click(function(){
+
+    let start_date = $("#main-create-event input:eq(0)").val();
+    let event_title = $("#main-create-event input:eq(1)").val();
+
+    start_date = new Date(start_date);
+    let event_date = moment(start_date).format("YYYY-MM-DDTHH:mm:ss");
+
+    let timezone = moment.tz.guess();
+
+    gapi.client.calendar.events.insert({
+      calendarId: CALENDAR_ID,
+      resource:{
+        start: {
+            dateTime: event_date,//end,
+            timeZone: timezone,
+        },
+        end: {
+            dateTime: moment(event_date).add(1,"h").format("YYYY-MM-DDTHH:mm:ss"),//start,
+            timeZone: timezone,
+        },
+        summary: event_title,
+      },
+    }).execute((result)=>{
+      if(result.code == 400 || result.code == 403){return;}
+
+      let host_uid = {};
+      host_uid[firebase.auth().currentUser.uid] = new Date().getTime();
+
+      firebase.database().ref('raid-attendees/'+result.id).update(host_uid).then(()=>{
+        firebase.database().ref('raid-events/'+result.id).update({
+          startTime: start_date.getTime(),
+          creator: result.creator.email,
+          title: event_title,
+          description: "",
+        });
+      });
+
+    });
+
   });
 
 });
@@ -265,15 +322,28 @@ function AddUserToEvent(event_id,attendee_uid,user_profile)
 
 function StartApplication()
 {
-  $("#accordion").empty();
   let auth_ref = firebase.auth().currentUser;
   let db_ref = firebase.database();
 
   //get user profile
-  db_ref.ref('users/'+auth_ref.uid).once('value').then((result)=>{
-    let profile = result.val();
-    $("#user-image, #settings-image").attr("src",profile.image);
-    $.map($("#user-name, #settings-name"),(v)=>{$(v).text(profile.name);});
+  db_ref.ref('users').once('value').then((result)=>{
+
+    if(result.hasChild(auth_ref.uid))
+    {
+      let profile = result.child(auth_ref.uid).val();
+      $("#user-image, #settings-image").attr("src",profile.image);
+      $.map($("#user-name, #settings-name"),(v)=>{$(v).text(profile.name);});
+    }
+    else {
+      db_ref.ref('users/'+auth_ref.uid).set({
+        email: auth_ref.email,
+        name: auth_ref.displayName,
+        image: auth_ref.photoURL,
+      }).then((result)=>{
+        $("#user-image, #settings-image").attr("src",auth_ref.photoURL);
+        $.map($("#user-name, #settings-name"),(v)=>{$(v).text(auth_ref.displayName);});
+      });
+    }
   });
 
   //Get calendar events
@@ -392,21 +462,21 @@ function StartApplication()
                               let u_key = snapshot.key;
                               let u = snapshot.val();
 
-                               //Name change
-                               $.map($("."+u_key),(element)=>{$(element).text(u.name);});
+                              //Name change
+                              $.map($("."+u_key),(element)=>{$(element).text(u.name);});
 
-                               $("img."+u_key).attr('src',u.image);
+                              $("img."+u_key).attr('src',u.image);
 
-                               if(snapshot.key === firebase.auth().currentUser.uid)
-                               {
-                                 $("#user-name").text(u.name);
-                                 $("#settings-name").text(u.name);
-                                 $("#user-image").attr("src",u.image);
-                                 $("#settings-image").attr("src",u.image);
-                               }
+                              if(snapshot.key === firebase.auth().currentUser.uid)
+                              {
+                                $("#user-name").text(u.name);
+                                $("#settings-name").text(u.name);
+                                $("#user-image").attr("src",u.image);
+                                $("#settings-image").attr("src",u.image);
+                              }
                              });
 
-                             //When a raid event details change
+                              //When a raid event details change
                               db_ref.ref('raid-events').on('child_changed',(snapshot)=>{
                                 let s_key = snapshot.key;
                                 let s = snapshot.val();
@@ -421,6 +491,52 @@ function StartApplication()
                               //When an event gets deleted
                               db_ref.ref('raid-events').on('child_removed',(snapshot)=>{
                                 $("#"+snapshot.key).remove();
+                              });
+
+                              //When an event gets added
+                              db_ref.ref('raid-events').on('child_added',(snapshot)=>{
+
+                                let e_key = snapshot.key;
+                                let e = snapshot.val();
+
+                                if($("#"+e_key).length > 0){ return; }
+
+                                db_ref.ref('users').orderByChild('email')
+                                                   .equalTo(e.creator)
+                                                   .once('value')
+                                                   .then((host)=>{
+                                                       $.each(host.val(),(uid,user_data)=>{
+                                                        $("#accordion").append(BuildCalendarEntry(snapshot, uid, user_data));
+
+                                                        if(uid === auth_ref.uid){
+                                                          $("#"+e_key+" .rsvp-status").addClass("btn-warning").removeClass("btn-success").text("Edit");
+                                                        }
+
+                                                        $("#"+e_key+" input:eq(0)").attr('value',moment(e.startTime).format('YYYY-MM-DDTHH:mm'));
+
+                                                        $("#"+e_key+" input:eq(1)").val(e.title);
+
+                                                       });
+                                                   });
+                                db_ref.ref('raid-attendees/'+e_key).once('value')
+                                                                   .then((users)=>{
+                                                                      users.forEach((user)=>{
+                                                                        let u_key = user.key;
+                                                                        db_ref.ref('users/'+u_key).once('value')
+                                                                                                  .then((profile)=>{
+                                                                                                     let p_key = profile.key;
+                                                                                                     let p = profile.val();
+                                                                                                     $("#"+e_key+" .list-group-item").append(AddUserToEvent(e_key,p_key,p));
+
+                                                                                                     let host_uid =  $("#"+e_key + " .raid-host").attr('class').split(' ')[1];
+
+                                                                                                     if(auth_ref.uid === u_key && u_key != host_uid)
+                                                                                                     {
+                                                                                                       $("#"+e_key + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
+                                                                                                     }
+                                                                                                  });
+                                                                      });
+                                                                    });
                               });
                            });
 }
