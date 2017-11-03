@@ -216,12 +216,9 @@ $(document).ready(function(){
 
 });
 
-function BuildCalendarEntry(e,uid,user_data)
-{
+function BuildCalendarEntry(event_id,time,title,host,host_uid){
 
-  let cal_event = e.val();
-
-  return '<div id="'+e.key+'" class="card">' +
+  return '<div id="'+event_id+'" class="card">' +
             '<div class="card-header" role="tab">' +
               '<div class="collapsed" data-toggle="" data-parent="#accordion" aria-expanded="false">' +
                 '<div class="container-fluid">' +
@@ -229,34 +226,34 @@ function BuildCalendarEntry(e,uid,user_data)
                    '<div class="col-3">' +
                      '<div class="row">' +
                        '<div class="col-xs-12">' +
-                          '<p class="week-name">'+moment(cal_event.startTime).format('dddd')+'</p>' +
+                          '<p class="week-name">'+moment(time).format('dddd')+'</p>' +
                        '</div>' +
                      '</div>' +
                      '<div class="row">' +
                        '<div class="col-xs-2">' +
-                          '<p class="month-name">'+moment(cal_event.startTime).format("MMM")+'</p>' +
+                          '<p class="month-name">'+moment(time).format("MMM")+'</p>' +
                        '</div>' +
                         '<div class="col-xs-8"></div>' +
                        '<div class="col-xs-2">' +
-                          '<p class="day-month">'+moment(cal_event.startTime).format("Do")+'</p>' +
+                          '<p class="day-month">'+moment(time).format("Do")+'</p>' +
                        '</div>' +
                      '</div>' +
                    '</div>' +
                    '<div class="col-6">' +
                      '<div class="row">' +
                        '<div class="col-xs-12">' +
-                          '<p class="raid-title">'+cal_event.title+'</p>' +
+                          '<p class="raid-title">'+title+'</p>' +
                        '</div>' +
                      '</div>' +
                      '<div class="row">' +
                        '<div class="col-xs-5">' +
-                          '<p class="raid-time">'+ moment(cal_event.startTime).format('LT') +'</p>' +
+                          '<p class="raid-time">'+ moment(time).format('LT') +'</p>' +
                        '</div>' +
                         '<div class="col-xs-2">' +
                           '<p style="margin-right:0px;">by</p>' +
                        '</div>' +
                        '<div class="col-xs-5">' +
-                          '<p class="raid-host '+uid+'">'+ user_data.name +'</p>' +
+                          '<p class="raid-host '+host_uid+'">'+ host +'</p>' +
                        '</div>' +
                      '</div>' +
                    '</div>' +
@@ -314,20 +311,74 @@ function BuildCalendarEntry(e,uid,user_data)
           '</div>';
 }
 
-function AddUserToEvent(event_id,attendee_uid,user_profile)
-{
+function AddUserToEvent(attendee_uid,image,name){
   return '<div class="col-6 container-fluid">' +
             '<div class="row">' + //justify-content-center
-              '<img class="'+attendee_uid+'" src="'+user_profile.image+'">' +
-              '<p class="'+attendee_uid+'">'+user_profile.name+'</p>' +
+              '<img class="'+attendee_uid+'" src="'+image+'">' +
+              '<p class="'+attendee_uid+'">'+name+'</p>' +
             '</div>' +
           '</div>';
+}
+
+function getAttendeeData(key){
+  return new Promise(function(resolve,reject){
+    firebase.database().ref('users/'+key).once('value').then(res=>{
+      let user =
+      {
+        user_id: key,
+        name: res.val().name,
+        image: res.val().image,
+      };
+      resolve(user);
+    }).catch(err=>{
+      reject(err);
+    });
+  });
+}
+
+function getAttendees(event_id){
+  return new Promise(function(resolve,reject){
+
+    firebase.database().ref('raid-attendees/'+event_id)
+                       .once('value')
+                       .then(a_uid=>{
+                         let promise = [];
+                         a_uid.forEach(attendee=>{
+                           promise.push(getAttendeeData(attendee.key));
+                         });
+
+                         Promise.all(promise).then(attendees=>{
+                           resolve(attendees);
+                         }).catch(err=>{
+                           reject(err);
+                         });
+                       }).catch(error=>{
+                         reject(error);
+                       });
+  });
+}
+
+function getHost(email){
+  return new Promise(function(resolve,reject){
+    firebase.database().ref('users')
+                       .orderByChild('email')
+                       .equalTo(email)
+                       .once('value')
+                       .then(host=>{
+                         resolve(host);
+                       }).catch(error=>{
+                         reject(error);
+                       });
+  });
 }
 
 function StartApplication()
 {
   let auth_ref = firebase.auth().currentUser;
   let db_ref = firebase.database();
+
+  $("#login-screen").toggleClass("hidden",true);
+  $("#main-screen").toggleClass("hidden",false);
 
   //get user profile
   db_ref.ref('users').once('value').then((result)=>{
@@ -339,7 +390,7 @@ function StartApplication()
       $.map($("#user-name, #settings-name"),(v)=>{$(v).text(profile.name);});
     }
     else {
-      db_ref.ref('users/'+auth_ref.uid).set({
+      db_ref.ref('users/'+auth_ref.uid).update({
         email: auth_ref.email,
         name: auth_ref.displayName,
         image: auth_ref.photoURL,
@@ -350,197 +401,121 @@ function StartApplication()
     }
   });
 
-  //Get calendar events
-  db_ref.ref('raid-events').orderByChild('startTime')
-                           .startAt(new Date().getTime())
-                           .once('value')
-                           .then((calendar_events)=>{
-                             let calendar_promise = [];
-                             let $calendar_root = $("#accordion");
-                             calendar_events.forEach((calendar_event)=>{
+  //When an event gets added/initial add
+  db_ref.ref('raid-events').on('child_added',(snapshot)=>{
+    if($("#"+snapshot.key).length > 0){return;}
+    let e = snapshot.val();
 
-                                let e = calendar_event.val(); //Calendar details
-                                let e_key = calendar_event.key; //calendar event id
+    getHost(e.creator).then(host=>{
+      let host_name = $.map(host.val(),val=>{return val.name});
+      $("#accordion").append(BuildCalendarEntry(snapshot.key,e.startTime,e.title,host_name,Object.keys(host.val())[0]));
 
-                                let c_event = db_ref.ref('raid-attendees/'+e_key)
-                                                    .once('value').then((attendee_uid)=>{
-                                                       let a_key = attendee_uid.key; //Attendees key
+      $("#"+snapshot.key+" input:eq(0)").attr('value',moment(e.startTime).format('YYYY-MM-DDTHH:mm'));
+      $("#"+snapshot.key+" input:eq(1)").val(e.title);
 
-                                                       db_ref.ref('users').orderByChild('email')
-                                                                          .equalTo(e.creator)
-                                                                          .once('value')
-                                                                          .then((host)=>{
-                                                                              $.each(host.val(),(uid,user_data)=>{
-                                                                               $calendar_root.append(BuildCalendarEntry(calendar_event, uid, user_data));
+      return getAttendees(snapshot.key);
+    }).then(attendees=>{
+      $.map(attendees,a=>{
+        $("#"+snapshot.key+" .list-group-item").append(AddUserToEvent(a.user_id,a.image,a.name));
 
-                                                                               if(uid === auth_ref.uid){
-                                                                                 $("#"+e_key+" .rsvp-status").addClass("btn-warning").removeClass("btn-success").text("Edit");
-                                                                               }
+        if(a.user_id == auth_ref.uid)
+        {
+          var host_id = $("#"+snapshot.key+" .raid-host").attr('class').split(' ')[1];
+          if(host_id == auth_ref.uid)
+          {
+            //Host, edit settings
+            $("#"+snapshot.key+" .rsvp-status").addClass("btn-warning").removeClass("btn-success").text("Edit");
+          }
+          else{
+            //Attendee, set to decline
+            $("#"+ snapshot.key + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
+          }
+        }
+      });
+    }).catch(err=>{
+      console.log(err);
+    }).catch(error=>{
+      console.log(error)
+    });
+  });
 
-                                                                               let e = calendar_event.val();
+  //When a player rsvp or cancels a raid
+  db_ref.ref('raid-attendees').on('child_changed',(snapshot)=>{
 
-                                                                               $("#"+e_key+" input:eq(0)").attr('value',moment(e.startTime).format('YYYY-MM-DDTHH:mm'));
+     let event_id = snapshot.key;
+     let attendee_uids = $.map($("#"+event_id+" ul p"),(element)=>{
+       return $(element).attr('class').split(' ')[0].toString();
+     });
 
-                                                                               $("#"+e_key+" input:eq(1)").val(e.title);
+     let snapshot_uids = [];
+     $.each(snapshot.val(),(client_uid,time)=>{
+       snapshot_uids.push(client_uid.toString());
+     });
 
-                                                                              });
-                                                                          });
+     //A filter B or B filter A
+     let delta_uids = attendee_uids.filter((entry)=>{
+       return $.inArray(entry,snapshot_uids) < 0;
+     }).concat(snapshot_uids.filter((entry)=>{
+       return $.inArray(entry,attendee_uids) < 0;
+     }));
 
-                                                       db_ref.ref('raid-attendees/'+e_key).once('value')
-                                                                                          .then((users)=>{
-                                                                                            users.forEach((user)=>{
-                                                                                              let u_key = user.key;
-                                                                                              db_ref.ref('users/'+u_key).once('value')
-                                                                                                                        .then((profile)=>{
-                                                                                                                           let p_key = profile.key;
-                                                                                                                           let p = profile.val();
-                                                                                                                           $("#"+e_key+" .list-group-item").append(AddUserToEvent(e_key,p_key,p));
+     let delta_uid = delta_uids[0];
 
-                                                                                                                           let host_uid =  $("#"+e_key + " .raid-host").attr('class').split(' ')[1];
+     if($.inArray(delta_uid,attendee_uids) >= 0)
+     {
+       //Exists, delete
+       $($("#"+event_id+" ul ."+delta_uid).parents()[1]).remove();
+       if(auth_ref.uid === delta_uid)
+       {
+         $("#"+event_id + " .rsvp-status").addClass("btn-success").removeClass("btn-danger").text("Attend");
+       }
+     }
+     else {
+       //Nonexist, create
+       getAttendeeData(delta_uid).then(result=>{
+                                  $("#"+event_id+" .list-group-item").append(AddUserToEvent(result.user_id,result.image,result.name));
+                                  //Attendee, set to decline
+                                  $("#"+ event_id + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
+                               }).catch(error=>{
+                                   console.log(error);
+                               });
+     }
+   });
 
-                                                                                                                           if(auth_ref.uid === u_key && u_key != host_uid)
-                                                                                                                           {
-                                                                                                                             $("#"+e_key + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
-                                                                                                                           }
-                                                                                                                        });
-                                                                                            });
-                                                                                          });
-                                                    });
-                                calendar_promise.push(c_event);
-                             });
-                             return Promise.all(calendar_promise);
-                           }).then(()=>{
+   //When a raid event details change
+  db_ref.ref('raid-events').on('child_changed',(snapshot)=>{
+    let s_key = snapshot.key;
+    let s = snapshot.val();
 
-                              $("#login-screen").toggleClass("hidden",true);
-                              $("#main-screen").toggleClass("hidden",false);
+    $("#"+s_key+" .raid-title").text(s.title);
+    $("#"+s_key+" .raid-time").text(moment(s.startTime).format('LT'));
+    $("#"+s_key+" .week-name").text(moment(s.startTime).format('dddd'));
+    $("#"+s_key+" .month-name").text(moment(s.startTime).format("MMM"));
+    $("#"+s_key+" .day-month").text(moment(s.startTime).format("Do"));
+  });
 
-                              //When a player rsvp or cancels a raid
-                              db_ref.ref('raid-attendees').on('child_changed',(snapshot)=>{
+  //When an event gets deleted
+  db_ref.ref('raid-events').on('child_removed',(snapshot)=>{
+    $("#"+snapshot.key).remove();
+  });
 
-                                let event_id = snapshot.key;
-                                let attendee_uids = $.map($("#"+event_id+" ul p"),(element)=>{
-                                  return $(element).attr('class').split(' ')[0].toString();
-                                });
+  //When a player changes their profile
+  db_ref.ref('users').on('child_changed',(snapshot)=>{
 
-                                let snapshot_uids = [];
-                                $.each(snapshot.val(),(client_uid,time)=>{
-                                  snapshot_uids.push(client_uid.toString());
-                                });
+    let u_key = snapshot.key;
+    let u = snapshot.val();
 
-                                //A filter B or B filter A
-                                let delta_uids = attendee_uids.filter((entry)=>{
-                                  return $.inArray(entry,snapshot_uids) < 0;
-                                }).concat(snapshot_uids.filter((entry)=>{
-                                  return $.inArray(entry,attendee_uids) < 0;
-                                }));
+    //Name change
+    $.map($("."+u_key),(element)=>{$(element).text(u.name);});
 
-                                let delta_uid = delta_uids[0];
+    $("img."+u_key).attr('src',u.image);
 
-                                if($.inArray(delta_uid,attendee_uids) >= 0)
-                                {
-                                  //Exists, delete
-                                  $($("#"+event_id+" ul ."+delta_uid).parents()[1]).remove();
-                                  if(auth_ref.uid === delta_uid)
-                                  {
-                                    $("#"+event_id + " .rsvp-status").addClass("btn-success").removeClass("btn-danger").text("Attend");
-                                  }
-                                }
-                                else {
-                                  //Nonexist, create
-                                  db_ref.ref('users/'+delta_uid).once('value')
-                                                                 .then((profile)=>{
-                                                                    let p_key = profile.key;
-                                                                    let p = profile.val();
-                                                                    $("#"+event_id+" .list-group-item").append(AddUserToEvent(event_id,p_key,p));
-                                                                    if(auth_ref.uid === delta_uid)
-                                                                    {
-                                                                      $("#"+event_id + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
-                                                                    }
-                                                                 });
-                                }
-                              });
-
-                              //When a player changes their profile
-                              db_ref.ref('users').on('child_changed',(snapshot)=>{
-
-                              let u_key = snapshot.key;
-                              let u = snapshot.val();
-
-                              //Name change
-                              $.map($("."+u_key),(element)=>{$(element).text(u.name);});
-
-                              $("img."+u_key).attr('src',u.image);
-
-                              if(snapshot.key === firebase.auth().currentUser.uid)
-                              {
-                                $("#user-name").text(u.name);
-                                $("#settings-name").text(u.name);
-                                $("#user-image").attr("src",u.image);
-                                $("#settings-image").attr("src",u.image);
-                              }
-                             });
-
-                              //When a raid event details change
-                              db_ref.ref('raid-events').on('child_changed',(snapshot)=>{
-                                let s_key = snapshot.key;
-                                let s = snapshot.val();
-
-                                $("#"+s_key+" .raid-title").text(s.title);
-                                $("#"+s_key+" .raid-time").text(moment(s.startTime).format('LT'));
-                                $("#"+s_key+" .week-name").text(moment(s.startTime).format('dddd'));
-                                $("#"+s_key+" .month-name").text(moment(s.startTime).format("MMM"));
-                                $("#"+s_key+" .day-month").text(moment(s.startTime).format("Do"));
-                              });
-
-                              //When an event gets deleted
-                              db_ref.ref('raid-events').on('child_removed',(snapshot)=>{
-                                $("#"+snapshot.key).remove();
-                              });
-
-                              //When an event gets added
-                              db_ref.ref('raid-events').on('child_added',(snapshot)=>{
-
-                                let e_key = snapshot.key;
-                                let e = snapshot.val();
-
-                                if($("#"+e_key).length > 0){ return; }
-
-                                db_ref.ref('users').orderByChild('email')
-                                                   .equalTo(e.creator)
-                                                   .once('value')
-                                                   .then((host)=>{
-                                                       $.each(host.val(),(uid,user_data)=>{
-                                                        $("#accordion").append(BuildCalendarEntry(snapshot, uid, user_data));
-
-                                                        if(uid === auth_ref.uid){
-                                                          $("#"+e_key+" .rsvp-status").addClass("btn-warning").removeClass("btn-success").text("Edit");
-                                                        }
-
-                                                        $("#"+e_key+" input:eq(0)").attr('value',moment(e.startTime).format('YYYY-MM-DDTHH:mm'));
-
-                                                        $("#"+e_key+" input:eq(1)").val(e.title);
-
-                                                       });
-                                                   });
-                                db_ref.ref('raid-attendees/'+e_key).once('value')
-                                                                   .then((users)=>{
-                                                                      users.forEach((user)=>{
-                                                                        let u_key = user.key;
-                                                                        db_ref.ref('users/'+u_key).once('value')
-                                                                                                  .then((profile)=>{
-                                                                                                     let p_key = profile.key;
-                                                                                                     let p = profile.val();
-                                                                                                     $("#"+e_key+" .list-group-item").append(AddUserToEvent(e_key,p_key,p));
-
-                                                                                                     let host_uid =  $("#"+e_key + " .raid-host").attr('class').split(' ')[1];
-
-                                                                                                     if(auth_ref.uid === u_key && u_key != host_uid)
-                                                                                                     {
-                                                                                                       $("#"+e_key + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
-                                                                                                     }
-                                                                                                  });
-                                                                      });
-                                                                    });
-                              });
-                           });
+    if(snapshot.key === firebase.auth().currentUser.uid)
+    {
+      $("#user-name").text(u.name);
+      $("#settings-name").text(u.name);
+      $("#user-image").attr("src",u.image);
+      $("#settings-image").attr("src",u.image);
+    }
+  });
 }
