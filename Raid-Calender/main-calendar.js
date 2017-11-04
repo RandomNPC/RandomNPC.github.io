@@ -477,14 +477,17 @@ function StartApplication()
        getAttendeeData(delta_uid).then(result=>{
                                   $("#"+event_id+" .list-group-item").append(AddUserToEvent(result.user_id,result.image,result.name));
                                   //Attendee, set to decline
-                                  $("#"+ event_id + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
+                                  if(result.user_id === auth_ref.uid)
+                                  {
+                                    $("#"+ event_id + " .rsvp-status").addClass("btn-danger").removeClass("btn-success").text("Cancel");
+                                  }
                                }).catch(error=>{
                                    console.log(error);
                                });
      }
    });
 
-   //When a raid event details change
+  //When a raid event details change
   db_ref.ref('raid-events').on('child_changed',(snapshot)=>{
     let s_key = snapshot.key;
     let s = snapshot.val();
@@ -512,7 +515,7 @@ function StartApplication()
 
     $("img."+u_key).attr('src',u.image);
 
-    if(snapshot.key === firebase.auth().currentUser.uid)
+    if(snapshot.key === auth_ref.uid)
     {
       $("#user-name").text(u.name);
       $("#settings-name").text(u.name);
