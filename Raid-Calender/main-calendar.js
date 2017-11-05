@@ -38,7 +38,6 @@ $(document).ready(function(){
     var user_ref = firebase.database().ref('users').child(user.uid);
 
     user_ref.update({
-      email: user.email,
       name: response,
       image: $("#user-image").attr("src"),
     });
@@ -52,7 +51,6 @@ $(document).ready(function(){
     var user_ref = firebase.database().ref('users').child(user.uid);
 
     user_ref.update({
-      email: user.email,
       image: response,
       name: $("#user-name").text(),
     });
@@ -148,7 +146,7 @@ $(document).ready(function(){
       firebase.database().ref('raid-events/'+event_id).update(
         {
           startTime: new Date(start_date).getTime(),
-          creator: firebase.auth().currentUser.email,
+          creator: firebase.auth().currentUser.uid,
           title: title,
           description: "",
         }
@@ -203,7 +201,7 @@ $(document).ready(function(){
       firebase.database().ref('raid-attendees/'+result.id).update(host_uid).then(()=>{
         firebase.database().ref('raid-events/'+result.id).update({
           startTime: start_date.getTime(),
-          creator: result.creator.email,
+          creator: firebase.auth().currentUser.uid,
           title: event_title,
           description: "",
         });
@@ -360,11 +358,9 @@ function getAttendees(event_id){
   });
 }
 
-function getHost(email){
+function getHost(uid){
   return new Promise(function(resolve,reject){
-    firebase.database().ref('users')
-                       .orderByChild('email')
-                       .equalTo(email)
+    firebase.database().ref('users/'+uid)
                        .once('value')
                        .then(host=>{
                          resolve(host);
@@ -393,7 +389,6 @@ function StartApplication()
     }
     else {
       db_ref.ref('users/'+auth_ref.uid).update({
-        email: auth_ref.email,
         name: auth_ref.displayName,
         image: auth_ref.photoURL,
       }).then((result)=>{
@@ -409,8 +404,8 @@ function StartApplication()
     let e = snapshot.val();
 
     getHost(e.creator).then(host=>{
-      let host_name = $.map(host.val(),val=>{return val.name});
-      $("#accordion").append(BuildCalendarEntry(snapshot.key,e.startTime,e.title,host_name,Object.keys(host.val())[0]));
+      let host_name = host.val().name;
+      $("#accordion").append(BuildCalendarEntry(snapshot.key,e.startTime,e.title,host_name,host.key));
 
       $("#"+snapshot.key+" input:eq(0)").attr('value',moment(e.startTime).format('YYYY-MM-DDTHH:mm'));
       $("#"+snapshot.key+" input:eq(1)").val(e.title);
