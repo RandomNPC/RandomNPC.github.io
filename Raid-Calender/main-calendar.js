@@ -44,8 +44,16 @@ $(document).ready(function(){
   });
 
   //Settings: Change Image
-  $("#main-settings button:eq(1)").click(function(){
-    return;
+  $("#main-settings input:eq(1)").on("change", function(e){
+    let file = e.target.files[0];
+
+    if(file.name.search(/(jpg|png|jpeg)/g) < 0){
+      //invalid file dont work with it
+      return;
+    }
+
+    let storage_ref = firebase.storage().ref(firebase.auth().currentUser.uid+"/profile"+file.name.match(/\..+/g)[0]);
+    let task = storage_ref.put(file);
   });
 
   //Clicking on button to join/decline raid or edit event (if host)
@@ -379,7 +387,6 @@ function StartApplication()
       $("#user-image, #settings-image").attr("src",profile.image);
       $.map($("#user-name, #settings-name"),(v)=>{$(v).text(profile.name);});
       $("#main-settings input:eq(0)").val(profile.name);
-      $("#main-settings input:eq(1)").val(profile.image);
     }
     else {
       db_ref.ref('users/'+auth_ref.uid).update({
@@ -389,7 +396,6 @@ function StartApplication()
         $("#user-image, #settings-image").attr("src",auth_ref.photoURL);
         $.map($("#user-name, #settings-name"),(v)=>{$(v).text(auth_ref.displayName);});
         $("#main-settings input:eq(0)").val(auth_ref.displayName);
-        $("#main-settings input:eq(1)").val(auth_ref.photoURL);
       });
     }
   });

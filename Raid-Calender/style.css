@@ -32,7 +32,7 @@ html, body, .login-background{
   margin-right: 3px;
 }
 
-.card img{
+img{
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -40,4 +40,8 @@ html, body, .login-background{
 
 ul{
   list-style-type: none;
+}
+
+input[type="file"] {
+    display: none;
 }

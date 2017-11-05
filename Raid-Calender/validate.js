@@ -1,13 +1,13 @@
 $(document).ready(function(){
 
   var CLIENT_ID = '79847669821-7s19sehothfn3v4eeloalhng91pi9fmj.apps.googleusercontent.com';
-  
+
   firebase.initializeApp({
     apiKey: "AIzaSyDmFH4ggKydjXMGmvtRslmLFCXpAL4PnhE",
     authDomain: "raid-calender.firebaseapp.com",
     databaseURL: "https://raid-calender.firebaseio.com",
     projectId: "raid-calender",
-    storageBucket: "",
+    storageBucket: "raid-calender.appspot.com",
     messagingSenderId: "549127986559"
   });
 
