@@ -32,7 +32,7 @@ $(document).ready(function(){
 
   //Settings: Change screenname
   $("#main-settings button:eq(0)").click(function(){
-    var response = prompt("What will be your new screen name?");
+    var response = $("#main-settings input:eq(0)").val();
 
     var user = firebase.auth().currentUser;
     var user_ref = firebase.database().ref('users').child(user.uid);
@@ -45,7 +45,7 @@ $(document).ready(function(){
 
   //Settings: Change Image
   $("#main-settings button:eq(1)").click(function(){
-    var response = prompt("Provide me a link to your image");
+    var response = $("#main-settings input:eq(1)").val();
 
     var user = firebase.auth().currentUser;
     var user_ref = firebase.database().ref('users').child(user.uid);
@@ -386,6 +386,8 @@ function StartApplication()
       let profile = result.child(auth_ref.uid).val();
       $("#user-image, #settings-image").attr("src",profile.image);
       $.map($("#user-name, #settings-name"),(v)=>{$(v).text(profile.name);});
+      $("#main-settings input:eq(0)").val(profile.name);
+      $("#main-settings input:eq(1)").val(profile.image);
     }
     else {
       db_ref.ref('users/'+auth_ref.uid).update({
@@ -394,6 +396,8 @@ function StartApplication()
       }).then((result)=>{
         $("#user-image, #settings-image").attr("src",auth_ref.photoURL);
         $.map($("#user-name, #settings-name"),(v)=>{$(v).text(auth_ref.displayName);});
+        $("#main-settings input:eq(0)").val(auth_ref.displayName);
+        $("#main-settings input:eq(1)").val(auth_ref.photoURL);
       });
     }
   });
