@@ -32,7 +32,7 @@ $(document).ready(function(){
 
   //Settings: Change screenname
   $("#main-settings button:eq(0)").click(function(){
-    var response = $("#main-settings input:eq(0)").val();
+    var response = $("#main-settings input:eq(0)").val().replace(/\W|script/g,"");
 
     var user = firebase.auth().currentUser;
     var user_ref = firebase.database().ref('users').child(user.uid);
@@ -45,15 +45,7 @@ $(document).ready(function(){
 
   //Settings: Change Image
   $("#main-settings button:eq(1)").click(function(){
-    var response = $("#main-settings input:eq(1)").val();
-
-    var user = firebase.auth().currentUser;
-    var user_ref = firebase.database().ref('users').child(user.uid);
-
-    user_ref.update({
-      image: response,
-      name: $("#user-name").text(),
-    });
+    return;
   });
 
   //Clicking on button to join/decline raid or edit event (if host)
