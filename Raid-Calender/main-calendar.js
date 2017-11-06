@@ -312,7 +312,7 @@ function BuildCalendarEntry(event_id,time,title,host,host_uid){
 }
 
 function AddUserToEvent(attendee_uid,image,name){
-  return '<div class="col-6 container-fluid">' +
+  return '<div class="col-12 container-fluid">' +
             '<div class="row">' + //justify-content-center
               '<img class="'+attendee_uid+'" src="'+image+'">' +
               '<p class="'+attendee_uid+'">'+name+'</p>' +
