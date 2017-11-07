@@ -1,5 +1,6 @@
 $(document).ready(function(){
-  $("#login-screen a:eq(0)").click(function(){});
-  $("#login-screen a:eq(1)").click(function(){});
-  $("#login-screen a:eq(2)").click(function(){});
+  $('.landing-page .navbar-nav>li>a').on('click', function(){
+    $('.navbar-collapse').collapse('hide');
+    //$(document).scrollTop( $($(this).attr("id")).offset().top );
+  });
 });
