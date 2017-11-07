@@ -1,0 +1,78 @@
+html,
+body,
+#home-page{
+  height: 100%;
+}
+
+body{
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: #6c6f73;
+}
+
+#home-page{
+  background: url('./front-page-images/outside.jpg') center center no-repeat;
+  background-size: cover;
+  color: white;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#home-caption{
+  font-size: 1.4rem;
+  font-weight: 200;
+  max-width: 60rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#about img{
+  max-width: 500px;
+  max-height: 500px;
+}
+
+img{
+  max-width: 400px;
+  max-height: 400px;
+  text-align: center;
+  padding: 1em;
+}
+
+.feature-content{
+  padding: 8rem 0;
+  overflow: hidden;
+}
+
+.feature-dark{
+  background: #262f36;
+  color: white;
+}
+
+.card{
+  width: 20rem;
+  height: 400px;
+  text-align: center;
+  padding: 10px;
+}
+
+#projects a{
+  text-decoration: none;
+  color: inherit;
+}
+
+#main-footer h6{
+  color: #718fA9;
+}
+
+#main-footer a{
+  color: #6C5D73;
+}
+
+#main-footer{
+  background: #262f36;
+  color: white;
+  padding: 6rem 0;
+  font-size: 0.8rem;
+}
