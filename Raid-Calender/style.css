@@ -1,11 +1,3 @@
-.hidden{
-  display: none;
-}
-
-#my-signin2 > div{
-  margin: 0 auto;
-}
-
 /*For players attending to the relavant event*/
 .card .row:nth-child(1) p{
   margin-top: 0;
@@ -26,4 +18,30 @@ ul{
 
 input[type="file"] {
     display: none;
+}
+
+#accordion > div{
+  margin: 20px;
+}
+
+.font{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8rem;
+  letter-spacing: 0.1rem;
+  position: relative;
+  top: 0.2rem;
+  left: 0.3rem;
+}
+
+.font-date{
+  font-family: 'Roboto Slab', serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1rem;
+}
+
+.font-title{
+  font-family: 'Permanent Marker', cursive;  
 }

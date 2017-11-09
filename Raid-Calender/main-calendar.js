@@ -226,34 +226,42 @@ function BuildCalendarEntry(event_id,time,title,host,host_uid){
                    '<div class="col-3">' +
                      '<div class="row">' +
                        '<div class="col-xs-12">' +
-                          '<p class="week-name">'+moment(time).format('dddd')+'</p>' +
+                          '<p class="week-name font-date">'+moment(time).format('dddd')+'</p>' +
                        '</div>' +
                      '</div>' +
                      '<div class="row">' +
                        '<div class="col-xs-2">' +
-                          '<p class="month-name">'+moment(time).format("MMM")+'</p>' +
+                          '<p class="month-name font-date">'+moment(time).format("MMM")+'</p>' +
                        '</div>' +
                         '<div class="col-xs-8"></div>' +
                        '<div class="col-xs-2">' +
-                          '<p class="day-month">'+moment(time).format("Do")+'</p>' +
+                          '<p class="day-month font-date">'+moment(time).format("Do")+'</p>' +
                        '</div>' +
                      '</div>' +
+                     '<div class="row">'+
+                     '<p class="raid-time font-date">'+ moment(time).format('LT') +'</p>'+
+                     '</div>'+
                    '</div>' +
-                   '<div class="col-6">' +
+                   '<div class="col-5 offset-1">' +
                      '<div class="row">' +
                        '<div class="col-xs-12">' +
-                          '<p class="raid-title">'+title+'</p>' +
+                          '<p class="raid-title font-title">'+title+'</p>' +
                        '</div>' +
                      '</div>' +
                      '<div class="row">' +
-                       '<div class="col-xs-5">' +
-                          '<p class="raid-time">'+ moment(time).format('LT') +'</p>' +
-                       '</div>' +
-                        '<div class="col-xs-2">' +
-                          '<p style="margin-right:0px;">by</p>' +
+                       '<div class="col-xs-7">' +
+                          '<p class="font-date" style="margin-right:0px;">Host:</p>' +
                        '</div>' +
                        '<div class="col-xs-5">' +
-                          '<p class="raid-host '+host_uid+'">'+ host +'</p>' +
+                          '<p class="raid-host '+host_uid+' font-date">'+ host +'</p>' +
+                       '</div>' +
+                     '</div>' +
+                     '<div class="row">' +
+                       '<div class="col-xs-7">' +
+                          '<p style="margin-right:0px;"></p>' +
+                       '</div>' +
+                       '<div class="col-xs-5">' +
+                          '<p class="raid-description"></p>' +
                        '</div>' +
                      '</div>' +
                    '</div>' +
@@ -281,13 +289,13 @@ function BuildCalendarEntry(event_id,time,title,host,host_uid){
                  '<div class="row">' +
                  '<div class="col-12">' +
                      '<div class="row">' +
-                       '<label class="col-4 col-form-label">Date & Time</label>' +
+                       '<label class="col-4 col-form-label"><h6>Date & Time</h6></label>' +
                        '<div class="col-8 form-group form-group-sm">' +
                           '<input type="datetime-local" class="form-control" value="">' +
                        '</div>' +
                      '</div>' +
                      '<div class="row">' +
-                        '<label class="col-4 col-form-label">Raid Title</label>' +
+                        '<label class="col-4 col-form-label"><h6>Raid Title</h6></label>' +
                        '<div class="col-8 form-group form-group-sm">' +
                           '<input type="text" class="form-control">' +
                        '</div>' +
@@ -312,10 +320,10 @@ function BuildCalendarEntry(event_id,time,title,host,host_uid){
 }
 
 function AddUserToEvent(attendee_uid,image,name){
-  return '<div class="col-12 container-fluid">' +
+  return '<div class="col-12 container-fluid" style="margin: 0.1rem;">' +
             '<div class="row">' + //justify-content-center
               '<img class="'+attendee_uid+'" src="'+image+'">' +
-              '<p class="'+attendee_uid+'">'+name+'</p>' +
+              '<p class="'+attendee_uid+' font">'+name+'</p>' +
             '</div>' +
           '</div>';
 }
