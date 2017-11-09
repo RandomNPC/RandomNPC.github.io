@@ -218,7 +218,7 @@ $(document).ready(function(){
 
 function BuildCalendarEntry(event_id,time,title,host,host_uid){
 
-  return '<div id="'+event_id+'" class="card">' +
+  return '<div id="'+event_id+'" class="card '+time+'">' +
             '<div class="card-header" role="tab">' +
               '<div class="collapsed" data-toggle="" data-parent="#accordion" aria-expanded="false">' +
                 '<div class="container-fluid">' +
@@ -407,7 +407,33 @@ function StartApplication()
 
     getHost(e.creator).then(host=>{
       let host_name = host.val().name;
-      $("#accordion").append(BuildCalendarEntry(snapshot.key,e.startTime,e.title,host_name,host.key));
+
+      let $elements = $("#accordion > div");
+
+      if($elements.length > 0)
+      {
+        let insertIndex = -1;
+
+        $.each($("#accordion > div"),(index,value)=>{
+            let startTime = $(value).attr('class').split(' ')[1];
+            if(startTime <= e.startTime){
+              insertIndex = index;
+            }
+        });
+
+        if(insertIndex < 0)
+        {
+          $('#accordion > div:eq(0)').before(BuildCalendarEntry(snapshot.key,e.startTime,e.title,host_name,host.key));
+        }
+        else
+        {
+          $('#accordion > div:eq('+insertIndex+')').after(BuildCalendarEntry(snapshot.key,e.startTime,e.title,host_name,host.key));
+        }
+
+      }
+      else{
+        $("#accordion").append(BuildCalendarEntry(snapshot.key,e.startTime,e.title,host_name,host.key));
+      }
 
       $("#"+snapshot.key+" input:eq(0)").attr('value',moment(e.startTime).format('YYYY-MM-DDTHH:mm'));
       $("#"+snapshot.key+" input:eq(1)").val(e.title);
