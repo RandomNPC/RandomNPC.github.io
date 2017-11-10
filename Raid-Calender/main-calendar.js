@@ -385,6 +385,7 @@ function StartApplication()
 
   $("#login-screen").toggleClass("hidden",true);
   $("#main-screen").toggleClass("hidden",false);
+  $("body").css("background-color","#262f36");
 
   //get user profile
   db_ref.ref('users').once('value').then((result)=>{

@@ -42,6 +42,7 @@ $(document).ready(function(){
       $("#user-name").text("");
       $("#login-screen").toggleClass("hidden",false);
       $("#main-screen").toggleClass("hidden",true);
+      $("body").css("background-color","");
       firebase.auth()
               .signOut()
               .then(function(error){});
