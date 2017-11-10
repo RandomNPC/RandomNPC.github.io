@@ -6,7 +6,6 @@ html,
 body,
 .landing-page,
 #login-screen,
-#main-screen,
 #main-content{
   height: 100%;
 }
@@ -64,8 +63,9 @@ body{
   align-items: center;
 }
 
-#main-content, #main-screen{
-  background: #262f36;
+#main-content,#main-screen{
+  background: #262f36 center center no-repeat;
+  background-size: cover;
 }
 
 .landing-page #stage-caption{
