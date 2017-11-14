@@ -153,7 +153,7 @@ $(document).ready(function(){
             }
           ],
           useDefault: false
-        }
+        },
         summary: title,
       },
     }).execute((result)=>{
@@ -224,7 +224,7 @@ $(document).ready(function(){
             }
           ],
           useDefault: false
-        }
+        },
       },
     }).execute((result)=>{
       if(result.code == 400 || result.code == 403){return;}
