@@ -24,6 +24,55 @@ $(document).ready(function(){
     }
   });
 
+  $.ajax({
+      type: 'GET',
+      url: 'https://us-central1-raid-calender.cloudfunctions.net/getEvents',
+      contentType: 'text/plain',
+      xhrFields: {
+        withCredentials: false
+      },
+      success: function(data){
+        $.map(data,(value)=>{
+          $("#events").append('<a class="dropdown-item '+value.startTime+'" href="#">'+moment(value.startTime).format('dddd, MMMM DD hh:mm a')+'</a>');
+        });
+      }
+  });
+
+  $("#events").on("click",".dropdown-item",function(){
+    let target = $(this).attr('class').split(' ');
+    if(target.length > 1){
+      //Not Default
+      $.ajax({
+          type: 'GET',
+          url: 'https://us-central1-raid-calender.cloudfunctions.net/getEvents',
+          contentType: 'text/plain',
+          xhrFields: {
+            withCredentials: false
+          },
+          success: function(data){
+            $.map(data,(value)=>{
+              if(target[1] == value.startTime){
+                var db = firebase.database().ref(DATABASE+"/0");
+
+                db.update({
+                  "name": value.host,
+                });
+
+                $.each(value.attendees,(index,player)=>{
+                  firebase.database().ref(DATABASE+"/"+(index+1)).update({
+                    "name": player,
+                  });
+                });
+              }
+            });
+          }
+      });
+    }
+    else {
+      //Default
+      ResetDatabase();
+    }
+  });
 });
 
 function Update(data)
