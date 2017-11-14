@@ -137,6 +137,23 @@ $(document).ready(function(){
             dateTime: moment(start_date).add(1,"h").format("YYYY-MM-DDTHH:mm:ss"),//start,
             timeZone: timezone,
         },
+        reminders: {
+          overrides: [
+            {
+              method: "popup",
+              minutes: 60,
+            },
+            {
+              method: "popup",
+              minutes: 30,
+            },
+            {
+              method: "popup",
+              minutes: Math.min(40320,Math.floor((start_date - new Date().getTime())/60000)-1),
+            }
+          ],
+          useDefault: false
+        }
         summary: title,
       },
     }).execute((result)=>{
@@ -191,6 +208,23 @@ $(document).ready(function(){
             timeZone: timezone,
         },
         summary: event_title,
+        reminders: {
+          overrides: [
+            {
+              method: "popup",
+              minutes: 60,
+            },
+            {
+              method: "popup",
+              minutes: 30,
+            },
+            {
+              method: "popup",
+              minutes: Math.min(40320,Math.floor((start_date - new Date().getTime())/60000)-1),
+            }
+          ],
+          useDefault: false
+        }
       },
     }).execute((result)=>{
       if(result.code == 400 || result.code == 403){return;}
