@@ -27,7 +27,7 @@ $(document).ready(function(){
   $.ajax({
       type: 'GET',
       url: 'https://us-central1-raid-calender.cloudfunctions.net/getEvents',
-      contentType: 'text/plain',
+      contentType: 'application/json',
       xhrFields: {
         withCredentials: false
       },
@@ -45,7 +45,7 @@ $(document).ready(function(){
       $.ajax({
           type: 'GET',
           url: 'https://us-central1-raid-calender.cloudfunctions.net/getEvents',
-          contentType: 'text/plain',
+          contentType: 'application/json',
           xhrFields: {
             withCredentials: false
           },
