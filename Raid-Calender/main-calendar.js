@@ -1,5 +1,3 @@
-var CALENDAR_ID = 'kvt7ldoc62n0hkadqsnr5v44po@group.calendar.google.com';
-
 $(document).ready(function(){
 
   //Home Button
@@ -97,13 +95,7 @@ $(document).ready(function(){
     if(confirm("Remove this event?"))
     {
       //Removing event
-      gapi.client.calendar.events.delete({
-          calendarId: CALENDAR_ID,
-          eventId: event_id,
-      }).execute((result)=>{
-        firebase.database().ref('raid-events/'+event_id).remove();
-        firebase.database().ref('raid-attendees/'+event_id).remove();
-      });
+      firebase.database().ref('raid-events/'+event_id).remove();
     }
     else {
       let $root = $($(this).parents()[5]);
@@ -123,53 +115,17 @@ $(document).ready(function(){
     let $event_title = $($($(this).parents()[2]).find("input")[1]);
     let title = $event_title.val();
 
-    let timezone = moment.tz.guess();
+    firebase.database().ref('raid-events/'+event_id).update(
+      {
+        startTime: new Date(start_date).getTime(),
+        creator: firebase.auth().currentUser.uid,
+        title: title,
+        description: "",
+        updated: false,
+        timezone: moment.tz.guess(),
+      }
+    );
 
-    gapi.client.calendar.events.update({
-      calendarId: CALENDAR_ID,
-      eventId: event_id,
-      resource: {
-        start: {
-            dateTime: start_date,//end,
-            timeZone: timezone,
-        },
-        end: {
-            dateTime: moment(start_date).add(1,"h").format("YYYY-MM-DDTHH:mm:ss"),//start,
-            timeZone: timezone,
-        },
-        reminders: {
-          overrides: [
-            {
-              method: "popup",
-              minutes: 60,
-            },
-            {
-              method: "popup",
-              minutes: 30,
-            },
-            {
-              method: "popup",
-              minutes: Math.min(40320,Math.floor((start_date - new Date().getTime())/60000)-1),
-            }
-          ],
-          useDefault: false
-        },
-        summary: title,
-      },
-    }).execute((result)=>{
-
-      if(result.code == 400){ return; }
-
-      firebase.database().ref('raid-events/'+event_id).update(
-        {
-          startTime: new Date(start_date).getTime(),
-          creator: firebase.auth().currentUser.uid,
-          title: title,
-          description: "",
-        }
-      );
-
-    });
   });
 
   //Host: Cancel Raid Details
@@ -191,60 +147,18 @@ $(document).ready(function(){
     let start_date = $("#main-create-event input:eq(0)").val();
     let event_title = $("#main-create-event input:eq(1)").val();
 
-    start_date = new Date(start_date);
-    let event_date = moment(start_date).format("YYYY-MM-DDTHH:mm:ss");
-
-    let timezone = moment.tz.guess();
-
-    gapi.client.calendar.events.insert({
-      calendarId: CALENDAR_ID,
-      resource:{
-        start: {
-            dateTime: event_date,//end,
-            timeZone: timezone,
-        },
-        end: {
-            dateTime: moment(event_date).add(1,"h").format("YYYY-MM-DDTHH:mm:ss"),//start,
-            timeZone: timezone,
-        },
-        summary: event_title,
-        reminders: {
-          overrides: [
-            {
-              method: "popup",
-              minutes: 60,
-            },
-            {
-              method: "popup",
-              minutes: 30,
-            },
-            {
-              method: "popup",
-              minutes: Math.min(40320,Math.floor((start_date - new Date().getTime())/60000)-1),
-            }
-          ],
-          useDefault: false
-        },
-      },
-    }).execute((result)=>{
-      if(result.code == 400 || result.code == 403){return;}
-
-      let host_uid = {};
-      host_uid[firebase.auth().currentUser.uid] = new Date().getTime();
-
-      firebase.database().ref('raid-attendees/'+result.id).update(host_uid).then(()=>{
-        firebase.database().ref('raid-events/'+result.id).update({
-          startTime: start_date.getTime(),
-          creator: firebase.auth().currentUser.uid,
-          title: event_title,
-          description: "",
-        });
-      });
-
-      $("#main-content").toggleClass("hidden",false);
-      $("#main-settings").toggleClass("hidden",true);
-      $("#main-create-event").toggleClass("hidden",true);
+    firebase.database().ref('create-events').push({
+      startTime: new Date(start_date).getTime(),
+      creator: firebase.auth().currentUser.uid,
+      title: event_title,
+      description: "",
+      timezone: moment.tz.guess(),
+      updated: false,
     });
+
+    $("#main-content").toggleClass("hidden",false);
+    $("#main-settings").toggleClass("hidden",true);
+    $("#main-create-event").toggleClass("hidden",true);
 
   });
 
