@@ -23,7 +23,7 @@ $(document).ready(function(){
       UpdateVideoDisplay();
     }
   });
-
+/*
   $.ajax({
       type: 'GET',
       url: 'https://us-central1-raid-calender.cloudfunctions.net/getEvents',
@@ -37,7 +37,7 @@ $(document).ready(function(){
         });
       }
   });
-
+*/
   $("#events").on("click",".dropdown-item",function(){
     let target = $(this).attr('class').split(' ');
     if(target.length > 1){
