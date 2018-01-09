@@ -76,8 +76,43 @@ $(document).ready(function(){
 
     function MarkLocation(x,y,p){
         let format = `<p>${p.name}<br/>ID:${p.id}<br/>Strand: ${p.strand}<br/>Option: ${p.option}</p>`;
+        let disguise_map =
+        {
+          "rock": {
+            url: 'rock.png',
+            size: [30,30],
+          },
+          "barrel":{
+            url: 'barrel.png',
+            size: [30,40],
+          },
+          "bush":{
+            url: 'bush.png',
+            size: [30,30],
+          },
+          "cactus":{
+            url: 'cactus.png',
+            size: [30,30],
+          },
+          "toadstool":{
+            url: 'toadstool.png',
+            size: [30,30],
+          },
+          "crate":{
+            url: 'crate.png',
+            size: [30,30],
+          },
+        };
 
-        let m = L.marker([y,x]).addTo(map).bindPopup(format);
+        let icon_disguise = disguise_map[`${p.name.match(/(\w+)$/g)[0].toLowerCase()}`];
+
+        console.log("x"+p.name.match(/(\w+)$/g)[0].toLowerCase()+"x")
+
+        let custom_icon = L.icon({
+          iconUrl: icon_disguise.url,
+          iconSize: icon_disguise.size,
+        });
+        let m = L.marker([y,x],{icon: custom_icon}).addTo(map).bindPopup(format);
         markers.addLayer(m);
     }
 
