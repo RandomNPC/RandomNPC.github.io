@@ -21,14 +21,6 @@ $(document).ready(function(){
 
   ref.on('child_added',
     point=>{
-        let infowindow = new google.maps.InfoWindow({
-          content: `<p>${point.val().content}</p>
-                    <div id="${point.key}">
-                      <button>Edit</button>
-                      <button>Delete</button>
-                    </div>`,
-        });
-
         let marker = new google.maps.Marker({
           position: {
             lat: point.val().lat,
@@ -37,17 +29,30 @@ $(document).ready(function(){
           map: map,
           icon: `point.png`,
         });
+
+        marker.infowindow = new google.maps.InfoWindow({
+          content: `<p>${point.val().content}</p>
+                    <div id="${point.key}">
+                      <button>Edit</button>
+                      <button>Delete</button>
+                    </div>`,
+        });
+
         marker.addListener('click', function() {
-          infowindow.open(map, marker);
+          marker.infowindow.open(map, marker);
         });
 
         markers[point.key] = marker;
+        $(`#list`).append(`<li id="${point.key}">${point.val().content}</li>`)
     },
     error=>{}
   );
 
   ref.on('child_removed',
     point=>{
+
+      $(`#log`).append(`<li>Point Removed: ${point.val().content}</li>`)
+      $(`#list #${point.key}`).remove();
       markers[point.key].setMap(null);
       markers[point.key] = null;
     },
@@ -59,14 +64,6 @@ $(document).ready(function(){
       markers[point.key].setMap(null);
       markers[point.key] = null;
 
-      let infowindow = new google.maps.InfoWindow({
-        content: `<p>${point.val().content}</p>
-                  <div id="${point.key}">
-                    <button>Edit</button>
-                    <button>Delete</button>
-                  </div>`,
-      });
-
       let marker = new google.maps.Marker({
         position: {
           lat: point.val().lat,
@@ -76,34 +73,47 @@ $(document).ready(function(){
         icon: `point.png`,
       });
 
+      marker.infowindow = new google.maps.InfoWindow({
+        content: `<p>${point.val().content}</p>
+                  <div id="${point.key}">
+                    <button>Edit</button>
+                    <button>Delete</button>
+                  </div>`,
+      });
+
       marker.addListener('click', function() {
-        infowindow.open(map, marker);
+        marker.infowindow.open(map, marker);
       });
 
       markers[point.key] = marker;
-
+      $(`#list #${point.key}`).text(point.val().content);
     },
     error=>{}
   );
 
   map.addListener('dblclick',(e)=>{
     let key = ref.push().key;
+    let text = prompt('Add Text');
     firebase.database().ref(`points/${key}`).update({
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
-      content: prompt('Add Text'),
+      content: text,
     })
 
+    $(`#log`).append(`<li id="${key}">Point Added: ${text}</li>`)
   });
 
   $("body").on('click',"button",function(){
     let index = $.inArray(this,$(this).parent().children());
     let key = $(this).parent()[0].id;
+
     switch(index)
     {
       case 0: //Edit Option
+          let change_text = prompt('Change Text');
+          $(`#log`).append(`<li id="${key}">Point Remaned: ${$($(this).parents()[1].childNodes[0]).text()} > ${change_text}</li>`)
           firebase.database().ref(`points/${key}`).update({
-            content: prompt('Change Text'),
+            content: change_text,
           });
         break;
       case 1: //Delete Option
@@ -112,4 +122,21 @@ $(document).ready(function(){
     }
   })
 
+  $(`#log,#list`).on('click',"li",function(){
+    let key = $(this)[0].id;
+    let marker_ref = markers[key];
+    if(marker_ref!=null)
+    {
+
+      for (let m in markers) {
+        if(markers[m]!=null)
+        {
+          markers[m].infowindow.close();
+        }
+      }
+
+      map.setCenter(marker_ref.getPosition());
+      new google.maps.event.trigger( marker_ref, 'click' );
+    }
+  });
 });

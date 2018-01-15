@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-       html,body,#map {
-        height: 100%;
-        width: 100%;
-       }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZKkmLu9QIHtX-iFCR-b3v0GnXhI94o-8"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.1.1.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZKkmLu9QIHtX-iFCR-b3v0GnXhI94o-8"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
     <script src="main.js"></script>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div id="map"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-9" id="map"></div>
+        <div class="col-3">
+          <p>Points:</p>
+          <ul id="list" cellspacing="0">
+          </ul>
+          <p>Changes:</p>
+          <ul id="log" cellspacing="0">
+          </ul>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
