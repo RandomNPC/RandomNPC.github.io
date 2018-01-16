@@ -80,27 +80,27 @@ $(document).ready(function(){
         {
           "rock": {
             url: 'rock.png',
-            size: [30,30],
+            size: [25,29],
           },
           "barrel":{
             url: 'barrel.png',
-            size: [30,40],
+            size: [25,45],
           },
           "bush":{
             url: 'bush.png',
-            size: [30,30],
+            size: [25,30],
           },
           "cactus":{
             url: 'cactus.png',
-            size: [30,30],
+            size: [25,30],
           },
           "toadstool":{
             url: 'toadstool.png',
-            size: [30,30],
+            size: [25,29],
           },
           "crate":{
             url: 'crate.png',
-            size: [30,30],
+            size: [25,31],
           },
         };
 
