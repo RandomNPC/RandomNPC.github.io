@@ -9,8 +9,8 @@ $(document).ready(function(){
     messagingSenderId: "522535743470"
   });
 
-  var uluru = {lat: 42.3601, lng: -71.0589};
-  var map = new google.maps.Map(document.getElementById('map'), {
+  let uluru = {lat: 42.3601, lng: -71.0589};
+  let map = new google.maps.Map(document.getElementById('map'), {
     zoom: 12,
     center: uluru,
     disableDoubleClickZoom: true,
@@ -18,6 +18,10 @@ $(document).ready(function(){
 
   let markers = {};
   let ref = firebase.database().ref('points');
+  let directionsDisplay = new google.maps.DirectionsRenderer;
+  let directionsService = new google.maps.DirectionsService;
+
+  directionsDisplay.setMap(map);
 
   ref.on('child_added',
     point=>{
@@ -35,10 +39,39 @@ $(document).ready(function(){
                     <div id="${point.key}">
                       <button>Edit</button>
                       <button>Delete</button>
+                      <select>
+                        <option value="Direction To">Direction To</option>
+                      </select>
                     </div>`,
         });
 
         marker.addListener('click', function() {
+
+          let $content_ref = $(marker.infowindow.getContent());
+          let content_name = $($content_ref[0]).text();
+          let content_id = $content_ref[2].id;
+
+          firebase.database().ref(`points`).once('value').then(snap=>{
+            let html_content = `<p>${content_name}</p>
+                                <div id="${content_id}">
+                                  <button>Edit</button>
+                                  <button>Delete</button>
+                                  <select>
+                                    <option value="Direction To">Direction To</option>
+                                  `;
+            snap.forEach(entry=>{
+              let info = entry.val();
+              if(entry.key != content_id){
+                html_content += `<option value="${entry.key}">${info.content}</option>`;
+              }
+            })
+
+            html_content += `</select></div>`;
+            marker.infowindow.setContent(html_content);
+          });
+
+
+
           marker.infowindow.open(map, marker);
         });
 
@@ -78,10 +111,39 @@ $(document).ready(function(){
                   <div id="${point.key}">
                     <button>Edit</button>
                     <button>Delete</button>
+                    <select>
+                      <option value="Direction To">Direction To</option>
+                    </select>
                   </div>`,
       });
 
       marker.addListener('click', function() {
+
+        let $content_ref = $(marker.infowindow.getContent());
+        let content_name = $($content_ref[0]).text();
+        let content_id = $content_ref[2].id;
+
+        firebase.database().ref(`points`).once('value').then(snap=>{
+          let html_content = `<p>${content_name}</p>
+                              <div id="${content_id}">
+                                <button>Edit</button>
+                                <button>Delete</button>
+                                <select>
+                                  <option value="Direction To">Direction To</option>
+                                `;
+          snap.forEach(entry=>{
+            let info = entry.val();
+            if(entry.key != content_id){
+              html_content += `<option value="${entry.key}">${info.content}</option>`;
+            }
+          })
+
+          html_content += `</select></div>`;
+          marker.infowindow.setContent(html_content);
+        });
+
+
+
         marker.infowindow.open(map, marker);
       });
 
@@ -121,6 +183,65 @@ $(document).ready(function(){
         break;
     }
   })
+
+  $("body").on('change',"select",function(){
+    let location_id = $(this).val();
+    let location_origin = $(this).parents()[0].id;
+    let location_index = $.inArray(location_id,$.map($(this).find('option'),options=>{return options.value;}));
+
+    if(location_index <= 0)
+    {
+      return;
+    }
+  //  console.log(location_id,location_origin)
+    GeneratePath(location_origin,location_id);
+  });
+
+  function GetPoint(coord){
+    return new Promise((resolve,reject)=>{
+      firebase.database().ref(`points/${coord}`).once('value')
+                         .then(coord=>{
+                           let loc = coord.val();
+                           resolve({
+                             lat: loc.lat,
+                             lng: loc.lng,
+                           });
+                         })
+                         .catch(error=>{
+                           reject(error);
+                         });
+    });
+  }
+
+  function GeneratePath(origin,destination)
+  {
+    return new Promise((resolve,reject)=>{
+      Promise.all([GetPoint(origin),GetPoint(destination)])
+      .then(data=>{
+        directionsService.route({
+          origin: data[0],  // Haight.
+          destination: data[1],  // Ocean Beach.
+          // Note that Javascript allows us to access the constant
+          // using square brackets and a string value as its
+          // "property."
+          travelMode: "DRIVING",
+        }, function(response, status) {
+          if (status == 'OK') {
+            directionsDisplay.setDirections(response);
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      })
+      .catch(error=>{
+        console.log(error)
+        reject(error);
+      })
+    });
+
+  }
+
 
   $(`#log,#list`).on('click',"li",function(){
     let key = $(this)[0].id;
