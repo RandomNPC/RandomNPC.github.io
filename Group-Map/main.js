@@ -35,7 +35,7 @@ $(document).ready(function(){
         });
 
         marker.infowindow = new google.maps.InfoWindow({
-          content: `<p>${point.val().content}</p>
+          content: `<h1>${point.val().content}</h1>
                     <div id="${point.key}">
                       <button>Edit</button>
                       <button>Delete</button>
@@ -105,7 +105,7 @@ $(document).ready(function(){
       });
 
       marker.infowindow = new google.maps.InfoWindow({
-        content: `<p>${point.val().content}</p>
+        content: `<h1>${point.val().content}</h1>
                   <div id="${point.key}">
                     <button>Edit</button>
                     <button>Delete</button>
@@ -213,16 +213,22 @@ $(document).ready(function(){
     return new Promise((resolve,reject)=>{
       Promise.all([GetPoint(origin),GetPoint(destination)])
       .then(data=>{
-        directionsService.route({
-          origin: data[0],  // Haight.
-          destination: data[1],  // Ocean Beach.
-          // Note that Javascript allows us to access the constant
-          // using square brackets and a string value as its
-          // "property."
+
+        let query = {
+          origin: data[0],
+          destination: data[1],
           travelMode: $(`#mode`).val(),
-        }, function(response, status) {
+          transitOptions:
+          {
+            modes: ["RAIL"],
+            routingPreference: "FEWER_TRANSFERS",
+          }
+        }
+
+        directionsService.route(query, function(response, status) {
           if (status == 'OK') {
             directionsDisplay.setDirections(response);
+            $(`#time`).text(response.routes[0].legs[0].duration.text);
             resolve();
           } else {
             reject();
