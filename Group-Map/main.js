@@ -178,7 +178,10 @@ $(document).ready(function(){
   $("body").on('click',"button",function(){
     let index = $.inArray(this,$(this).parent().children());
     let key = $(this).parent()[0].id;
-
+    if(key==="")
+    {
+      return;
+    }
     switch(index)
     {
       case 0: //Edit Option
@@ -222,8 +225,7 @@ $(document).ready(function(){
     });
   }
 
-  function GeneratePath(origin,destination)
-  {
+  function GeneratePath(origin,destination){
     return new Promise((resolve,reject)=>{
       Promise.all([GetPoint(origin),GetPoint(destination)])
       .then(data=>{
@@ -256,7 +258,6 @@ $(document).ready(function(){
     });
 
   }
-
 
   $(`#list`).on('click',"li",function(){
     let key = $(this)[0].id;
