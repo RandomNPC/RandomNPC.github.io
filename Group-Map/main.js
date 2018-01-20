@@ -23,6 +23,10 @@ $(document).ready(function(){
 
   directionsDisplay.setMap(map);
 
+  let input = document.getElementById('pac-input');
+  let searchBox = new google.maps.places.SearchBox(input);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
   ref.on('child_added',
     point=>{
         let marker = new google.maps.Marker({
@@ -158,6 +162,16 @@ $(document).ready(function(){
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
       content: text,
+    })
+  });
+
+  searchBox.addListener('places_changed', function() {
+    let point = searchBox.getPlaces()[0];
+    let key = ref.push().key;
+    firebase.database().ref(`points/${key}`).update({
+      lat: point.geometry.location.lat(),
+      lng: point.geometry.location.lng(),
+      content: point.name,
     })
   });
 
