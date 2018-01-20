@@ -83,8 +83,6 @@ $(document).ready(function(){
 
   ref.on('child_removed',
     point=>{
-
-      $(`#log`).append(`<li>Point Removed: ${point.val().content}</li>`)
       $(`#list #${point.key}`).remove();
       markers[point.key].setMap(null);
       markers[point.key] = null;
@@ -161,8 +159,6 @@ $(document).ready(function(){
       lng: e.latLng.lng(),
       content: text,
     })
-
-    $(`#log`).append(`<li id="${key}">Point Added: ${text}</li>`)
   });
 
   $("body").on('click',"button",function(){
@@ -173,7 +169,6 @@ $(document).ready(function(){
     {
       case 0: //Edit Option
           let change_text = prompt('Change Text');
-          $(`#log`).append(`<li id="${key}">Point Remaned: ${$($(this).parents()[1].childNodes[0]).text()} > ${change_text}</li>`)
           firebase.database().ref(`points/${key}`).update({
             content: change_text,
           });
@@ -189,11 +184,11 @@ $(document).ready(function(){
     let location_origin = $(this).parents()[0].id;
     let location_index = $.inArray(location_id,$.map($(this).find('option'),options=>{return options.value;}));
 
-    if(location_index <= 0)
+    if(location_index <= 0 || $(this).parents()[0].id === "")
     {
       return;
     }
-  //  console.log(location_id,location_origin)
+
     GeneratePath(location_origin,location_id);
   });
 
@@ -224,7 +219,7 @@ $(document).ready(function(){
           // Note that Javascript allows us to access the constant
           // using square brackets and a string value as its
           // "property."
-          travelMode: "DRIVING",
+          travelMode: $(`#mode`).val(),
         }, function(response, status) {
           if (status == 'OK') {
             directionsDisplay.setDirections(response);
@@ -243,7 +238,7 @@ $(document).ready(function(){
   }
 
 
-  $(`#log,#list`).on('click',"li",function(){
+  $(`#list`).on('click',"li",function(){
     let key = $(this)[0].id;
     let marker_ref = markers[key];
     if(marker_ref!=null)
