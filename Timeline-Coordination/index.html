@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+    <script src="vis.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="vis.min.css">
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <br>
+    <div id="itenerary">
+      <div id="flight" class="container">
+          <br>
+          <div class="row">
+              <div class="col-4">Name</div>
+              <div class="col-2"></div>
+              <div class="col-6">
+                <input type="text" id="flight_name"></input>
+              </div>
+          </div>
+          <br>
+          <div class="row">
+              <div class="col-4">Flight #</div>
+              <div class="col-2"></div>
+              <div class="col-6">
+                <input type="text" id="flight_no"></input>
+              </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-4">Origin</div>
+              <div class="col-2"></div>
+              <div class="col-6"><input type="text" id="flight_origin"></input></div>
+          </div>
+          <br>
+          <div class="row">
+              <div class="col-4">Depart</div>
+              <div class="col-2"></div>
+              <div class="col-6"><input type="datetime-local" class="form-control" id="flight_depart" value=""></input></div>
+          </div>
+          <br>
+          <div class="row">
+              <div class="col-4">Timezone</div>
+              <div class="col-2"></div>
+              <div class="col-6"><input type="text" id="flight_depart_tz"></input></div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-4">Destination</div>
+              <div class="col-2"></div>
+              <div class="col-6"><input type="text" id="flight_dest"></input></div>
+          </div>
+          <br>
+          <div class="row">
+              <div class="col-4">Arrive</div>
+              <div class="col-2"></div>
+              <div class="col-6"><input type="datetime-local" class="form-control" id="flight_arr" value=""></input></div>
+          </div>
+          <br>
+          <div class="row">
+              <div class="col-4">Timezone</div>
+              <div class="col-2"></div>
+              <div class="col-6"><input type="text" id="flight_arr_tz"></input></div>
+          </div>
+          <br>
+      </div>
+      <br>
+      <div id="drive" class="container">
+          <br>
+          <div class="row">
+              <div class="col-12">Drive</div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-4">Name</div>
+              <div class="col-2"></div>
+              <div class="col-6">
+                <input type="text" id="drive_name"></input>
+              </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-4">Arrive:</div>
+            <div class="col-2"></div>
+            <div class="col-6"><input type="text" id="drive_arrive"></input></div>
+          </div>
+          <br>
+      </div>
+      <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-4"><button id="add">Add</button></div>
+            <div class="col-4"><button id="update">Update</button></div>
+            <div class="col-4"><button id="remove">Remove</button></div>
+        </div>
+        <br>
+      </div>
+    </div>
+  </body>
+</html>
