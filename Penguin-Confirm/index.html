@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="theme-color" content="#a9bab2">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -10,10 +11,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     <script src="https://use.fontawesome.com/6d4d8942d6.js"></script>
-    <script src="settings.js"></script>
     <script src="setup.js"></script>
     <script src="home.js"></script>
     <script src="navigation.js"></script>
+    <script src="location-post.js"></script>
     <script src="database.js"></script>
     <link rel="stylesheet" href="style.css">
   </head>
@@ -28,7 +29,7 @@
         <div class="navbar-nav">
           <a class="nav-item nav-link" href="#" id="link-home">Home</a>
           <a class="nav-item nav-link" href="#" id="link-setup">Setup</a>
-          <a class="nav-item nav-link" href="#" id="link-settings">Settings</a>
+          <a class="nav-item nav-link" href="#" id="link-locations">Locations</a>
         </div>
       </div>
     </nav>
@@ -50,6 +51,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -72,6 +74,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -94,6 +97,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -116,6 +120,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -138,6 +143,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -161,6 +167,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -183,6 +190,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -205,6 +213,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -227,6 +236,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -249,6 +259,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -271,6 +282,7 @@
                 <div class="col-7">
                   <h5 class="main">Main Penguin</h5>
                   <p class="alt">Alt Penguin</p>
+                  <input type="text" style="display:none;"></input>
                 </div>
                 <div class="col-2">
                   <button type="button" class="btn btn-success">Confirm</button>
@@ -303,13 +315,6 @@
         </div>
       </div>
       <div id="content-setup">
-        <div class="container-fluid">
-          <div class="row justify-content-between">
-            <h5 style="margin-top:25px;" class="col-2">Week: </h5>
-            <input style="margin-top:20px;" class="form-control col-2" type="text" placeholder="Week">
-            <div class="col-8"></div>
-          </div>
-        </div>
         <h5 style="margin-top:40px;">One-Point Penguins</h5>
         <div class="card">
           <div class="card-header">
@@ -610,17 +615,8 @@
           </div>
         </div>
       </div>
-      <div id="content-settings">
-        <div class="container-fluid">
-          <div class="row justify-content-between" style="margin:20px;">
-            <div class="col-ms-6">
-              Generate Predictions:
-            </div>
-            <div class="col-ms-6">
-               <button type="button" id="button-reset" class="btn btn-danger">Generate</button>
-            </div>
-          </div>
-        </div>
+      <div id="content-location">
+        <textarea id="output-location" rows="30"></textarea>
       </div>
     </div>
   </body>

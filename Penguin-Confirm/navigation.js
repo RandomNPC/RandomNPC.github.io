@@ -1,21 +1,21 @@
 $(document).ready(()=>{
-  $("#content-setup, #content-settings").toggle(false);
+  $("#content-setup, #content-location").toggle(false);
 
   $("#link-home").click(()=>{
-    $("#content-setup, #content-settings, #content-home").toggle(false);
+    $("#content-setup, #content-home, #content-locations").toggle(false);
     $("#content-home").toggle();
     $(".navbar-collapse").collapse("hide");
   });
 
   $("#link-setup").click(()=>{
-    $("#content-setup, #content-settings, #content-home").toggle(false);
+    $("#content-setup, #content-home, #content-locations").toggle(false);
     $("#content-setup").toggle();
     $(".navbar-collapse").collapse("hide");
   });
 
-  $("#link-settings").click(()=>{
-    $("#content-setup, #content-settings, #content-home").toggle(false);
-    $("#content-settings").toggle();
+  $("#link-locations").click(()=>{
+    $("#content-setup, #content-home, #content-locations").toggle(false);
+    $("#content-location").toggle();
     $(".navbar-collapse").collapse("hide");
   });
 });

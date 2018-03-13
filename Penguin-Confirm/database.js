@@ -30,6 +30,7 @@ $(document).ready(function(){
 
       $("#content-home .card:eq("+index+") .col-7 >:eq(0)").text(value.entries[value.index].descriptor);
       $("#content-home .card:eq("+index+") .col-7 >:eq(1)").text(value.entries[(value.index + 1) % value.entries.length].descriptor);
+      $("#content-home .card:eq("+index+") .col-7 >:eq(2)").val(value.location);
 
       //Toggle confirm skin
       $("#content-home .card:eq("+index+") .card-header").toggleClass("penguin-confirm",value.confirm);
@@ -46,10 +47,15 @@ $(document).ready(function(){
 
       if(value.confirm)
       {
+        $("#content-home .card:eq("+index+") input").show();
         $("#content-home .card:eq("+index+") .fa").hide();
         $("#content-home .card:eq("+index+") .col-7 > :eq(1)").hide();
       }
+      else{
+        $("#content-home .card:eq("+index+") input").hide();
+      }
 
+      Output();
     });
 
   }

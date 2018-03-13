@@ -102,14 +102,11 @@ $(document).ready(function(){
     })
   })
   $(`#remove`).click(function(){
-    console.log("remove")
     firebase.database().ref(`entry/${uid}`).remove().then(e=>{
       uid = -1;
     }).catch(err=>{});
   })
   $(`#update`).click(function(){
-    console.log("update")
-    console.log($(`#flight_depart`).val())
     firebase.database().ref(`entry/${uid}`).update({
       flight_name: $(`#flight_name`).val(),
       flight_no: $(`#flight_no`).val(),
