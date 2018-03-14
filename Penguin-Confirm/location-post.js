@@ -29,7 +29,13 @@ function Output(){
       });
 
       $(`#output-location`).val(output);
+      $(`#copy-location`).attr(`data-clipboard-text`,output);
     }).catch(error=>{
       console.log(error)
     });
 };
+
+$(document).ready(function(){
+  new ClipboardJS(`#copy-location`);
+
+});
