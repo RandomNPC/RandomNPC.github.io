@@ -9,3 +9,7 @@
 .alt{
   text-align: left;
 }
+
+textarea{
+  width: 100%;
+}

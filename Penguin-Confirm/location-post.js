@@ -1,4 +1,5 @@
 function Output(){
+    console.log('trigger')
     firebase.database().ref('penguins').once('value')
     .then(snap=>{
       let output = ``;
@@ -26,7 +27,8 @@ function Output(){
           output += `${entry_index}) ${name} - ${location}\n`;
         }
       });
-      $(`#output-location`).text(output);
+
+      $(`#output-location`).val(output);
     }).catch(error=>{
       console.log(error)
     });

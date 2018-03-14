@@ -54,9 +54,7 @@ $(document).ready(function(){
       else{
         $("#content-home .card:eq("+index+") input").hide();
       }
-
-      Output();
     });
-
+    Output();
   }
 });

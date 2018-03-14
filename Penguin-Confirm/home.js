@@ -22,7 +22,7 @@ $(document).ready(function(){
     });
   });
 
-  $("#content-home .btn").click(function(e){
+  $("#content-home .btn:not(#copy-location)").click(function(e){
 
       e.preventDefault();
 
