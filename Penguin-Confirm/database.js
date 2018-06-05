@@ -1,60 +1,82 @@
 $(document).ready(function(){
 
   var config = {
-    apiKey: "AIzaSyB42PW3MwrtNhxuAVUgGYFdDfjiVCqNpJ0",
-    authDomain: "penguin-confirm.firebaseapp.com",
-    databaseURL: "https://penguin-confirm.firebaseio.com",
-    projectId: "penguin-confirm",
-    storageBucket: "penguin-confirm.appspot.com",
-    messagingSenderId: "124831971002"
+    apiKey: "AIzaSyD1-dRhKYn21pfoi5W1VfJKAajse9pVASY",
+    authDomain: "runescape-penguins.firebaseapp.com",
+    databaseURL: "https://runescape-penguins.firebaseio.com",
+    projectId: "runescape-penguins",
+    storageBucket: "runescape-penguins.appspot.com",
+    messagingSenderId: "433845323729"
   };
   firebase.initializeApp(config);
 
-  var ref = firebase.database().ref('penguins');
+  const DB_REF = firebase.database();
 
-  ref.on('value',Update,(error)=>{});
+  function Display(x)
+  {
+        let $setup_ref = $.map($(`#content-setup .card`),x=>$(x).find(`.col-5`))
+                          .map(x=>$.map($(x),k=>$(k).find(`.nopadding`)))
+                          .map(x=>x.map(k=>$.map($(k),p=>$(p).find('input'))))
+                          .map(x=>x.map(k=>[k[0][0],k[1]]))
 
-  function Update(data){
-    $.each(data.val(),function(index,value){
+        x.val().filter((k,v,arr)=>v < arr.length - 1)
+               .map(k=>k.options)
+               .map((k,v,arr)=>{
+                  if(v<arr.length-1){
+                    return k;
+                  }else {
+                    return k.map(p=>{return {id: p.id, name: [p.name[1]]}})
+                  }
+               })
+               .forEach((k,v)=>k.forEach((p,q)=>{
+                  $($setup_ref[v][q][0]).val(`${p.id}`)
+                  p.name.forEach((s,t)=>{
+                    $($setup_ref[v][q][1][t]).val(s)
+                  })
+               }))
 
-      $.each($("#content-setup .card:eq("+index+") .col-5"),(i,v)=>{
 
-          //ID
-          $($(v).find("input:first")).val(value.entries[i].index);
+        let $ref = $.map($(`#content-home .card`),x=>$(x).find(`.col-6`))
+                    .map(x=>$.map($(x),k=>$(k).find(`h6`)))
 
-          //Descriptor
-          $($(v).find("input:last")).val(value.entries[i].descriptor);
-      });
+        //One/Two Pointer pairs
+        x.val().map(k=>k.options)
+               .filter((k,v)=>v<5)
+               .map(k=>k.map(p=>p.name))
+               .forEach((k,v)=>k.forEach((p,q)=>p.forEach((s,t)=>$($ref[v][q][t]).text(s))))
 
-      //Home Page Entry for each card
+        //Freezer
+        x.val().map(k=>k.options)
+               .filter((k,v)=>v==5)
+               .map(k=>k.map(p=>p.name))
+               .map(k=>k.map(p=>p.filter((s,t)=>t>0)))
+               .reduce((k,v)=>k.concat(v),[])
+               .reduce((k,v)=>k.concat(v),[])
+               .forEach((k,v)=>$($ref[5][v]).text(k))
 
-      $("#content-home .card:eq("+index+") .col-7 >:eq(0)").text(value.entries[value.index].descriptor);
-      $("#content-home .card:eq("+index+") .col-7 >:eq(1)").text(value.entries[(value.index + 1) % value.entries.length].descriptor);
-      $("#content-home .card:eq("+index+") .col-7 >:eq(2)").val(value.location);
+        let list =
+        x.val().filter((k,v)=>v<6)
+               .map(k=>k.index)
 
-      //Toggle confirm skin
-      $("#content-home .card:eq("+index+") .card-header").toggleClass("penguin-confirm",value.confirm);
+        $(`.selected`).removeClass(`selected`)
 
-      //Toggle Button Style
-      $("#content-home .card:eq("+index+") button").toggleClass("btn-danger",value.confirm);
-      $("#content-home .card:eq("+index+") button").toggleClass("btn-success",!value.confirm);
+        $.map($(`#content-home .card`),x=>$(x).find(`.col-6`))
+         .filter(k=>k.length>0)
+         .map((k,v)=>k[list[v]])
+         .forEach(k=>$(k).addClass(`selected`))
 
-      //Change Button Text
-      $("#content-home .card:eq("+index+") button").text((!value.confirm) ? "Confirm" : "Deny");
-
-      $("#content-home .card:eq("+index+") .fa").show();
-      $("#content-home .card:eq("+index+") .col-7 > :eq(1)").show();
-
-      if(value.confirm)
-      {
-        $("#content-home .card:eq("+index+") input").show();
-        $("#content-home .card:eq("+index+") .fa").hide();
-        $("#content-home .card:eq("+index+") .col-7 > :eq(1)").hide();
-      }
-      else{
-        $("#content-home .card:eq("+index+") input").hide();
-      }
-    });
-    Output();
+         let $data =
+         $($.map($(`#content-home .card`),x=>$(x).find(`.col-4`))
+          .filter(k=>k.length>0)[0][x.val().filter((k,v)=>v===6)[0].index]).addClass(`selected`)
   }
-});
+
+  DB_REF.ref().limitToLast(1).on('child_added',x=>Display(x))
+
+  DB_REF.ref().on('child_changed',x=>{
+
+    if(x.val().every(k=>!isNaN(k))){
+      return;
+    }
+    Display(x)
+  })
+})

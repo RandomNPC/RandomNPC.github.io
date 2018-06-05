@@ -2,14 +2,6 @@
   background-color: #5cb85c;
 }
 
-.main{
-  text-align: left;
-}
-
-.alt{
-  text-align: left;
-}
-
 textarea{
   width: 100%;
 }
@@ -21,4 +13,21 @@ textarea{
    width: 100%;
    text-align: center;
    cursor: pointer;
+}
+
+.nopadding{
+  padding: 0;
+}
+
+.selected{
+  border: 1px solid black;
+  background-color: #1af262;
+}
+
+a.option{
+  display: block;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  color: #292b2c;
 }
