@@ -259,4 +259,22 @@ $(document).ready(function(){
 
   });
 
+  $(`#sort`).click(function(){
+    let list = $(`#list li.selected`).toArray()
+                                     .map(x=>[$(x).attr(`id`),$(x).find(`input`)])
+                                     .map(x=>{return {id: x[0], label:$(x[1]).val()}})
+
+    let not_list = $(`#list li:not(.selected)`).toArray()
+                                             .map(x=>[$(x).attr(`id`),$(x).find(`input`)])
+                                             .map(x=>{return {id: x[0], label:$(x[1]).val()}})
+
+    localStorage.setItem("order",JSON.stringify([...list,...not_list]))
+
+    firebase.database().ref().limitToLast(1).once('value')
+                                            .then(x=>firebase.database().ref(Object.keys(x.val())[0]).once('value'))
+                                            .catch(err=>console.log(err))
+                                            .then(x=>Display(x))
+
+  })
+
 })
