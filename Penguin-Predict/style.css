@@ -1,0 +1,70 @@
+#data td{
+  border: 1px solid black;
+}
+
+#data td > div{
+  display: table-cell;
+}
+
+#data tr > td:first-child:not(.label){
+  width: 25px;
+  text-align: center;
+}
+
+#data tr > td:not(:first-child) > div:nth-child(1){
+  width: 50px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#data tr > td:not(:first-child) > div:nth-child(2){
+  flex-grow: 1;
+  width: 200px;
+}
+
+table{
+  border-collapse: collapse;
+  font-family: 'Nunito', sans-serif;
+}
+
+#data{
+  padding: 10px;
+}
+
+#data table{
+  border: 2px solid black;
+}
+
+#data table:not(:first-child){
+  margin-top: 25px;
+}
+
+#data table > tr:first-child
+{
+  font-weight: bolder;
+}
+
+#data .label{
+  text-align:  center;
+}
+
+#data .selected{
+  border: 5px solid red;
+}
+
+#data table > tr:not(:first-child) > td:not(:first-child){
+  cursor: pointer;
+}
+
+#menu{
+  border: 1px solid black;
+  margin-top: 50px;
+}
+
+#menu td{
+  padding-left: 10px;
+}
+
+body > div{
+  display: inline-block;
+}

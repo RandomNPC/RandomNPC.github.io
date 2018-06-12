@@ -250,9 +250,9 @@ $(document).ready(function(){
        image: localStorage.getItem("image"),
      },
      success: function(result) {
-       $("#link-imgur").val(`http://www.imgur.com/${result.data.id}`);
+       $("#link-imgur").val(`https://imgur.com/${result.data.id}`);
        $("#link-rs").val(`[imgur src=${result.data.id}.png]`)
-       $(`#copy-imgur`).attr(`data-clipboard-text`,`http://www.imgur.com/${result.data.id}`);
+       $(`#copy-imgur`).attr(`data-clipboard-text`,`https://imgur.com/${result.data.id}`);
        $(`#copy-rs`).attr(`data-clipboard-text`,`[imgur src=${result.data.id}.png]`);
      }
     });

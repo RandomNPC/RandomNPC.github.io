@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#a9bab2">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.1.1.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <script src="predict-logic.js"></script>
+    <script src="html2canvas.js"></script>
+  </head>
+  <body>
+    <div>
+      <div id="data"></div>
+      <div id="menu">
+        <table>
+          <tr>
+            <td><p>Imgur Link:</p></td>
+            <td><input id="link-imgur" readonly></input></td>
+            <td><button id="make-imgur">Generate</button></td>
+            <td><button id="copy-imgur" data-clipboard-text="">Copy</button></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
