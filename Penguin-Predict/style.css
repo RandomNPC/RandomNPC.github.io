@@ -49,7 +49,7 @@ table{
 }
 
 #data .selected{
-  border: 5px solid red;
+  background-color: yellow;
 }
 
 #data table > tr:not(:first-child) > td:not(:first-child){
