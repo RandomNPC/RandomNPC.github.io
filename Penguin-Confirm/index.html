@@ -5,26 +5,28 @@
     <meta name="theme-color" content="#a9bab2">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
-    <script src="https://use.fontawesome.com/6d4d8942d6.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
     <script src="navigation.js"></script>
     <script src="database.js"></script>
     <script src="db-interact.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <script src="moment.js"></script>
+    <script src="moment-timezone.js"></script>
+    <script src="moment-timezone-with-data.js"></script>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
 
-    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Penguin-Confirm</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#">Penguin-Confirm</a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-item nav-link" href="#" id="link-home">Home</a>
@@ -193,6 +195,25 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div id="reddit-settings" class="container-fluid">
+          <div class="row">
+            <div class="custom-control custom-radio custom-control-inline col-4 justify-content-center form-check">
+              <input type="radio" id="radio-default" name="radio-disguise" class="custom-control-input" checked>
+              <label class="custom-control-label" for="radio-default">Default</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline col-4 justify-content-center form-check">
+              <input type="radio" id="radio-1" name="radio-disguise" class="custom-control-input">
+              <label class="custom-control-label" for="radio-1">Pumpkin</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline col-4 justify-content-center form-check">
+              <input type="radio" id="radio-2" name="radio-disguise" class="custom-control-input">
+              <label class="custom-control-label" for="radio-2">Snowman</label>
+            </div>
+          </div>
+          <div id="reddit-copy" class="btn-group row" data-clipboard-text="">
+            <a class="btn btn-default btn-block btn-warning font-weight-bold"><h5>COPY TO REDDIT</h5></a>
           </div>
         </div>
       </div>
