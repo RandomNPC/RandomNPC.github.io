@@ -96,7 +96,7 @@ $(document).ready(function(){
   };
   firebase.initializeApp(config);
 
-  new ClipboardJS(`#copy-imgur,#copy-rs`);
+  new ClipboardJS(`#copy-imgur,#copy-rs,#copy-text`);
 
   function Display(x)
   {
@@ -174,6 +174,8 @@ $(document).ready(function(){
         </div>
       </li>`
     ))
+
+    $(`#copy-text`).attr(`data-clipboard-text`,selected.map((k,v)=>`${v+1}. [gold]${k[0]}[/gold]\n ${(k[1].length>0)?`[i]via ${k[1]}[/i]\n`:`${k[1]}`}\n`).join(``));
 
     UpdateLink();
   }
