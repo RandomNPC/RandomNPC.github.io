@@ -1,3 +1,4 @@
+
 #data td{
   border: 1px solid black;
 }
@@ -39,9 +40,13 @@ table{
   margin-top: 25px;
 }
 
-#data table > tr:first-child
+#data table > tr:first-child, #data table:first-child tr
 {
   font-weight: bolder;
+}
+
+#data table:first-child{
+  width: 100%;
 }
 
 #data .label{

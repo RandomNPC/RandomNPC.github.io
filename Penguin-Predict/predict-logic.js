@@ -40,8 +40,10 @@ $(document).ready(function(){
     });
   })
   .then(data=>{
+      $(`#data`).append(`<table><tr><td class="label">PENGUIN PREDICTIONS FOR ${data[0]}</td></tr></table>`)
+
       let raw =
-      data.filter((x,i)=>i<6)
+      data[1].filter((x,i)=>i<6)
           .map(x=>x.map(k=>k.name.map(p=>[k.id,p])))
           .map(x=>x.transpose())
           .map(x=>x.map(k=>k.chunk(2)))
@@ -65,7 +67,7 @@ $(document).ready(function(){
 
               x.forEach((k,v)=>{
                 if(k.length > 1){
-                  $(`#data table:nth-child(${i+1})`).append(
+                  $(`#data table:nth-child(${i+2})`).append(
                     `<tr>
                       <td>
                         ${v}
@@ -82,7 +84,7 @@ $(document).ready(function(){
                   )
                 }
                 else {
-                  $(`#data table:nth-child(${i+1})`).append(
+                  $(`#data table:nth-child(${i+2})`).append(
                     `<tr>
                       <td colspan="3" class="label">
                         ${k[0].toUpperCase()}
