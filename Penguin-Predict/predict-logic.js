@@ -127,18 +127,18 @@ $(document).ready(function(){
         //Which Table was selected?
         let table_index = $.inArray($clicked_table[0],$tables)
 
-
+        console.log(table_index)
         switch(table_index)
         {
-          case 0:
           case 1:
+          case 2:
              $.map($(`#data table:not(:last-child)`),x=>$(x).find(`tr:not(:first-child):eq(${col_index})`))
               .forEach(x=>{
                 $(x).find(`td:not(:first-child)`).removeClass(`selected`);
                 $(x).find(`td:not(:first-child):eq(${row_index})`).addClass(`selected`)
               })
             break;
-          case 2:
+          case 3:
             $(`#data table:last-child > tr:not(:first-child) > td:not(:first-child)`).removeClass(`selected`)
             $(`#data table:last-child > tr:not(:first-child) > td:not(:first-child):eq(${row_index})`).addClass(`selected`)
             break;
