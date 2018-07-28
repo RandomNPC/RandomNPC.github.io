@@ -1,5 +1,3 @@
-var DATABASE = "players";
-
 $(document).ready(function(){
   // Initialize Firebase
   var config = {
