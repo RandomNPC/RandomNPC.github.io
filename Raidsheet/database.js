@@ -19,8 +19,7 @@ $(document).ready(function(){
           .then(data=>{
             data.val().forEach((x,i)=>{
               $(arr[i][0]).text(x.name);
-              //$(arr[i][1]).val(x.name);
-              x.roles.forEach(k=>{
+              x.roles.sort((a,b)=>a>b).forEach(k=>{
                 if(k>=0){
                   let $ref = $($(arr[i][3])[k]);
 
@@ -48,7 +47,7 @@ $(document).ready(function(){
             //$(target[1]).val(content.name);
             $(target[2]).find(`button:not(.btn-warning)`).remove();
 
-            content.roles.forEach(k=>{
+            content.roles.sort((a,b)=>a>b).forEach(k=>{
               let $ref = $($(target[3])[k]);
               $ref.clone().appendTo($(target[2]))
             })
