@@ -74,19 +74,41 @@ $(document).ready(function(){
 
   const CIRCUS =
   [
-    `Outside Gnome Maze entrance`,
-    `Seers' Village`,
-    `Catherby`,
-    `Taverley`,
-    `Edgeville`,
-    `Falador`,
-    `Rimmington`,
-    `Draynor`,
-    `Al Kharid`,
-    `Lumbridge`,
-    `Lumber Yard`,
-    `South of Cook's Guild`,
+    `inside the Tree Gnome Entrance`,
+    `in Seers' Village`,
+    `in Catherby`,
+    `in Taverley`,
+    `in Edgeville`,
+    `in Falador`,
+    `in Rimmington`,
+    `in Draynor Village`,
+    `in Al Kharid`,
+    `in Lumbridge`,
+    `outside the Sawmill`,
+    `outside of the Cook's Guild`,
   ]
+
+  const SPECIAL_LABELS =
+  [
+    [[20,27],[15,27]],     //Desert
+    [[],[26,33]],        //Sophanem
+    [[],[4,8,11,24,31]]  //Wilderness
+  ]
+
+  Object.defineProperty(Array.prototype,`chunk`,{
+    value: function(size){
+      let arr = this;
+      return Array(Math.ceil(arr.length / size)).fill().map((_, index) => index * size).map(begin => arr.slice(begin, begin + size))
+    }
+  })
+
+  Object.defineProperty(Array.prototype,`transpose`,{
+    value: function(){
+      let arr = this;
+
+      return arr.reduce((prev, next) => next.map((item, i) =>(prev[i] || []).concat(next[i])), [])
+    }
+  })
 
   function EvalDisguise(disguise){
     let index = $.inArray($(`#reddit-settings > div:nth-child(1) > div > input:checked`)[0],$(`#reddit-settings > div:nth-child(1) > div > input`))
@@ -114,31 +136,54 @@ $(document).ready(function(){
     let penguins =
     data.val()
         .filter((x,i)=>i<6)
-        .map((x,i,arr)=>{
-          if(i<arr.length-1){
-              return x.options[x.index].name.map((x,i)=>{
-                return {
-                  value: i+1,
-                  name: x.match(/.+\w(?= )/g)[0],
-                  disguise: x.match(/\w+$/g)[0],
-                  extra_args: ``,
-                }
-              })
+        .map((x,i)=>x.options[x.index])
+        .map(x=>x.name.map(k=>[x.id,k]))
+        .transpose()
+        .map(x=>x.chunk(2))
+        .reverse()
+        .map((x,i)=>x.filter((k,v,arr)=>v<arr.length-i))
+        .reverse()
+        .reduce((x,i)=>x.concat(i),[])
+        .chunk(5)
+        .map((x,i,arr)=>x.map(k=>{
+          let data = {
+            id: k[0],
+            name: k[1].match(/.+\w(?= )/g)[0],
+            value: Math.min(i+1,2),
+            disguise: k[1].match(/\w+$/g)[0],
+            extra_args: ``,
           }
-          else {
-            let format = x.options.map(k=>k.name[1])[x.index];
-            return {
-              value: 2,
-              name: format.match(/.+\w(?= )/g)[0],
-              disguise: format.match(/\w+$/g)[0],
-              extra_args: `^[‡](#small)`
-            }
+
+          //Freezer Label
+          if(i === arr.length-1){
+            data.extra_args = ` ^[‡](#small)`;
           }
+
+          //Special Labels for Wilderness, Desert, and Sophanem
+          switch(SPECIAL_LABELS.map(p=>p[data.value-1]).findIndex(s=>s.includes(k[0])))
+          {
+            case 0: //Desert
+              data.extra_args = `Desert [${data.name}}](#small)${data.extra_args}`;
+              break;
+            case 1: //Sophanem
+              data.extra_args = `Sophanem [${data.name.match(/^\w+(?= )/g)}](#small)${data.extra_args}`;
+              break;
+            case 2: //Wilderness
+              data.extra_args = `Wilderness [${data.name}](#small) [](#danger)${data.extra_args}`;
+              break;
+            default:
+              break;
+          }
+
+          return data;
+        }))
+        .reduce((x,i)=>x.concat(i),[])
+        .map((x,i)=>{
+          if(x.extra_args.length > ` ^[‡](#small)`.length){
+            return `> ${i+1}. | ${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
+          }
+          else return `> ${i+1}. | ${x.name}${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
         })
-        .reduce((x,i)=>x.concat(i),[])
-        .map((x,i,arr)=>[arr.filter(k=>k.value==1),arr.filter(p=>p.value==2),])[0]
-        .reduce((x,i)=>x.concat(i),[])
-        .map((x,i)=>`> ${i+1}. | ${x.name}${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`)
         .concat(
           [
             `-`,
@@ -168,7 +213,6 @@ $(document).ready(function(){
   }
 
   DB_REF.ref().limitToLast(1).on('child_added',x=>{
-    console.log(x.val())
     Display(x)
     ParseReddit(x)
   })
