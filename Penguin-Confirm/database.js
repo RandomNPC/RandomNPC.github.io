@@ -105,7 +105,6 @@ $(document).ready(function(){
   Object.defineProperty(Array.prototype,`transpose`,{
     value: function(){
       let arr = this;
-
       return arr.reduce((prev, next) => next.map((item, i) =>(prev[i] || []).concat(next[i])), [])
     }
   })
@@ -163,7 +162,7 @@ $(document).ready(function(){
           switch(SPECIAL_LABELS.map(p=>p[data.value-1]).findIndex(s=>s.includes(k[0])))
           {
             case 0: //Desert
-              data.extra_args = `Desert [${data.name}}](#small)${data.extra_args}`;
+              data.extra_args = `Desert [${data.name}](#small)${data.extra_args}`;
               break;
             case 1: //Sophanem
               data.extra_args = `Sophanem [${data.name.match(/^\w+(?= )/g)}](#small)${data.extra_args}`;

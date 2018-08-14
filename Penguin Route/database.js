@@ -185,6 +185,7 @@ $(document).ready(function(){
     html2canvas(document.getElementById("route"),{
                   allowTaint:true,
                   useCORS: true,
+                  logging: false,
                 })
                 .then(canvas=>localStorage.setItem("image",canvas.toDataURL('image/jpeg', 0.9).split(',')[1]))
                 .catch(err=>console.log(err));
