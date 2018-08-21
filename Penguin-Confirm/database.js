@@ -178,7 +178,7 @@ $(document).ready(function(){
         }))
         .reduce((x,i)=>x.concat(i),[])
         .map((x,i)=>{
-          if(x.extra_args.length > ` ^[‡](#small)`.length){
+          if(x.extra_args.length > 0){
             return `> ${i+1}. | ${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
           }
           else return `> ${i+1}. | ${x.name}${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
