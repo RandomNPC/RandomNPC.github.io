@@ -99,63 +99,6 @@ $(document).ready(function(){
 
   new ClipboardJS(`#copy-imgur,#copy-rs,#copy-text`);
 
-  function Display(x)
-  {
-    let indicies = x.val().map(k=>k.index)
-    let options = x.val().map(k=>k.options.map(p=>p.name))
-                         .map((k,v)=>{
-                           if(v===5){
-                             return k.map(p=>p.filter((s,t)=>t>0));
-                           }else {
-                             return k;
-                           }
-                         })
-
-    $(`#list`).empty();
-
-    options.map((k,v)=>k.map((p,q)=>p.map(s=>{return {name: s,target: q==indicies[v]}})))
-           .map(k=>k.reduce((p,q)=>p.concat(q),[]))
-           .reduce((k,v)=>k.concat(v),[])
-           .forEach((k,v)=>{
-             if(k.target){
-               $(`#list`).append(
-                 `<li id="${v}" class="selected">
-                    <p>${k.name}</p>
-                    <input type="text"></input>
-                  </li>`
-               )
-             }
-             else {
-               $(`#list`).append(
-                 `<li id="${v}">
-                    <p>${k.name}</p>
-                    <input type="text"></input>
-                  </li>`
-                )
-             }
-           })
-      let order = localStorage.getItem("order");
-
-      if(order===`null` || order ===null){
-        let save = JSON.stringify($.map($(`#list li`),x=>{return {id:$(x).attr(`id`),label: $(x).find('input').val(), used: $(x).hasClass(`selected`)}}))
-        localStorage.setItem("order",save)
-        Generate();
-        return;
-      }
-
-      let content =
-      JSON.parse(order)
-          .map(k=>{
-            $(`#list #${k.id} input`).val(k.label)
-            return $(`#list #${k.id}`).clone()
-          })
-
-      $(`#list`).empty();
-
-      content.forEach(k=>$(`#list`).append(k))
-      Generate();
-  }
-
   function Generate()
   {
     let selected = $.map($(`.selected`),x=>$(x).find(`p,input`))
