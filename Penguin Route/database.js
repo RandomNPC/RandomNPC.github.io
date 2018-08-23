@@ -84,17 +84,18 @@ $(document).ready(function(){
                     "Group Teleport - Ice Plateau",
                     "Group Teleport - Port Khazard",
                     "Group Teleport - Fishing Guild",
+                    "Ape Atoll Teleport"
                   ];
 
-  var config = {
-    apiKey: "AIzaSyD1-dRhKYn21pfoi5W1VfJKAajse9pVASY",
-    authDomain: "runescape-penguins.firebaseapp.com",
-    databaseURL: "https://runescape-penguins.firebaseio.com",
-    projectId: "runescape-penguins",
-    storageBucket: "runescape-penguins.appspot.com",
-    messagingSenderId: "433845323729"
-  };
-  firebase.initializeApp(config);
+  firebase.initializeApp({
+    apiKey: "AIzaSyBO9Q0XQReiTqBiVuamOQW07IAxUESkYQ0",
+    authDomain: "runscape-route.firebaseapp.com",
+    databaseURL: "https://runscape-route.firebaseio.com",
+    projectId: "runscape-route",
+    storageBucket: "runscape-route.appspot.com",
+    messagingSenderId: "1051890066655"
+  });
+
 
   new ClipboardJS(`#copy-imgur,#copy-rs,#copy-text`);
 
@@ -136,7 +137,7 @@ $(document).ready(function(){
       let order = localStorage.getItem("order");
 
       if(order===`null` || order ===null){
-        let save = JSON.stringify($.map($(`#list li`),x=>{return {id:$(x).attr(`id`),label: $(x).find('input').val()}}))
+        let save = JSON.stringify($.map($(`#list li`),x=>{return {id:$(x).attr(`id`),label: $(x).find('input').val(), used: $(x).hasClass(`selected`)}}))
         localStorage.setItem("order",save)
         Generate();
         return;
@@ -191,34 +192,124 @@ $(document).ready(function(){
                 .catch(err=>console.log(err));
   }
 
-  firebase.database().ref().limitToLast(1).on('child_added',x=>Display(x))
+  firebase.database()
+          .ref()
+          .once(`value`)
+          .then(x=>{
+            $(`#list`).empty();
+            x.forEach(k=>{
+              if(k.val().used){
+                $(`#list`).append(
+                  `<li id="${k.key}" class="selected">
+                     <p>${k.val().name}</p>
+                     <input type="text"></input>
+                   </li>`
+                )
+              }
+              else {
+                $(`#list`).append(
+                  `<li id="${k.key}">
+                     <p>${k.val().name}</p>
+                     <input type="text"></input>
+                   </li>`
+                 )
+              }
+              $(`#list > li:last-child input`).val(k.val().text)
+            })
+
+            let content =
+            x.val().map(k=>k.position)
+                   .map(k=>$(`#list #${k}`).clone())
+
+            $(`#list`).empty();
+
+            content.forEach(k=>$(`#list`).append(k))
+
+            Generate();
+          })
 
   firebase.database().ref().on('child_changed',x=>{
+    firebase.database()
+            .ref()
+            .once(`value`)
+            .then(x=>{
+              $(`#list`).empty();
+              x.forEach(k=>{
+                if(k.val().used){
+                  $(`#list`).append(
+                    `<li id="${k.key}" class="selected">
+                       <p>${k.val().name}</p>
+                       <input type="text"></input>
+                     </li>`
+                  )
+                }
+                else {
+                  $(`#list`).append(
+                    `<li id="${k.key}">
+                       <p>${k.val().name}</p>
+                       <input type="text"></input>
+                     </li>`
+                   )
+                }
+                $(`#list > li:last-child input`).val(k.val().text)
+              })
 
-    if(x.val().every(k=>!isNaN(k))){
-      return;
-    }
-    Display(x);
+              let content =
+              x.val().map(k=>k.position)
+                     .map(k=>$(`#list #${k}`).clone())
+
+              $(`#list`).empty();
+
+              content.forEach(k=>$(`#list`).append(k))
+
+              Generate();
+            })
   })
 
   $(`#list`).sortable({
     update: function( event, ui ) {
-      let save = JSON.stringify($.map($(`#list li`),x=>{return {id:$(x).attr(`id`),label: $(x).find('input').val()}}))
-      localStorage.setItem("order",save)
+      let update = {};
+      let arr = Array($(`#list li`).length).fill(0).map((x,i)=>i);
+      $.map($(`#list li`),x=>parseInt($(x).attr(`id`)))
+       .forEach((x,i)=>{
+         update[`${i}/position`]=arr.indexOf(x);
+       })
+      firebase.database()
+              .ref()
+              .update(update)
+
       Generate();
     }
   });
 
   $(`#reset`).click(function(){
-    localStorage.setItem("order",null)
-    firebase.database().ref().limitToLast(1).once('value')
-                                            .then(x=>firebase.database().ref(Object.keys(x.val())[0]).once('value'))
-                                            .catch(err=>console.log(err))
-                                            .then(x=>Display(x))
+    firebase.database()
+            .ref()
+            .once(`value`)
+            .then(x=>{
+              let update = {};
+              x.val().map((k,v)=>v)
+                     .forEach((k,v)=>{
+                       update[`${v}/position`] = k;
+                       update[`${v}/text`] = "";
+                     })
+              return firebase.database().ref().update(update);
+            })
+            .catch(err=>console.log(err))
   })
 
-  $(`#list`).on(`input`,function(){
-    Generate();
+  $(`#list`).on(`change`,function(){
+    let data = {};
+    $(`#list input`).toArray()
+                    .map((x,i)=>{return {
+                      id: parseInt($(`#list li:eq(${i})`).attr(`id`)),
+                      text: $(x).val(),
+                    }})
+                    .sort((x,i)=>x.id-i.id)
+                    .forEach(x=>{
+                      data[`${x.id}/text`] = x.text;
+                    })
+    firebase.database().ref().update(data)
   })
 
   $("#list").on("focusin","input",function(){
@@ -230,9 +321,6 @@ $(document).ready(function(){
           source: teleports,
           select: function( event, ui ) {
             $target.val(ui.item.label,event)
-            let save = JSON.stringify($.map($(`#list li`),x=>{return {id:$(x).attr(`id`),label: $(x).find('input').val()}}))
-            console.log(save)
-            localStorage.setItem("order",save)
             Generate();
           }
         }
@@ -263,21 +351,23 @@ $(document).ready(function(){
   });
 
   $(`#sort`).click(function(){
+    let arr = Array($(`#list li`).length).fill(0).map((x,i)=>i);
+
     let list = $(`#list li.selected`).toArray()
                                      .map(x=>[$(x).attr(`id`),$(x).find(`input`)])
-                                     .map(x=>{return {id: x[0], label:$(x[1]).val()}})
+                                     .map(x=>parseInt(x[0]))
 
     let not_list = $(`#list li:not(.selected)`).toArray()
                                              .map(x=>[$(x).attr(`id`),$(x).find(`input`)])
-                                             .map(x=>{return {id: x[0], label:$(x[1]).val()}})
+                                             .map(x=>parseInt(x[0]))
+    let data = {};
+    let sorted = list.concat(not_list)
+                     .map(x=>arr.indexOf(x))
+                     .forEach((x,i)=>{
+                       data[`${i}/position`]=x;
+                     })
 
-    localStorage.setItem("order",JSON.stringify([...list,...not_list]))
-
-    firebase.database().ref().limitToLast(1).once('value')
-                                            .then(x=>firebase.database().ref(Object.keys(x.val())[0]).once('value'))
-                                            .catch(err=>console.log(err))
-                                            .then(x=>Display(x))
-
+    firebase.database().ref().update(data);
   })
 
 })
