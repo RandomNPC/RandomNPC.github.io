@@ -84,7 +84,8 @@ $(document).ready(function(){
                     "Group Teleport - Ice Plateau",
                     "Group Teleport - Port Khazard",
                     "Group Teleport - Fishing Guild",
-                    "Ape Atoll Teleport"
+                    "Ape Atoll Teleport",
+                    "Lletya Teleport",
                   ];
 
   firebase.initializeApp({
@@ -137,6 +138,7 @@ $(document).ready(function(){
 
   firebase.database()
           .ref()
+          .orderByChild(`position`)
           .once(`value`)
           .then(x=>{
             $(`#list`).empty();
@@ -160,20 +162,13 @@ $(document).ready(function(){
               $(`#list > li:last-child input`).val(k.val().text)
             })
 
-            let content =
-            x.val().map(k=>k.position)
-                   .map(k=>$(`#list #${k}`).clone())
-
-            $(`#list`).empty();
-
-            content.forEach(k=>$(`#list`).append(k))
-
             Generate();
           })
 
   firebase.database().ref().on('child_changed',x=>{
     firebase.database()
             .ref()
+            .orderByChild(`position`)
             .once(`value`)
             .then(x=>{
               $(`#list`).empty();
@@ -197,14 +192,6 @@ $(document).ready(function(){
                 $(`#list > li:last-child input`).val(k.val().text)
               })
 
-              let content =
-              x.val().map(k=>k.position)
-                     .map(k=>$(`#list #${k}`).clone())
-
-              $(`#list`).empty();
-
-              content.forEach(k=>$(`#list`).append(k))
-
               Generate();
             })
   })
@@ -212,10 +199,10 @@ $(document).ready(function(){
   $(`#list`).sortable({
     update: function( event, ui ) {
       let update = {};
-      let arr = Array($(`#list li`).length).fill(0).map((x,i)=>i);
+
       $.map($(`#list li`),x=>parseInt($(x).attr(`id`)))
        .forEach((x,i)=>{
-         update[`${i}/position`]=arr.indexOf(x);
+         update[`${x}/position`]=i;
        })
       firebase.database()
               .ref()
@@ -297,18 +284,18 @@ $(document).ready(function(){
     let arr = Array($(`#list li`).length).fill(0).map((x,i)=>i);
 
     let list = $(`#list li.selected`).toArray()
-                                     .map(x=>[$(x).attr(`id`),$(x).find(`input`)])
-                                     .map(x=>parseInt(x[0]))
+                                     .map(x=>$(x).attr(`id`))
+                                     .map(x=>parseInt(x))
 
     let not_list = $(`#list li:not(.selected)`).toArray()
-                                             .map(x=>[$(x).attr(`id`),$(x).find(`input`)])
-                                             .map(x=>parseInt(x[0]))
+                                             .map(x=>$(x).attr(`id`))
+                                             .map(x=>parseInt(x))
+                                             .sort((a,b)=>a-b)
+
     let data = {};
-    let sorted = list.concat(not_list)
-                     .map(x=>arr.indexOf(x))
-                     .forEach((x,i)=>{
-                       data[`${i}/position`]=x;
-                     })
+    let sorted = [...list,...not_list].forEach((x,i)=>{
+                                        data[`${x}/position`]=i;
+                                      })
 
     firebase.database().ref().update(data);
   })

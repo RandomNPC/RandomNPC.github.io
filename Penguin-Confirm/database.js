@@ -145,9 +145,10 @@ $(document).ready(function(){
         .reduce((x,i)=>x.concat(i),[])
         .chunk(5)
         .map((x,i,arr)=>x.map(k=>{
+          console.log(k)
           let data = {
             id: k[0],
-            name: k[1].match(/.+\w(?= )/g)[0],
+            name: k[1].match(/^.+(?= )/g)[0],
             value: Math.min(i+1,2),
             disguise: k[1].match(/\w+$/g)[0],
             extra_args: ``,
@@ -163,12 +164,15 @@ $(document).ready(function(){
           {
             case 0: //Desert
               data.extra_args = `Desert [${data.name}](#small)${data.extra_args}`;
+              data.name = "";
               break;
             case 1: //Sophanem
               data.extra_args = `Sophanem [${data.name.match(/^\w+(?= )/g)}](#small)${data.extra_args}`;
+              data.name = "";
               break;
             case 2: //Wilderness
               data.extra_args = `Wilderness [${data.name}](#small) [](#danger)${data.extra_args}`;
+              data.name = "";
               break;
             default:
               break;
@@ -179,9 +183,14 @@ $(document).ready(function(){
         .reduce((x,i)=>x.concat(i),[])
         .map((x,i)=>{
           if(x.extra_args.length > 0){
-            return `> ${i+1}. | ${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
+            //Special/Freezer
+            if(x.name.length > 0){
+              //Freezer
+              return `> ${i+1}. | ${x.name}${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
+            }//Special
+            else return `> ${i+1}. | ${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
           }
-          else return `> ${i+1}. | ${x.name}${x.extra_args} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
+          else return `> ${i+1}. | ${x.name} | [](#${EvalDisguise(x.disguise).toLowerCase()}) ${EvalDisguise(x.disguise)} | ${x.value}`
         })
         .concat(
           [
