@@ -201,7 +201,7 @@ $(document).ready(function(){
             ` `,
             `#Please post locations below as you spy!`,
             `---`,
-            `^Quick&nbsp;links: ^[Spawn&nbsp;locations](http://runescape.wikia.com/wiki/Penguin_Hide_and_Seek/Spawn_locations) ^| ^[Quest&nbsp;requirements](http://runescape.wikia.com/wiki/Penguin_Hide_and_Seek#Optional_quest_unlocks) ^| ^[Roam-ranges](https://www.reddit.com/r/World60Pengs/wiki/roam-ranges) ^| ^[Point&nbsp;Calculator](http://runescape.wikia.com/wiki/Calculator%3AOther/Penguin_points)`,
+            `^Quick&nbsp;links: ^[Spawn&nbsp;locations](https://runescape.wiki/w/Penguin_Hide_and_Seek/Spawn_locations) ^| ^[Quest&nbsp;requirements](https://runescape.wiki/w/Penguin_Hide_and_Seek#Optional_quest_unlocks) ^| ^[Roam-ranges](https://www.reddit.com/r/World60Pengs/wiki/roam-ranges) ^| ^[Point&nbsp;Calculator](https://runescape.wiki/w/Calculator%3AOther/Penguin_points)`,
           ]);
 
     //Post Date
