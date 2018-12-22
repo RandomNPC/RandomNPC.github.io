@@ -30,7 +30,7 @@ $(document).ready(function(){
                     "Juju Teleport Spiritbag",
                     //Duel Ring
                     "Dueling Ring: Castle Wars",
-                    "Dueling Ring: Mobilising Armies",
+                    "Dueling Ring: South Feldip Hills",
                     "Dueling Ring: Al Kharid Duel Arena",
                     "Dueling Ring: Fist of Guthix",
                     //Games Necklace
