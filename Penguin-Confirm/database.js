@@ -10,8 +10,6 @@ $(document).ready(function(){
   };
   firebase.initializeApp(config);
 
-  const DB_REF = firebase.database();
-
   new ClipboardJS(`#reddit-copy`)
 
   function Display(x)
@@ -42,19 +40,10 @@ $(document).ready(function(){
                     .map(x=>$.map($(x),k=>$(k).find(`h6`)))
 
         //One/Two Pointer pairs
-        x.val().map(k=>k.options)
-               .filter((k,v)=>v<5)
+        x.val().splice(0,6)
+               .map(k=>k.options)
                .map(k=>k.map(p=>p.name))
                .forEach((k,v)=>k.forEach((p,q)=>p.forEach((s,t)=>$($ref[v][q][t]).text(s))))
-
-        //Freezer
-        x.val().map(k=>k.options)
-               .filter((k,v)=>v==5)
-               .map(k=>k.map(p=>p.name))
-               .map(k=>k.map(p=>p.filter((s,t)=>t>0)))
-               .reduce((k,v)=>k.concat(v),[])
-               .reduce((k,v)=>k.concat(v),[])
-               .forEach((k,v)=>$($ref[5][v]).text(k))
 
         let list =
         x.val().filter((k,v)=>v<6)
@@ -124,6 +113,10 @@ $(document).ready(function(){
   }
 
   function ParseReddit(data){
+
+    let freezer = data.val()[5];
+    let freezer_data = freezer.options[freezer.index];
+
     //Circus
     let circus_name = CIRCUS[data.key%12];
 
@@ -131,21 +124,17 @@ $(document).ready(function(){
     let polar_bear = data.val()[data.val().length-1];
     let polar_name = polar_bear.options[polar_bear.index].name[0];
 
-    //Penguins
     let penguins =
     data.val()
-        .filter((x,i)=>i<6)
         .map((x,i)=>x.options[x.index])
         .map(x=>x.name.map(k=>[x.id,k]))
+        .splice(0,5)
         .transpose()
         .map(x=>x.chunk(2))
-        .reverse()
-        .map((x,i)=>x.filter((k,v,arr)=>v<arr.length-i))
-        .reverse()
         .reduce((x,i)=>x.concat(i),[])
+        .concat([[freezer_data.id,freezer_data.name[0]]])
         .chunk(5)
         .map((x,i,arr)=>x.map(k=>{
-          console.log(k)
           let data = {
             id: k[0],
             name: k[1].match(/^.+(?= )/g)[0],
@@ -220,13 +209,12 @@ $(document).ready(function(){
 
   }
 
-  DB_REF.ref().limitToLast(1).on('child_added',x=>{
+  firebase.database().ref(`current-week`).on('child_added',x=>{
     Display(x)
     ParseReddit(x)
   })
 
-  DB_REF.ref().on('child_changed',x=>{
-
+  firebase.database().ref(`current-week`).on('child_changed',x=>{
     if(x.val().every(k=>!isNaN(k))){
       return;
     }
@@ -235,7 +223,7 @@ $(document).ready(function(){
   })
 
   $(`#reddit-settings > div:nth-child(1) > div > input`).click(function(){
-    DB_REF.ref().limitToLast(1).once(`value`,x=>
+    firebase.database().ref(`current-week`).once(`value`,x=>
       ParseReddit({
         key: parseInt(Object.keys(x.val())[0]),
         val: function(){return Object.values(x.val())[0];}

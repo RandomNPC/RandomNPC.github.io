@@ -3,8 +3,7 @@ $(document).ready(function(){
   function CurrentWeek(){
     return new Promise((resolve,reject)=>{
       firebase.database()
-              .ref()
-              .limitToLast(1)
+              .ref(`current-week`)
               .once(`value`)
               .then(x=>{
                 resolve(Object.keys(x.val())[0])
@@ -37,8 +36,7 @@ $(document).ready(function(){
     CurrentWeek().then(x=>{
                     let updates = {};
 
-                    updates[`${x}/${db_index}/index`] = clicked_index;
-                    updates[`${x}/${db_index}/confirm`] = true;
+                    updates[`current-week/${x}/${db_index}/index`] = clicked_index;
 
                     return firebase.database().ref().update(updates);
                   })
@@ -79,7 +77,7 @@ $(document).ready(function(){
     }
 
     CurrentWeek().then(x=>{
-                    let query = `${x}/${db_index}/options`;
+                    let query = `current-week/${x}/${db_index}/options`;
                     let update = {}
                     switch(text_slot){
                       case 0://id, first
