@@ -43,7 +43,18 @@ $(document).ready(function(){
         x.val().splice(0,6)
                .map(k=>k.options)
                .map(k=>k.map(p=>p.name))
-               .forEach((k,v)=>k.forEach((p,q)=>p.forEach((s,t)=>$($ref[v][q][t]).text(s))))
+               .map(x=>{
+                 //console.log(x)
+                 return x;
+               })
+               .forEach((k,v)=>k.forEach((p,q)=>p.forEach((s,t)=>{
+                 if(v<5){
+                   $($ref[v][q][t]).text(s)
+                 }
+                 else {
+                   $($ref[v][q]).text(s)
+                 }
+               })))
 
         let list =
         x.val().filter((k,v)=>v<6)
@@ -132,7 +143,7 @@ $(document).ready(function(){
         .transpose()
         .map(x=>x.chunk(2))
         .reduce((x,i)=>x.concat(i),[])
-        .concat([[freezer_data.id,freezer_data.name[0]]])
+        .concat([[freezer_data.id,freezer_data.name[1]]])
         .chunk(5)
         .map((x,i,arr)=>x.map(k=>{
           let data = {
