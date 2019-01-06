@@ -40,14 +40,16 @@ $(document).ready(function(){
     });
   })
   .then(data=>{
-      $(`#data`).append(`<table><tr><td class="label">PENGUIN PREDICTIONS FOR ${data[0]}</td></tr></table>`)
+    console.log(data)
+      $(`#data`).append(`<table><tr><td class="label">PENGUIN PREDICTIONS FOR ${data.week}</td></tr></table>`)
 
       let raw =
-      data[1].filter((x,i)=>i<6)
-          .map(x=>x.map(k=>k.name.map(p=>[k.id,p])))
-          .map(x=>x.transpose())
-          .map(x=>x.map(k=>k.chunk(2)))
-          .map(x=>x.map(k=>k.chunk(2)))
+      data.data.filter((x,i)=>i<6)
+               .map(x=>x.map(k=>k.name.map(p=>[k.id,p])))
+               .map(x=>x.transpose())
+               .map(x=>x.map(k=>k.chunk(2)))
+               .map(x=>x.map(k=>k.chunk(2)))
+
 
       raw[0].map((x,i)=>raw.map((k,v)=>raw[v][i]))
             .map((x,i)=>{
