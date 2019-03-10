@@ -1,17 +1,19 @@
 $(document).ready(function(){
 
+  let current_marker = null;
+
   firebase.initializeApp({
-    apiKey: "AIzaSyAyZBzeDXYxGUmP93INZaz6EiJAzLyqjiQ",
-    authDomain: "world-map-188815.firebaseapp.com",
-    databaseURL: "https://world-map-188815.firebaseio.com",
-    projectId: "world-map-188815",
-    storageBucket: "",
-    messagingSenderId: "522535743470"
+    apiKey: "AIzaSyBtbzM9q5Oc36xaSNxOtzGvSA__hINxUFc",
+    authDomain: "map-planning-c97e1.firebaseapp.com",
+    databaseURL: "https://map-planning-c97e1.firebaseio.com",
+    projectId: "map-planning-c97e1",
+    storageBucket: "map-planning-c97e1.appspot.com",
+    messagingSenderId: "499546331206"
   });
 
-  let uluru = {lat: 42.3601, lng: -71.0589};
-  let map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
+  let uluru = {lat: 37.0902, lng: -95.7129};
+  const map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
     center: uluru,
     disableDoubleClickZoom: true,
   });
@@ -41,11 +43,9 @@ $(document).ready(function(){
         marker.infowindow = new google.maps.InfoWindow({
           content: `<h1>${point.val().content}</h1>
                     <div id="${point.key}">
-                      <button>Edit</button>
-                      <button>Delete</button>
+                      <button id="deletepoint">Delete</button>
                       <select>
                         <option value="Direction To">Direction To</option>
-                      </select>
                     </div>`,
         });
 
@@ -58,11 +58,9 @@ $(document).ready(function(){
           firebase.database().ref(`points`).once('value').then(snap=>{
             let html_content = `<p>${content_name}</p>
                                 <div id="${content_id}">
-                                  <button>Edit</button>
-                                  <button>Delete</button>
+                                  <button id="deletepoint">Delete</button>
                                   <select>
-                                    <option value="Direction To">Direction To</option>
-                                  `;
+                                    <option value="Direction To">Direction To</option>`;
             snap.forEach(entry=>{
               let info = entry.val();
               if(entry.key != content_id){
@@ -111,11 +109,9 @@ $(document).ready(function(){
       marker.infowindow = new google.maps.InfoWindow({
         content: `<h1>${point.val().content}</h1>
                   <div id="${point.key}">
-                    <button>Edit</button>
-                    <button>Delete</button>
+                    <button id="deletepoint">Delete</button>
                     <select>
                       <option value="Direction To">Direction To</option>
-                    </select>
                   </div>`,
       });
 
@@ -128,8 +124,7 @@ $(document).ready(function(){
         firebase.database().ref(`points`).once('value').then(snap=>{
           let html_content = `<p>${content_name}</p>
                               <div id="${content_id}">
-                                <button>Edit</button>
-                                <button>Delete</button>
+                                <button id="deletepoint">Delete</button>
                                 <select>
                                   <option value="Direction To">Direction To</option>
                                 `;
@@ -155,15 +150,36 @@ $(document).ready(function(){
     error=>{}
   );
 
-  map.addListener('dblclick',(e)=>{
-    let key = ref.push().key;
-    let text = prompt('Add Text');
-    firebase.database().ref(`points/${key}`).update({
-      lat: e.latLng.lat(),
-      lng: e.latLng.lng(),
-      content: text,
-    })
+  map.addListener('dblclick',(location)=>{
+
+    if(current_marker!=null)
+    {
+      current_marker.setMap(null)
+    }
+
+    const marker = new google.maps.Marker({map: map});
+    marker.setPosition(location.latLng)
+    const info_window = new google.maps.InfoWindow;
+
+    current_marker = marker;
+
+    const lat = location.latLng.lat();
+    const lng = location.latLng.lng();
+
+    info_window.setContent(`<input id="newtext"></input><button id="newsubmit">Add</button><div style="display:none"; id="rc_lat">${lat}</div><div style="display:none"; id="rc_lng">${lng}</div>`);
+    info_window.open(map, current_marker);
   });
+
+  $(`body`).on(`click`,`#newsubmit`,function(){
+    let key = ref.push().key;
+    firebase.database().ref(`points/${key}`).update({
+      content: $(`#newtext`).val(),
+      lat: parseFloat($(`#rc_lat`).text()),
+      lng: parseFloat($(`#rc_lng`).text())
+    })
+
+    current_marker.setMap(null)
+  })
 
   searchBox.addListener('places_changed', function() {
     let point = searchBox.getPlaces()[0];
@@ -175,25 +191,8 @@ $(document).ready(function(){
     })
   });
 
-  $("body").on('click',"button",function(){
-    let index = $.inArray(this,$(this).parent().children());
-    let key = $(this).parent()[0].id;
-    if(key==="")
-    {
-      return;
-    }
-    switch(index)
-    {
-      case 0: //Edit Option
-          let change_text = prompt('Change Text');
-          firebase.database().ref(`points/${key}`).update({
-            content: change_text,
-          });
-        break;
-      case 1: //Delete Option
-          firebase.database().ref(`points/${key}`).remove();
-        break;
-    }
+  $("body").on('click',"#deletepoint",function(){
+    firebase.database().ref(`points/${$(this).parent().attr(`id`)}`).remove();
   })
 
   $("body").on('change',"select",function(){
