@@ -31,13 +31,26 @@ $(document).ready(function(){
 
   ref.on('child_added',
     point=>{
+        let icon = `point.png`;
+
+        switch(point.val().type){
+          case 0:
+            icon = `house.png`;
+            break;
+          case 1:
+            icon = `point.png`;
+            break;
+          default:
+            icon = `point.png`;
+            break;
+        }
         let marker = new google.maps.Marker({
           position: {
             lat: point.val().lat,
             lng: point.val().lng,
           },
           map: map,
-          icon: `point.png`,
+          icon: icon,
         });
 
         marker.infowindow = new google.maps.InfoWindow({
@@ -166,16 +179,29 @@ $(document).ready(function(){
     const lat = location.latLng.lat();
     const lng = location.latLng.lng();
 
-    info_window.setContent(`<input id="newtext"></input><button id="newsubmit">Add</button><div style="display:none"; id="rc_lat">${lat}</div><div style="display:none"; id="rc_lng">${lng}</div>`);
+    info_window.setContent(`<input id="newtext"></input><button id="newhouse">Add House</button><button id="newplace">Add Place</button><div style="display:none"; id="rc_lat">${lat}</div><div style="display:none"; id="rc_lng">${lng}</div>`);
     info_window.open(map, current_marker);
   });
 
-  $(`body`).on(`click`,`#newsubmit`,function(){
+  $(`body`).on(`click`,`#newhouse`,function(){
     let key = ref.push().key;
     firebase.database().ref(`points/${key}`).update({
       content: $(`#newtext`).val(),
       lat: parseFloat($(`#rc_lat`).text()),
-      lng: parseFloat($(`#rc_lng`).text())
+      lng: parseFloat($(`#rc_lng`).text()),
+      type: 0,
+    })
+
+    current_marker.setMap(null)
+  })
+
+  $(`body`).on(`click`,`#newplace`,function(){
+    let key = ref.push().key;
+    firebase.database().ref(`points/${key}`).update({
+      content: $(`#newtext`).val(),
+      lat: parseFloat($(`#rc_lat`).text()),
+      lng: parseFloat($(`#rc_lng`).text()),
+      type: 1,
     })
 
     current_marker.setMap(null)
