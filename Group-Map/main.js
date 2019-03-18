@@ -31,26 +31,13 @@ $(document).ready(function(){
 
   ref.on('child_added',
     point=>{
-        let icon = `point.png`;
-
-        switch(point.val().type){
-          case 0:
-            icon = `house.png`;
-            break;
-          case 1:
-            icon = `point.png`;
-            break;
-          default:
-            icon = `point.png`;
-            break;
-        }
         let marker = new google.maps.Marker({
           position: {
             lat: point.val().lat,
             lng: point.val().lng,
           },
           map: map,
-          icon: icon,
+          icon: point.val().type,
         });
 
         marker.infowindow = new google.maps.InfoWindow({
@@ -72,7 +59,7 @@ $(document).ready(function(){
             let html_content = `<p>${content_name}</p>
                                 <div id="${content_id}">
                                   <button id="deletepoint">Delete</button>
-                                  <select>
+                                  <select id="clickmarker">
                                     <option value="Direction To">Direction To</option>`;
             snap.forEach(entry=>{
               let info = entry.val();
@@ -179,29 +166,32 @@ $(document).ready(function(){
     const lat = location.latLng.lat();
     const lng = location.latLng.lng();
 
-    info_window.setContent(`<input id="newtext"></input><button id="newhouse">Add House</button><button id="newplace">Add Place</button><div style="display:none"; id="rc_lat">${lat}</div><div style="display:none"; id="rc_lng">${lng}</div>`);
+    info_window.setContent(
+    `<input id="newtext"></input>
+     <select id="pointtype">
+        <option value="none" selected>None</option>
+        <option value="house">House</option>
+        <option value="store">Store</option>
+        <option value="attraction">Attraction</option>
+     </select>
+     <button id="newplace">Add</button>
+     <div style="display:none"; id="rc_lat">${lat}</div>
+     <div style="display:none"; id="rc_lng">${lng}</div>`
+    );
     info_window.open(map, current_marker);
   });
 
-  $(`body`).on(`click`,`#newhouse`,function(){
-    let key = ref.push().key;
-    firebase.database().ref(`points/${key}`).update({
-      content: $(`#newtext`).val(),
-      lat: parseFloat($(`#rc_lat`).text()),
-      lng: parseFloat($(`#rc_lng`).text()),
-      type: 0,
-    })
-
-    current_marker.setMap(null)
-  })
-
   $(`body`).on(`click`,`#newplace`,function(){
     let key = ref.push().key;
+    let image = $(`#pointtype option:selected`).attr(`value`)
+    if(image==="none"){
+      image = "point";
+    }
     firebase.database().ref(`points/${key}`).update({
       content: $(`#newtext`).val(),
       lat: parseFloat($(`#rc_lat`).text()),
       lng: parseFloat($(`#rc_lng`).text()),
-      type: 1,
+      type: `${image}.png`,
     })
 
     current_marker.setMap(null)
@@ -221,7 +211,7 @@ $(document).ready(function(){
     firebase.database().ref(`points/${$(this).parent().attr(`id`)}`).remove();
   })
 
-  $("body").on('change',"select",function(){
+  $("body").on('change',"#clickmarker",function(){
     let location_id = $(this).val();
     let location_origin = $(this).parents()[0].id;
     let location_index = $.inArray(location_id,$.map($(this).find('option'),options=>{return options.value;}));
