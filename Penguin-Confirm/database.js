@@ -29,8 +29,9 @@ $(document).ready(function(){
                   }
                })
                .forEach((k,v)=>k.forEach((p,q)=>{
+
                   $($setup_ref[v][q][0]).val(`${p.id}`)
-                  p.name.forEach((s,t)=>{
+                  Object.values(p.name).forEach((s,t)=>{
                     $($setup_ref[v][q][1][t]).val(s)
                   })
                }))
@@ -42,7 +43,7 @@ $(document).ready(function(){
         //One/Two Pointer pairs
         x.val().splice(0,6)
                .map(k=>k.options)
-               .map(k=>k.map(p=>p.name))
+               .map(k=>k.map(p=>Object.values(p.name)))
                .map(x=>{
                  //console.log(x)
                  return x;
@@ -133,54 +134,49 @@ $(document).ready(function(){
 
     //Polar Bear
     let polar_bear = data.val()[data.val().length-1];
-    let polar_name = polar_bear.options[polar_bear.index].name[0];
+    let polar_name = Object.values(polar_bear.options[polar_bear.index].name)[0];
 
     let penguins =
     data.val()
-        .map((x,i)=>x.options[x.index])
-        .map(x=>x.name.map(k=>[x.id,k]))
-        .splice(0,5)
-        .transpose()
-        .map(x=>x.chunk(2))
+        .map(x=>x.options[x.index])
+        .filter((x,i,arr)=>i < arr.length-1)
+        .map((x,i,arr)=>{
+          return Object.values(x.name).map((p,q)=>{
+            return{
+              id: x.id,
+              name: p.match(/^.+(?= )/g)[0],
+              value: (i==5) ? 2 : q+1,
+              disguise: p.match(/\w+$/g)[0],
+              extra_args: (i < arr.length-1) ? `` : ` ^[‡](#small)`,
+            }
+          })
+        })
         .reduce((x,i)=>x.concat(i),[])
-        .concat([[freezer_data.id,freezer_data.name[1]]])
-        .chunk(5)
-        .map((x,i,arr)=>x.map(k=>{
-          let data = {
-            id: k[0],
-            name: k[1].match(/^.+(?= )/g)[0],
-            value: Math.min(i+1,2),
-            disguise: k[1].match(/\w+$/g)[0],
-            extra_args: ``,
-          }
-
-          //Freezer Label
-          if(i === arr.length-1){
-            data.extra_args = ` ^[‡](#small)`;
-          }
-
-          //Special Labels for Wilderness, Desert, and Sophanem
-          switch(SPECIAL_LABELS.map(p=>p[data.value-1]).findIndex(s=>s.includes(k[0])))
+        .map((x,i,arr)=>{
+          return arr.filter((p,q)=>arr.findIndex(s=>s.value===p.value)===q)
+                    .map(u=>arr.filter(w=>w.value===u.value))
+        })[0]
+        .reduce((x,i)=>x.concat(i),[])
+        .map(x=>{
+          switch(SPECIAL_LABELS.map(p=>p[x.value-1]).findIndex(s=>s.includes(x.id)))
           {
             case 0: //Desert
-              data.extra_args = `Desert [${data.name}](#small)${data.extra_args}`;
-              data.name = "";
+              x.extra_args = `Desert [${x.name}](#small)${x.extra_args}`;
+              x.name = "";
               break;
             case 1: //Sophanem
-              data.extra_args = `Sophanem [${data.name.match(/^\w+(?= )/g)}](#small)${data.extra_args}`;
-              data.name = "";
+              x.extra_args = `Sophanem [${x.name.match(/^\w+(?= )/g)}](#small)${x.extra_args}`;
+              x.name = "";
               break;
             case 2: //Wilderness
-              data.extra_args = `Wilderness [${data.name}](#small) [](#danger)${data.extra_args}`;
-              data.name = "";
+              x.extra_args = `Wilderness [${x.name}](#small) [](#danger)${x.extra_args}`;
+              x.name = "";
               break;
             default:
               break;
           }
-
-          return data;
-        }))
-        .reduce((x,i)=>x.concat(i),[])
+          return x;
+        })
         .map((x,i)=>{
           if(x.extra_args.length > 0){
             //Special/Freezer
