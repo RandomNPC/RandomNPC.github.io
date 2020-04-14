@@ -89,14 +89,13 @@ $(document).ready(function(){
                   ];
 
   firebase.initializeApp({
-    apiKey: "AIzaSyBO9Q0XQReiTqBiVuamOQW07IAxUESkYQ0",
-    authDomain: "runscape-route.firebaseapp.com",
-    databaseURL: "https://runscape-route.firebaseio.com",
-    projectId: "runscape-route",
-    storageBucket: "runscape-route.appspot.com",
-    messagingSenderId: "1051890066655"
+    apiKey: "AIzaSyD1-dRhKYn21pfoi5W1VfJKAajse9pVASY",
+    authDomain: "runescape-penguins.firebaseapp.com",
+    databaseURL: "https://runescape-penguins.firebaseio.com",
+    projectId: "runescape-penguins",
+    storageBucket: "runescape-penguins.appspot.com",
+    messagingSenderId: "433845323729"
   });
-
 
   new ClipboardJS(`#copy-imgur,#copy-rs,#copy-text`);
 
@@ -137,29 +136,33 @@ $(document).ready(function(){
   }
 
   firebase.database()
-          .ref()
-          .orderByChild(`position`)
+          .ref(`routing`)
           .once(`value`)
-          .then(x=>{
+          .then(data=>{
+
             $(`#list`).empty();
-            x.forEach(k=>{
-              if(k.val().used){
-                $(`#list`).append(
-                  `<li id="${k.key}" class="selected">
-                     <p>${k.val().name}</p>
-                     <input type="text"></input>
-                   </li>`
-                )
+            const arr = data.val()
+
+            const s_arr = Array(data.length).fill(null);
+
+            data.forEach(x=>{
+              s_arr[x.val().position] = {
+                key: x.key,
+                name: x.val().name,
+                selected: x.val().selected,
+                text: x.val().text
               }
-              else {
-                $(`#list`).append(
-                  `<li id="${k.key}">
-                     <p>${k.val().name}</p>
-                     <input type="text"></input>
-                   </li>`
-                 )
-              }
-              $(`#list > li:last-child input`).val(k.val().text)
+            })
+
+            s_arr.forEach(x=>{
+              $(`#list`).append(
+                `<li id="${x.key}" ${(x.selected) ? `class="selected"`: ``}>
+                   <p>${x.name}</p>
+                   <input type="text"></input>
+                 </li>`
+               )
+
+               $(`#list > li:last-child input`).val(x.text)
             })
 
             Generate();
@@ -167,29 +170,32 @@ $(document).ready(function(){
 
   firebase.database().ref().on('child_changed',x=>{
     firebase.database()
-            .ref()
-            .orderByChild(`position`)
+            .ref(`routing`)
             .once(`value`)
-            .then(x=>{
+            .then(data=>{
+
               $(`#list`).empty();
-              x.forEach(k=>{
-                if(k.val().used){
-                  $(`#list`).append(
-                    `<li id="${k.key}" class="selected">
-                       <p>${k.val().name}</p>
-                       <input type="text"></input>
-                     </li>`
-                  )
+              const arr = data.val()
+
+              const s_arr = Array(data.length).fill(null);
+
+              data.forEach(x=>{
+                s_arr[x.val().position] = {
+                  key: x.key,
+                  name: x.val().name,
+                  selected: x.val().selected,
+                  text: x.val().text
                 }
-                else {
-                  $(`#list`).append(
-                    `<li id="${k.key}">
-                       <p>${k.val().name}</p>
-                       <input type="text"></input>
-                     </li>`
-                   )
-                }
-                $(`#list > li:last-child input`).val(k.val().text)
+              })
+
+              s_arr.forEach(x=>{
+                $(`#list`).append(
+                  `<li id="${x.key}" ${(x.selected) ? `class="selected"`: ``}>
+                     <p>${x.name}</p>
+                     <input type="text"></input>
+                   </li>`
+                 )
+                $(`#list > li:last-child input`).val(x.text)
               })
 
               Generate();
@@ -198,48 +204,38 @@ $(document).ready(function(){
 
   $(`#list`).sortable({
     update: function( event, ui ) {
-      let update = {};
-
-      $.map($(`#list li`),x=>parseInt($(x).attr(`id`)))
-       .forEach((x,i)=>{
-         update[`${x}/position`]=i;
-       })
-      firebase.database()
-              .ref()
-              .update(update)
-
-      Generate();
+      const arr = {}
+      $(`#list li`).toArray()
+                   .forEach((x,i)=>{
+                    arr[`routing/${$(x).attr(`id`)}/position`] = i;
+                   })
+      firebase.database().ref().update(arr)
     }
   });
 
+  //back to original positions
   $(`#reset`).click(function(){
     firebase.database()
-            .ref()
+            .ref(`routing`)
             .once(`value`)
-            .then(x=>{
-              let update = {};
-              x.val().map((k,v)=>v)
-                     .forEach((k,v)=>{
-                       update[`${v}/position`] = k;
-                       update[`${v}/text`] = "";
-                     })
-              return firebase.database().ref().update(update);
+            .then(data=>{
+              const arr = {};
+              data.forEach(x=>{
+                arr[`routing/${x.key}/position`] = x.val().origin_position;
+              })
+              return firebase.database().ref().update(arr)
             })
             .catch(err=>console.log(err))
   })
 
-  $(`#list`).on(`change`,function(){
-    let data = {};
-    $(`#list input`).toArray()
-                    .map((x,i)=>{return {
-                      id: parseInt($(`#list li:eq(${i})`).attr(`id`)),
-                      text: $(x).val(),
-                    }})
-                    .sort((x,i)=>x.id-i.id)
-                    .forEach(x=>{
-                      data[`${x.id}/text`] = x.text;
-                    })
-    firebase.database().ref().update(data)
+  $(`#list`).on(`change`,`input`,function(){
+    let arr = {};
+    const data = $(this)[0].value;
+    const source = $($(this).parents()[0]).attr(`id`)
+
+    arr[`routing/${source}/text`] = data;
+
+    firebase.database().ref().update(arr)
   })
 
   $("#list").on("focusin","input",function(){
@@ -281,23 +277,35 @@ $(document).ready(function(){
   });
 
   $(`#sort`).click(function(){
-    let arr = Array($(`#list li`).length).fill(0).map((x,i)=>i);
 
-    let list = $(`#list li.selected`).toArray()
-                                     .map(x=>$(x).attr(`id`))
-                                     .map(x=>parseInt(x))
+    firebase.database()
+            .ref(`routing`)
+            .once(`value`)
+            .then(data=>{
+              const arr = {};
 
-    let not_list = $(`#list li:not(.selected)`).toArray()
-                                             .map(x=>$(x).attr(`id`))
-                                             .map(x=>parseInt(x))
-                                             .sort((a,b)=>a-b)
+              const s_arr = Array(data.length).fill(null);
 
-    let data = {};
-    let sorted = [...list,...not_list].forEach((x,i)=>{
-                                        data[`${x}/position`]=i;
-                                      })
+              data.forEach(x=>{
+                s_arr[x.val().position] = {
+                  key: x.key,
+                  selected: x.val().selected
+                }
+              })
 
-    firebase.database().ref().update(data);
+              const sort_arr = [
+                s_arr.filter(x=>x.selected),
+                s_arr.filter(x=>!x.selected)
+              ]
+
+              sort_arr.reduce((x,i)=>x.concat(i),[])
+                      .forEach((x,i)=>{
+                        arr[`routing/${x.key}/position`] = i;
+                      })
+
+              firebase.database().ref().update(arr)
+
+            })
   })
 
 })
