@@ -45,11 +45,12 @@ $(document).ready(function(){
 
       let raw =
       data.data.filter((x,i)=>i<6)
-               .map(x=>x.map(k=>k.name.map(p=>[k.id,p])))
+               .map(x=>x.map(k=>Object.values(k.name).map(p=>[k.id,p])))
                .map(x=>x.transpose())
                .map(x=>x.map(k=>k.chunk(2)))
                .map(x=>x.map(k=>k.chunk(2)))
-
+      
+      raw[5][1] = raw[5][0];
 
       raw[0].map((x,i)=>raw.map((k,v)=>raw[v][i]))
             .map((x,i)=>{
