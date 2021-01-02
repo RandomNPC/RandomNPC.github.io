@@ -26,8 +26,8 @@ $(document).ready(function(){
                     "Menaphos Lodestone",
                     //Items
                     "Ectophial",
-                    "Charter Ship",
-                    "Juju Teleport Spiritbag",
+                    "Ape Atoll Teleport",
+                    "Lletya Teleport",
                     //Duel Ring
                     "Dueling Ring: Castle Wars",
                     "Dueling Ring: South Feldip Hills",
@@ -37,7 +37,6 @@ $(document).ready(function(){
                     "Games Necklace: Barbarian Outpost",
                     "Games Necklace: Gamers Grotto",
                     "Games Necklace: Corporeal Beast",
-                    "Games Necklace: Tears Of Guthix",
                     "Games Necklace: Troll Invasion",
                     //Glory
                     "Amulet of Glory: Edgeville",
@@ -55,12 +54,9 @@ $(document).ready(function(){
                     "Wicked Hood: Chaos Altar",
                     "Wicked Hood: Mind Altar",
                     "Wicked Hood: Body Altar",
-                    "Wicked Hood: Death Altar",
                     "Wicked Hood: Nature Altar",
-                    "Wicked Hood: Soul Altar",
                     "Wicked Hood: Law Altar",
                     "Wicked Hood: Astral Altar",
-                    "Wicked Hood: Blood Altar",
                     "Wicked Hood: Cosmic Altar",
                     //Fairy Rings
                     "Fairy Ring: ALQ - Haunted Woods",
@@ -79,13 +75,26 @@ $(document).ready(function(){
                     "Fairy Ring: CIP - Miscellenia",
                     "Fairy Ring: AKQ - Piscatoris",
                     "Fairy Ring: ALS - McGrubors Woods",
-                    //Group teleport
-                    "Group Teleport - Barbarian Outpost",
-                    "Group Teleport - Ice Plateau",
-                    "Group Teleport - Port Khazard",
-                    "Group Teleport - Fishing Guild",
-                    "Ape Atoll Teleport",
-                    "Lletya Teleport",
+                    "Fairy Ring: BLR - Legends Guild",
+                    //Glider
+                    "Glider: Ta Quir Priw - The Grand Tree",
+                    "Glider: Sindarpos - White Wolf Mountain",
+                    "Glider: Lemanto Andra - Digsite",
+                    "Glider: Kar-Hewo - Al Kharid",
+                    "Glider: Gandius - East Karamja",
+                    "Glider: Lemantolly Undri - Feldip Hills",
+                    "Glider: Priw Gnomo Andralo - Gnome Maze",
+                    //Charter
+                    "Chartership: Port Tyras",
+                    "Chartership: Port Khazard",
+                    "Chartership: Brimhaven",
+                    "Chartership: Catherby",
+                    "Chartership: East Karamja (Shipyard)",
+                    "Chartership: Musa Point",
+                    "Chartership: Port Sarim",
+                    "Chartership: Menaphos",
+                    "Chartership: Mos Le'Harmless",
+                    "Chartership: Port Phasmatys",
                   ];
 
   firebase.initializeApp({
