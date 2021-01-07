@@ -85,16 +85,16 @@ $(document).ready(function(){
                     "Glider: Lemantolly Undri - Feldip Hills",
                     "Glider: Priw Gnomo Andralo - Gnome Maze",
                     //Charter
-                    "Chartership: Port Tyras",
-                    "Chartership: Port Khazard",
-                    "Chartership: Brimhaven",
-                    "Chartership: Catherby",
-                    "Chartership: East Karamja (Shipyard)",
-                    "Chartership: Musa Point",
-                    "Chartership: Port Sarim",
-                    "Chartership: Menaphos",
-                    "Chartership: Mos Le'Harmless",
-                    "Chartership: Port Phasmatys",
+                    "Charter Ship: Port Tyras",
+                    "Charter Ship: Port Khazard",
+                    "Charter Ship: Brimhaven",
+                    "Charter Ship: Catherby",
+                    "Charter Ship: East Karamja (Shipyard)",
+                    "Charter Ship: Musa Point",
+                    "Charter Ship: Port Sarim",
+                    "Charter Ship: Menaphos",
+                    "Charter Ship: Mos Le'Harmless",
+                    "Charter Ship: Port Phasmatys",
                   ];
 
   firebase.initializeApp({
